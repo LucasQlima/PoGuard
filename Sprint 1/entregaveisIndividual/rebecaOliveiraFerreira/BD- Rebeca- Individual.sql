@@ -1,0 +1,34 @@
+CREATE DATABASE Monitoramento;
+
+USE Monitoramento;
+
+CREATE TABLE admEmpresa (
+	idEmpresa INT PRIMARY KEY AUTO_INCREMENT,
+	cnpj VARCHAR(14) NOT NULL UNIQUE,
+    email VARCHAR(30) NOT NULL UNIQUE ,
+    qtd_Carros INT,
+    senha VARCHAR(12) NOT NULL,
+    confirmeSenha VARCHAR(12) NOT NULL,
+    CONSTRAINT CHK_senha
+    CHECK (senha = confirmeSenha)
+) AUTO_INCREMENT = 1;
+
+CREATE TABLE carro (
+	idCarro INT PRIMARY KEY AUTO_INCREMENT,
+    cnpjEmpresa VARCHAR(14) NOT NULL,
+    placa VARCHAR(7) NOT NULL UNIQUE,
+	tipoCarro VARCHAR(40) NOT NULL,
+	qtdSensores TINYINT NOT NULL
+)AUTO_INCREMENT = 1;
+
+CREATE TABLE sensor (
+	idSensor INT PRIMARY KEY AUTO_INCREMENT,
+    cnpjEmpresa VARCHAR(14) NOT NULL,
+	placaCarro VARCHAR(7) NOT NULL,
+	numeroSerie VARCHAR (30) NOT NULL UNIQUE,
+	temperatura DECIMAL(4,2)
+) AUTO_INCREMENT = 1;
+
+SHOW TABLES;
+
+

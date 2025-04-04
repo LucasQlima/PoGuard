@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <h1>CALCULADORA FINANCEIRA</h1>
+
+    <p>A perda de carga é algo que atinge todas as transportadoras do Brasil, representando uma perda de 
+        R$3 bilhões anuais somente por conta de fala de refrigeração adequada nas cargas.
+        Calcule aqui as suas perdas e o valor e quantidade dos sensores necessarios para sua frota
+    </p>
+
+    <button onclick="senseFrota()">Sensores da Frota</button>
+    <button onclick="perdaCarga()">Perda de Carga</button>
+
+    <div id="div_mensagem"></div>
+</body>
+</html>
+<script>
+
+    var mensagem = 0;
+    if(mensagem == 0){
+        div_mensagem.innerHTML = 
+        `
+        <h2>Selecione uma das opções de calculo</h2>
+        `
+    }
+
+    function senseFrota() {
+        div_mensagem.innerHTML = 
+        `
+        <h2>ORÇAMENTO PARA SUA FROTA</h2>
+
+        <h4 id="qtdBig">Quantidade de baús grandes (acima de 15m de comprimento): 0</h4>
+        <p>Cada baú grande necessita de <b>8</b> sensores</p>
+        <button onclick="minusBig()"> -1 </button><button onclick="plusBig()"> +1 </button>
+
+        <h4 id="qtdMed">Quantidade de baús médios (entre 10m e 15m de comprimento): 0</h4>
+        <p>Cada baú médio necessita de <b>5</b> sensores</p>
+        <button onclick="minusMed()"> -1 </button><button onclick="plusMed()"> +1 </button>
+        
+        <h4 id="qtdSmall">Quantidade de baús pequenos (menores que 10m de comprimento): 0</h4>
+        <p>Cada baú pequeno necessita de <b>3</b> sensores</p>
+        <button onclick="minusSmall()"> -1 </button><button onclick="plusSmall()"> +1 </button>
+
+        <h4>Onde sua propriedade de localiza(UF)?</h4>
+        <input type="text" id="uniFed">
+
+        <br><br>
+        <button onclick="calc_orcamento()">CALCULAR</button>
+        <br><br>
+
+        <div id="qtdSensores"></div>
+        <div id="orcamentoSensor"></div>
+        <div id="orcamentoTotal"></div>
+        `
+    }
+    function perdaCarga() {
+        div_mensagem.innerHTML = 
+        `
+        <h2>Calcule quanta carga você perde por ano</h2>
+
+        <p> 
+        Atualmente o Brasil perde cerca de <b>44%</b> de carga todos os anos durante as etapas de transporte e <br>
+        manuseio de carga, representando <b>R$3 bilhões perdidos anualmente</b>. tudo isso causado por falhas no <br>
+        transporte por conta do pobre ou inexistente monitoramento da carga, principalmente de cargas <br>
+        que necessitam de refrigeração. <br>
+        Calcule qunato a sua empresa de transporte perde por ano somente pela falta de monitoramento da carga
+        </p>
+        
+        <h4>Qual foi o faturamento da sua empresa no último?(Em milhões)</h4>
+        <input id="faturamentoEmpresa" placeholder="R$">
+
+        <h4>Quantas toneladas de alimento foram transportadas no último ano pela sua empresa?(Em toneladas)</h4>
+        <input id="cargaPerdida">
+
+        <br><br>
+
+        <button onclick="calcCarga()">Calcular</button>
+
+        <div id="perdaMonetaria"></div>
+        <div id="mensagemCarga"></div>
+        `
+    }
+
+    //bloco sobre a perda anual
+        var fatuEmpresa = 0;
+        var cargaAno = 0;
+
+        var porcentagemDeMercado = 0;
+        var porcentagemPerdaLucro = 0;
+        var perdasBrutasMonetarias = 0;
+
+        var porcentagemPerdaCarga = 0;
+        var brutoPerdaCargaEmpresa = 0;
+        var porcentagemPerdaCargaEmpresa = 0;
+
+    function calcCarga() {
+        fatuEmpresa = Number(faturamentoEmpresa.value)
+        cargaAno = Number(cargaPerdida.value)
+
+        /*
+        O valor total da cadeia fria no ano de 2023 foi de U$2.5bi,assumindo o dolar a 5 reais = 12.5bi
+        A quantidade de carga perdida no ano de 2023 foi de 46 toneladas
+        Verificar a porcentagem de mercado a empresa e saber quanto ela perdeu do R$3bi anuais.
+        Verificar o quanto a empresa perdeu de carga de acordo com os 44% de perda anual, e também 
+        o quanto contriu para a perda do país
+        */
+
+        porcentagemDeMercado = (fatuEmpresa / 12500) * 100;
+        porcentagemPerdaLucro = (((porcentagemDeMercado / 100) * 3000) / fatuEmpresa) * 100;
+        perdasBrutasMonetarias = (porcentagemDeMercado / 100) * 3000;
+
+        porcentagemPerdaCarga = (cargaAno / 46) * 100;
+        porcentagemPerdaCargaEmpresa = ((cargaAno * 0.44) / cargaAno) * 100;
+        brutoPerdaCargaEmpresa = cargaAno * 0.44;
+
+        perdaMonetaria.innerHTML = 
+        `
+        Neste ano a sua empresa perdeu <b>R$${perdasBrutasMonetarias}</b> milhões devido a transporte inapropriado <br>
+        dar cargas. O que representa <b>${porcentagemPerdaLucro}%</b> do seu lucro anual.
+        `
+        if(brutoPerdaCargaEmpresa < 1){
+            mensagemCarga.innerHTML = 
+            `
+            Também neste ano, a sua empresa perdeu <b>${brutoPerdaCargaEmpresa * 1000}</b> kilos em carga, <br>
+            representando <b>${porcentagemPerdaCargaEmpresa}%</b> de todo o seu transporte anual de carga e <br>
+            <b>${porcentagemPerdaCarga}%</b> de toda a carga perdida no Brasil.
+            `
+        }else{
+            mensagemCarga.innerHTML = 
+            `
+            Também neste ano, a sua empresa perdeu <b>${brutoPerdaCargaEmpresa}</b> toneladas em carga, <br>
+            representando <b>${porcentagemPerdaCargaEmpresa}%</b> de todo o seu transporte anual de carga e <br>
+            <b>${porcentagemPerdaCarga}%</b> de toda a carga perdida no Brasil.
+            `
+        }
+
+
+
+    }
+    //bloco sobre a perda anual
+
+    //bloco sobre a quantidade de sensores
+        var big = 0;
+        var bigTotal = 0
+        var med = 0
+        var medTotal = 0
+        var small = 0;
+        var smallTotal = 0
+
+        
+        var valSensor = 200;
+        var totalSensores = 0;
+        var precoSensores = 0;
+
+        var uf = '';
+        var precoFrete = 0;
+
+        var total = 0;
+
+    //bloco qtdBig
+        function plusBig() {
+            big += 1
+
+            qtdBig.innerHTML = `Quantidade de baús grandes (acima de 15m de comprimento): ${big}`
+        }
+
+        function minusBig() {
+            big -= 1
+
+            qtdBig.innerHTML = `Quantidade de baús grandes (acima de 15m de comprimento): ${big}`
+        }
+    //bloco qtdBig
+
+    //bloco qtdMed
+        function plusMed() {
+            med += 1
+
+            qtdMed.innerHTML = `Quantidade de baús médios (entre 10m e 15m de comprimento): ${med}`
+        }
+
+        function minusMed() {
+            med -= 1
+
+            qtdMed.innerHTML = `Quantidade de baús médios (entre 10m e 15m de comprimento): ${med}`
+        }
+    //bloco qtdMed
+
+    //bloco qtdSmall
+        function plusSmall() {
+            small += 1
+
+            qtdSmall.innerHTML = `Quantidade de baús pequenos (menores que 10m de comprimento): ${small}`
+        }
+
+        function minusSmall() {
+            small -= 1
+
+            qtdSmall.innerHTML = `Quantidade de baús pequenos (menores que 10m de comprimento): ${small}`
+        }
+    //bloco qtdSmall
+
+    
+    function calc_orcamento() {
+
+        uf = uniFed.value;
+
+        //bloco do preço do frete
+            if(uf == 'SP'){
+                    precoFrete = 500
+                }else if(uf == 'MS'){
+                    precoFrete = 750
+                }else if(uf == 'GO'){
+                    precoFrete = 750
+                }else if(uf == 'MG'){
+                    precoFrete = 750
+                }else if(uf == 'RJ'){
+                    precoFrete = 750
+                }else if(uf == 'PR'){
+                    precoFrete = 750
+                }else if(uf == ''){
+                    precoFrete = 0
+                }else{
+                    precoFrete = 1250
+                }
+        //bloco do preço do frete
+
+        bigTotal = big * 8
+        medTotal = med * 5
+        smallTotal = small * 3
+
+        bigVal = bigTotal * valSensor
+        medVal = medTotal * valSensor
+        smallVal = smallTotal * valSensor
+
+
+        totalSensores = bigTotal + medTotal + smallTotal;
+        precoSensores = totalSensores * valSensor;
+
+        total = precoFrete + precoSensores;
+
+        qtdSensores.innerHTML = 
+        `
+        <p>
+            Possuindo <b>${big}</b> baús grandes o total de sensores é de <b>${bigTotal}, </b>, totalizando <b>R$${bigVal}</b>. <br>
+            Possuindo <b>${med}</b> baús médios o total de sensores é de <b>${medTotal}, </b> totalizando <b>R$${medVal}</b>. <br>
+            Possuindo <b>${small}</b> baús pequenos o total de sensores é de <b>${smallTotal}, </b> totalizando <b>R$${smallVal}</b>. <br>
+        </p>
+        `
+        orcamentoSensor.innerHTML = 
+        `
+        <p>
+            O total de sensores é de <b>${totalSensores}.</b> Cada sensor custa <b>R$${valSensor}</b>, <br>
+            logo o custo para adiquirir sensores para toda a sua frota é de <b>R$${precoSensores}</b>. <br>
+            A sua propriedade se localiza em <b>${uf}</b>, logo o valor do frete é de <b>R$${precoFrete}</b>.
+        </p>
+        `
+        orcamentoTotal.innerHTML = 
+        `
+        <p>
+            Somando o valor de todos os sensores com o total do frete para sua região, o valor final é
+            de <b>R$${total}</b>.
+        </P>
+        `
+    }
+    //bloco calcula da quantiade de sensores
+    
+
+</script>

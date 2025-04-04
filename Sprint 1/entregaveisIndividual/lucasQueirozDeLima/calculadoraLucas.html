@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Calculadora Financeira</h1>
+    <h3 style="color: #4682B4;">Monitoramento de temperatura em baús refrigerados</h3>
+
+    ________________________________________________________________________________________
+
+    <br><br>
+
+    Digite o nome do produto que você fará o transporte: 
+    <input type="text" id="input_produto">
+
+    <br><br>
+
+    Informe o valor da unidade desse produto em reais:
+    <input type="number" id="input_valor">
+
+    <br><br>
+
+    Escreva a quantidade de produtos que você está transportando:
+    <input type="number" id="input_qtd">
+
+    <br><br>
+
+    O quanto você receberá da empresa contratante para realizar o transporte:
+    <input type="number" id="input_recebido">
+
+    <br><br>
+
+    O que você deseja vizualizar?
+
+    <button onclick="calcTotal()">Ver valor total da carga.</button>
+    <button onclick="disponibilizarBotoes()">Analisar possivel perda.</button>
+
+    <br><br>
+
+    <div id="div_texto"></div>
+
+</body>
+</html>
+
+<script>
+
+    function calcTotal() {
+        var produto = input_produto.value;
+        var valorUnitario = Number(input_valor.value);
+        var quantidade = Number(input_qtd.value);
+        var recebido = Number(input_recebido.value);
+
+        var total = valorUnitario * quantidade;
+
+        div_texto.innerHTML = `________________________________________________________________________________________
+        
+        <br><br>
+
+        A sua carga de ${produto} possui o valor monetário de <b style="color: green">R$${total}</b> e você receberá <b style="color: green">R$${recebido}</b> por realizar essa entrega.`;
+    }
+
+    function disponibilizarBotoes() {
+        div_texto.innerHTML = `________________________________________________________________________________________
+        
+        <br><br>
+
+        <p style="color: gray">INFORMATIVO: Cerca de 10% dos alimentos refrigerados transportados no Brasil são perdidos devido a falhas na cadeia de frio.</p>
+
+        <br>
+        
+        Digite a quantidade de produtos da carga que foram perdidos: 
+        <input type="number" id="input_perda">
+        
+        <br><br>
+
+        Digite a porcentagem referente a margem de perda do produto transportado: 
+        <input type="number" id="input_margem">
+        
+        <br><br>
+        
+        <button onclick="analisarPerda()">Calcular.</button>
+
+        <br><br>
+
+        <div id="div_final"></div>
+        `
+    }
+
+    function analisarPerda() {
+        var produto = input_produto.value;
+
+        var valorUnitario = Number(input_valor.value);
+        var quantidade = Number(input_qtd.value);
+        var recebido = Number(input_recebido.value);
+        
+        var qtdPerda = Number(input_perda.value);
+
+        var margemPerda = Number(input_margem.value) / 100;
+        var total = valorUnitario * quantidade;
+        var perda = (100 * qtdPerda / quantidade);
+
+        if (margemPerda * 100 < perda) {
+            var mensagem = `________________________________________________________________________________________ <br><br>A sua perda foi de <b style="color: red">${perda}%</b> da sua carga de <b>${produto}</b> que é <b style="color: red">R$${perda / 100 * total}</b> de um total de <b style="color: green">R$${total}</b>.<br><br>Contando com a margem de perda estipulada você receberá <b>R$${recebido - ((qtdPerda - (quantidade * margemPerda)) * valorUnitario )}.</b><br><br> Com nossa solução vocêpoderia ter uma redução de cerca de 15% desse prejuizo. <br>`;
+        } else {
+            var mensagem = `________________________________________________________________________________________ <br><br>A sua perda foi de <b style="color: red">${perda}%</b> da sua carga de <b>${produto}</b> que é <b style="color: red">R$${perda / 100 * total}</b> de um total de <b style="color: green">R$${total}</b>.<br><br>Contando com a margem de perda estipulada você receberá <b>R$${recebido}.</b><br><br>`;
+        }
+
+
+
+        if (perda <= 10) {
+            div_final.innerHTML = mensagem;
+        } else {
+            if (perda <= 25) {
+                div_final.innerHTML = mensagem;
+                div_final.innerHTML += `<b style="color: red">Cuidado, é possivel reduzir essa perda!!</b>`
+            } else {
+                div_final.innerHTML = mensagem;
+                div_final.innerHTML += `<b style="color: red">A situação é alarmante, o seu lucro está sendo drasticamente reduzido!!</b>`
+            }
+        }
+    }
+
+</script>

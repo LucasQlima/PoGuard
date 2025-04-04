@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora financeira - Monitoramento de baús refrigerados alimentícios</title>
+</head>
+
+<body>
+  <h1>Acompanhe suas finanças</h1>
+  <br>
+
+  <h3>Informações sobre o transporte:</h3>
+  <p>Qual o nome da carga transportada?</p>
+  <input type="text" id="input_produto">
+
+  <p>Qual a quantidade da carga transportada?</p>
+  <input type="text" id="input_qtdCarga">
+
+  <p>Qual o valor da carga transportada em reais?</p>
+  <input type="text" id="input_valorCarga">
+
+  <p>Para qual região so Brasil será transportado? (<b>Sudeste, Nordeste, Sul, Centro-Oeste ou Norte</b>):</p>
+  <input type="text" id="input_regiao">
+  <br><br>
+
+
+  <button onclick="calcular()">Analise seus lucros </button>
+
+  <br><br>
+  <span id="span_mensagem"></span>
+</body>
+
+</html>
+<script>
+  function calcular() {
+    var produto = input_produto.value;
+    var quantidade = Number(input_qtdCarga.value);
+    var valor = Number(input_valorCarga.value);
+    var regiao = input_regiao.value;
+    var prejuizoValor = 0;
+    var perdaQtd = 0;
+
+    if (regiao == "Sul") {
+    } else {
+      if (regiao == "Nordeste") {
+        prejuizo = valor * 0.15
+        perdaQtd = quantidade * 0.15
+
+        span_mensagem.innerHTML += `
+        Sua entrega pode sofrer uma perda de até 15%! <br> ${produto} poderá ter uma perda de ${perdaQtd} produtos e R$${prejuizo} <br>`;
+
+      } else {
+        prejuizo = valor * 0.10
+        perdaQtd = quantidade * 0.10
+
+        span_mensagem.innerHTML += `Sua entrega pode sofrer uma perda de até 10%! <br>
+        ${produto} poderá ter uma perda de ${perdaQtd} produtos e R$${prejuizo}<br>`;
+      }
+    }
+
+    span_mensagem.innerHTML += `Regiões de temperaturas extremas como Nordeste e Sul, podem sofrer perdas de até 15% de produtos alimentícios.<br> Enquanto as demais regiões podem sofrer cerca de 10% de perda da carga <br><br>`;
+
+    span_mensagem.innerHTML += `<h4>Se previna, e venha conosco monitorar sua carga!</h4>`
+
+  }
+</script>

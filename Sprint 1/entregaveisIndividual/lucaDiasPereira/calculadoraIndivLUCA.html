@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Negocio</title>
+</head>
+<body>
+    <h1 style="color:red;"><b>CALCULADORA FINANCEIRA</b></h1>
+
+
+    <b>Insira o produto a ser transportado:</b><br><br>
+    <input type="text" id="input_nome" placeholder= "Nome do Produto">
+    <input type="number" id="input_tempcap" placeholder="Temperatura Captada"><br><br> 
+
+    <input type="number" id="input_valor" placeholder="Preço do Produto">
+    <input type="number" id="input_quantidade" placeholder="Quantidade por Unidade"><br><br>
+
+    <input type="number" id="input_min" placeholder="Temperatura Minima">
+    <input type="number" id="input_max" placeholder="Temperatura Maxima"><br><br>
+
+    <button onclick="calcular()">Fazer Calculo</button><br><br>
+    <div id="div_mensagem"></div>
+    <b style="color: darkred;"></b>
+</body>
+</html>
+<script>
+    function calcular() {
+        var nome = input_nome.value;
+        var tempcap = Number(input_tempcap.value);
+        var valor = Number(input_valor.value);
+        var quantidade = Number(input_quantidade.value);
+        var minimo = Number(input_min.value);
+        var maximo = Number(input_max.value);
+
+        var difMax = ((tempcap * 100) / maximo).toFixed(2);
+        var difMin = ((tempcap / minimo) * 100).toFixed(2);
+        var ttlBau = (valor * quantidade).toFixed(2);
+        var pctMax = (difMax * ttlBau / 100).toFixed(2);
+        var pctMin = (difMin * ttlBau / 100).toFixed(2);
+
+        if (tempcap < minimo) {
+            difMin = (((minimo - tempcap) / minimo) * 100).toFixed(2);
+        }
+        var overMax = (difMax - 100).toFixed(2);
+        var overMin = (difMin - 100).toFixed(2);
+
+        if (difMax > 100) {
+            div_mensagem.innerHTML =
+            `<b>Temperatura está:</b> <b style="color: darkred;">Acima da Temperatura Máxima!</b><br>
+            Temperatura se encontra a <b>${overMax}%</b> acima da temperatura máxima.<br>
+            Pode resultar em perda total da mercadoria.;<br><br>
+            
+            <b>Diagnostico Detalhado:</b><br>
+            Produto em Trajeto: ${nome};<br>
+            Total de Carga: ${quantidade};<br>
+            Valor por Unidade: R$${valor};<br>
+            Carga Total: R$${ttlBau};<br>
+            Temperatura Ideal: Entre ${maximo} e ${minimo};<br>`
+        } else if (difMax >= 50) {
+            div_mensagem.innerHTML =
+            `<b>Temperatura está:</b> <b style="color: red;">Proximo ao Limite de Temperatura Máxima</b><br>
+            Temperatura está a <b>${difMax}%</b> % de atingir o limite máximo de temperatura.<br>
+            Pode resultar em uma perda de até R$${pctMax} da mercadoria.;<br><br>
+            
+            <b>Diagnóstico Detalhado:</b><br>
+            Produto em Trajeto: ${nome};<br>
+            Total de Carga: ${quantidade};<br>
+            Valor por Unidade: R$${valor};<br>
+            Carga Total: R$${ttlBau};<br>
+            Temperatura Ideal: Entre ${maximo} e ${minimo};<br>`
+//        } else if (difMin > 100) {
+//            div_mensagem.innerHTML =
+//            `<b>Temperatura está:</b> <b style="color: darkblue;">Abaixo da Temperatura Minima!</b><br>
+//            Temperatura se encontra a <b>${overMin}%</b> abaixo da temperatura minimo.<br>
+//            Pode resultar em perda total da mercadoria.;<br><br>
+//            
+//            <b>Diagnostico Detalhado:</b><br>
+//            Produto em Trajeto: ${nome};<br>
+//            Total de Carga: ${quantidade};<br>
+//            Valor por Unidade: R$${valor};<br>
+//            Carga Total: R$${ttlBau};<br>
+//            Temperatura Ideal: Entre ${maximo} e ${minimo};<br>`
+//        } else if (difMin >= 50) {
+//            div_mensagem.innerHTML =
+//            `<b>Temperatura está:</b> <b style="color: darkcyan;">Proximo ao Limite de Temperatura Minima</b><br>
+//            Temperatura está a <b>${difMin}%</b> % de atingir o limite minimo de temperatura.<br>
+//            Pode resultar em uma perda de até R$${pctMin} da mercadoria.;<br><br>
+//            
+//            <b>Diagnóstico Detalhado:</b><br>
+//            Produto em Trajeto: ${nome};<br>
+//            Total de Carga: ${quantidade};<br>
+//            Valor por Unidade: R$${valor};<br>
+//            Carga Total: R$${ttlBau};<br>
+//            Temperatura Ideal: Entre ${maximo} e ${minimo};<br>`
+        } else {
+            div_mensagem.innerHTML =
+            `<b>Temperatura está:</b> <b style="color: green;">Dentro dos Limites de Temperatura</b><br>
+            Temperatura está a <b>${difMin}%</b> da minima e <b>${difMax}%</b> da máxima.<br><br>
+            
+            <b>Diagnóstico Detalhado:</b><br>
+            Produto em Trajeto: ${nome};<br>
+            Total de Carga: ${quantidade};<br>
+            Valor por Unidade: R$${valor};<br>
+            Carga Total: R$${ttlBau};<br>
+            Temperatura Ideal: Entre ${maximo} e ${minimo};<br>`
+        }
+    }
+</script>

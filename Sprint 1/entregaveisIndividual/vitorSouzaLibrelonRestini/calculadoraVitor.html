@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <h2>CALCULADORA PARA BAUS REFRIGERADOS</h2>
+    </div>
+    <div>
+        <div>
+            <p>INFORMAÇÕES DO PRODUTO</p>        
+            <input placeholder="Nome do produto" id="input_nome">                       
+            <input placeholder="Preço unitário" id="input_valor">            
+            <input placeholder="Volume de cada produto" id="input_vl_prod">
+            <input placeholder="Temperatura mínima" id="input_temp_min">
+            <input placeholder="Temperatura máxima" id="input_temp_max">
+        </div>
+        <div>
+            <p>INFORMAÇÕES DO VEÍCULO</p>        
+            <input placeholder="Placa do veículo" id="input_placa">            
+            <input placeholder="Volume máximo" id="input_vl_max">            
+            <input placeholder="Motorista" id="input_motorista">                        
+        </div>
+        <div>
+            <p>INFORMAÇÕES DO ROTA</p>        
+            <input placeholder="Data da rota" id="input_dt_rota">            
+            <input placeholder="Quantidade de produtos" id="input_qt_prod">
+            <input placeholder="Temperatura média do baú" id="input_temp_bau">                                         
+        </div>
+        <br>
+        <button onclick="calc()">Analisar rota e baú</button>
+        <br>
+        <div id="id_mensagem">
+
+        </div>
+    </div>
+    
+</body>
+</html>
+<script>
+    function calc(){
+        var qtProd = Number(input_qt_prod.value)
+        var dtRota = input_dt_rota.value
+        var nmMotorista = input_motorista.value
+        var nmProd = input_nome.value
+        var placa = input_placa.value
+        var precoProd = input_valor.value
+        var vlMaxVeiculo = input_vl_max.value
+        var vlProd = input_vl_prod.value
+        var tempMax = Number(input_temp_max.value)
+        var tempMin = Number(input_temp_min.value)
+        var tempMed = Number(input_temp_bau.value)
+        if(vlProd * qtProd >vlMaxVeiculo )
+        {
+            alert(`Cuidado! Pois você levando um volume de produtos maior do que o capacitado!`)
+            id_mensagem.innerHTML = 
+        `
+            Não será possível realizar essa viagem, pois o volume de produtos sendo carregador é maior do que o permitido.
+        `
+        }
+        else
+        {
+            if(vlProd * qtProd == vlMaxVeiculo)
+            alert(`Cuidado! Pois o veículo está com sua capacidade máxima permitida!`)
+        id_mensagem.innerHTML = 
+        `
+            O veículo de placa: ${placa} saiu no dia: ${dtRota} carregando o produto ${nmProd}.<br>
+            O veículo foi dirigido pelo motorista: ${nmMotorista}. A carga tinha um valor de R$${qtProd * precoProd}.
+        `
+            if(tempMax < tempMed){
+                alert(`A temperatura máxima do produto é ${tempMax}°C e a temperatura média do baú durante a viagem foi de ${tempMed}°C`)
+                id_mensagem.innerHTML += 
+            `
+                <p style="color:red"> Carga com alta possibilidade de deterioração da qualidade do produto ${nmProd}</p>
+            `
+            }
+            else{
+                id_mensagem.innerHTML += 
+            `
+                Durante o trajeto a carga não passou por nenhum risco, já que a temperatura média do báu foi em torno de ${tempMed}°C, respeitando o limite mínimo de ${tempMin}°C e o máximo de ${tempMax}°C
+            `
+            }
+        }
+        
+    }
+</script>

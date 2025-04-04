@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1><b>Calculadora de sensores</b></h1>
+    Informe o tamanho do seu baú: <br>
+    <Input id="input_tamanho" placeholder="1, 2 ou 3"></Input>
+    <br>
+    <b style="color:red">1 - Pequeno</b> | <b style="color:yellow">2 - Medio</b> | <b style="color: green">3 - Grande</b>
+    <br> <br>
+    Informe o volume do seu baú: <br>
+    <input type="text" id="input_volume" placeholder="Informe em valores inteiros">
+    <br>
+    <i>Até 8 m3 para pequeno | Até 20 m3 para medio | Até 50 m3 para Grande</i>
+    <br>
+    <br>
+    Informe a quantidade de alimento sendo transportado: <br>
+    <input type="text" id="input_alimento" placeholder="Informe em KG">
+    <br>
+    <i>Até 2000kg para pequeno | Até 5000kg para medio | Até 12000kg para Grande</i>
+    <br> <br>
+    <button onclick="analisar()">Analisar número de sensores</button>
+    <div id="div_mensagem"></div>
+</body>
+</html>
+<script>
+    // implemetar informações de custo por sensor, área do baú, redução do custo e informar o processo.
+    function analisar(){
+
+        var tamanho = Number(input_tamanho.value);
+        var alimento = Number(input_alimento.value);
+        var volume = Number(input_volume.value)
+        var numSensores = 0
+        div_mensagem.innerHTML = ``
+
+        if(tamanho == 1){
+                  
+                if(volume < 0){
+                    div_mensagem.innerHTML = `Volume inválido`
+                }else if(volume < 5) {
+                    div_mensagem.innerHTML = `O número de sensores será de 1` 
+                    numSensores = 1
+                }else if(volume <= 8){
+                    div_mensagem.innerHTML = `O número de sensores será de 2`
+                    numSensores = 2
+                }else if(volume > 8){
+                    div_mensagem.innerHTML = `Volume limite ultrapassado`
+                }
+
+        }       
+                    
+                        
+        if(tamanho == 2){
+
+            if(volume < 0){
+                    div_mensagem.innerHTML = `Volume inválido`
+                }else if(volume < 5 ) {
+                    div_mensagem.innerHTML = `O número de sensores será de 1`
+                    numSensores = 1 
+                }else if(volume < 10){
+                    div_mensagem.innerHTML = `O número de sensores será de 2`
+                    numSensores = 2
+                }else if(volume < 15 ){ 
+                    div_mensagem.innerHTML = `O número de sensores será de 3`
+                    numSensores = 3
+                }else if(volume <= 20){ 
+                    div_mensagem.innerHTML = `O número de sensores será de 4`
+                    numSensores = 4
+                }else if(volume > 20){
+                    div_mensagem.innerHTML = `Volume limite ultrapassado`
+                }
+        }
+        if(tamanho == 3){
+
+            if(volume < 0){
+                    div_mensagem.innerHTML = `Volume inválido`
+                }else if(volume < 5) {
+                    div_mensagem.innerHTML = `O número de sensores será de 1`
+                    numSensores = 1
+                }else if(volume < 10){
+                    div_mensagem.innerHTML = `O número de sensores será de 2`
+                    numSensores = 2
+                }else if(volume < 15){
+                    div_mensagem.innerHTML = `O número de sensores será de 3`
+                    numSensores = 3
+                }else if(volume < 20){ 
+                    div_mensagem.innerHTML = `O número de sensores será de 4`
+                    numSensores = 4
+                }else if(volume < 25){
+                    div_mensagem.innerHTML = `O número de sensores será de 5`
+                    numSensores = 5
+                }else if(volume < 30){
+                    div_mensagem.innerHTML = `O número de sensores será de 6`
+                    numSensores = 6
+                }else if(volume < 35){
+                    div_mensagem.innerHTML = `O número de sensores será de 7`
+                    numSensores = 7
+                }else if(volume < 40){
+                    div_mensagem.innerHTML = `O número de sensores será de 8`
+                    numSensores = 8
+                }else if(volume < 45){
+                    div_mensagem.innerHTML = `O número de sensores será de 9`
+                    numSensores = 9
+                }else if(volume <= 50){
+                    div_mensagem.innerHTML = `O número de sensores será de 10`
+                    numSensores = 10
+                }
+                else if(volume > 50 ){
+                    div_mensagem.innerHTML = `Volume limite ultrapassado`
+                }
+            }
+        if(tamanho > 3){
+            div_mensagem.innerHTML = `Tamanho de caminhão não encontrado`
+        }
+
+        if(tamanho < 1){
+            div_mensagem.innerHTML = `Tamanho de caminhão não encontrado`
+        }
+        
+        div_mensagem.innerHTML += `<br> Com a quantidade de ${alimento} kg de alimento sendo transportado sem o monitoramento de temperatura adequado, pode ocorrer a perda média de 10%, ou <b style="color:red">${alimento * 0.1}</b> kg de alimento, gerando um grande prejuízo financeiro e uma perda de credibilidade, consequentemente perdendo espaço no mercado. <br>
+        Com o monitoramento adequado, podemos reduzir esse número para uma perda de até 2%, <b style="color:green">reduzindo em 4 vezes a perda por rompimentos de frios.</b> <br>
+        Com a instalção de ${numSensores} sensor(es), sua carga estara mais segura e <b style="color:green">gerando menos prejuízo</b> e <b style="color:green">mais credibilidade no mercado.</b>
+        `
+    
+}
+</script>

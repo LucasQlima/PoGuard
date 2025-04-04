@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Financeira - Transporte Refrigerado</title>
+    <style>
+        .div1 { color: rgb(0, 4, 250);}
+    </style>
+</head>
+<body>
+
+    <h2>Calculadora Financeira - Transporte Refrigerado</h2>
+    
+    Consumo de Diesel (litros por hora):  
+    <input type="number" id="input_litrosPorHora"><br>
+    <div class="div1">
+        <b>Caminhões Leves (3 a 7 toneladas)</b> <br>
+        Consumo médio: 3 a 5 km/L <br>
+        Sistema de refrigeração: 0,5 a 1,5 L/hora <br>
+        <b>Caminhões Médios (7 a 15 toneladas)</b> <br>
+        Consumo médio: 2 a 3 km/L <br>
+        Sistema de refrigeração: 1 a 2 L/hora <br><br>
+    </div>
+
+    Preço do litro do Diesel (R$):  
+    <input type="number" id="input_precoDiesel"><br><br>
+
+    Horas de Funcionamento por Dia:  
+    <input type="number" id="input_horasUso"><br><br>
+
+    Valor médio da carga transportada (R$):  
+    <input type="number" id="input_valorCarga"><br><br>
+
+    Percentual médio de perda (%) sem monitoramento:  
+    <input type="number" id="input_percentualPerda"><br>
+    <div class="div1">
+        No transporte de frutas e vegetais, a perda pode chegar a 10% a 20% sem refrigeração adequada. <br>
+        Em carnes e laticínios, pode variar entre 5% e 15%. <br><br>
+    </div>
+
+    <button onclick="calcular()">Calcular</button><br><br>
+
+    <div id="resultado"></div>
+</body>
+</html>
+    <script>
+        function calcular() {
+            var litrosPorHora = Number(input_litrosPorHora.value);
+            var precoDiesel = Number(input_precoDiesel.value);
+            var horasUso = Number(input_horasUso.value);
+            var valorCarga = Number(input_valorCarga.value);
+            var percentualPerda = Number(input_percentualPerda.value);
+    
+            // Cálculo do custo diário do diesel
+            var custoDiario = litrosPorHora * precoDiesel * horasUso;
+    
+            // Cálculo do prejuízo evitado com o monitoramento da temperatura
+            var perdaEvitada = (valorCarga * percentualPerda) / 100;
+    
+            // Economia total diária
+            var economiaDiaria = perdaEvitada - custoDiario;
+    
+            document.getElementById("resultado").innerHTML = `
+                <p><strong>Custo diário com Diesel:</strong><br>
+                Consumindo ${litrosPorHora} litros por cada hora. Em ${horasUso} horas de funcionamento por dia, será de custo: <strong>R$ ${custoDiario.toFixed(2)}</strong> reais.</p>
+                <p><strong>Prejuízo evitado ao manter a temperatura ideal:</strong>
+                Com o valor da carga sendo R$ ${valorCarga} reais e estipulando de que a percentual perda ocorreria em ${percentualPerda}% da carga, o valor do prejuízo evitado é de: <strong>R$ ${perdaEvitada.toFixed(2)} reais.</strong></p>
+                <p><strong>TOTAL de Economia líquida diária:</strong>
+                Gastando R$ ${custoDiario} reais de custo com Diesel, mas utilizando o sistema de mnitoramento e evitando possível prejuízo de R$ ${perdaEvitada}, a economia diária foi de: R$ <strong>R$ ${economiaDiaria.toFixed(2)} reias.</strong></p>
+            `;
+        }
+    </script>
+    
