@@ -1,3 +1,130 @@
+/*
+    paleta de cores:
+    primary: #EAECEF
+    primary foreground: #002649
+*/
+@import url("https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Barlow", sans-serif;
+}
+
 body {
-    background-color: white;
+  background-color: white;
+}
+/* COMPONENTES */
+
+.titulo {
+  font-weight: 600;
+  font-size: 76px;
+  color: #000;
+  padding-bottom: 14px;
+  border-bottom: 12px solid #002649;
+  width: fit-content;
+}
+.sub_titulo {
+  font-weight: 300;
+  font-size: 36px;
+  margin-top: 30px;
+}
+
+.separador {
+  display: block;
+  border-bottom: 4px solid #437ed833;
+  width: 80%;
+  margin: auto;
+}
+
+.container {
+  width: 100%;
+  padding: 66px 10%;
+}
+
+/* PARCEIROS */
+
+.div_parceiros .div_imagens {
+  margin-top: 110px;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+
+.div_parceiro img {
+  width: 324px;
+  height: 324px;
+}
+.div_parceiro h2 {
+  font-weight: 300;
+  font-size: 48px;
+  text-align: center;
+  margin-top: 30px;
+}
+
+/* SOBRE NÓS  */
+
+.div_sobre_nos .div_card {
+  width: 100%;
+  margin-top: 110px;
+  background-color: #e9e94c;
+  padding: 66px;
+  display: flex;
+  align-items: center;
+  gap: 64px;
+  border-radius: 10px;
+}
+
+.div_card p {
+  font-weight: 500;
+  font-size: 48px;
+  line-height: 70px;
+  color: #002649;
+}
+.div_card .div_image {
+  z-index: 1;
+}
+.div_card .div_image img {
+  width: 666px;
+  height: 592px;
+  z-index: 1;
+}
+
+.div_card .div_image::before {
+  content: " ";
+  display: block;
+  width: 666px;
+  height: 592px;
+  border-radius: 10px;
+  background-color: #002649;
+  position: absolute;
+  z-index: -1;
+  transform: translate(35px, 35px);
+}
+
+/* RODAPÉ */
+footer {
+  width: 100%;
+  padding: 32px 10%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #002649;
+}
+
+footer img {
+  width: 173px;
+}
+
+footer .div_links {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.link {
+  font-size: 24px;
+  font-weight: 500;
+  color: #edbe00;
+  text-decoration: none;
 }
