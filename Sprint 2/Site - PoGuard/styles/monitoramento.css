@@ -1,0 +1,235 @@
+/*
+    paleta de cores:
+    primary: #EAECEF
+    primary foreground: #002649
+
+    color-green #B4E8AE
+*/
+@import url("https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Barlow", sans-serif;
+}
+
+.separador {
+  display: block;
+  border-bottom: 4px solid #437ed833;
+  width: 90%;
+  margin: auto;
+}
+
+.container {
+  width: 100%;
+  padding: 0px 5%;
+}
+
+.titulo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 48px;
+  font-weight: 400;
+}
+
+/* DASHBOARD */
+
+.span_green {
+  width: 30px;
+  height: 30px;
+  display: block;
+  border-radius: 100%;
+  background-color: #b4e8ae;
+}
+
+.div_dashboard {
+  padding-top: 110px;
+  padding-bottom: 32px;
+}
+
+.div_menu {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 600px;
+  margin-top: 40px;
+}
+
+.div_grafico {
+  width: 80%;
+  height: 100%;
+  border-top: 6px solid #002649;
+  border-left: 6px solid #002649;
+  border-bottom: 6px solid #002649;
+  border-radius: 10px 0px 0px 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.div_rotas {
+  width: 20%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.div_rota {
+  height: 22.5%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-left: 6px solid #002649;
+  border-right: 4px solid #002649;
+  border-bottom: 4px solid #002649;
+  cursor: pointer;
+}
+
+.div_rota h3 {
+  font-size: 36px;
+  color: #002649;
+  font-weight: 400;
+}
+
+.select {
+  border-top: 6px solid #002649;
+  border-left: 0;
+  border-right: 6px solid #002649;
+  border-bottom: 6px solid #002649;
+  border-radius: 0px 6px 6px 0px;
+}
+
+.select h3 {
+  font-size: 36px;
+  color: #002649;
+  font-weight: 600;
+}
+
+.div_mais_rotas {
+  height: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+  cursor: pointer;
+}
+
+.div_mais_rotas .span_blue {
+  width: 10px;
+  height: 10px;
+  background-color: #002649;
+  border-radius: 100%;
+}
+
+.div_temperaturas {
+  display: flex;
+  width: 80%;
+  justify-content: space-around;
+  font-size: 32px;
+  font-weight: 400;
+  padding-bottom: 32px;
+  border-bottom: 4px solid #437ed833;
+}
+
+.div_temperaturas div {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.span_temp_max {
+  width: 28px;
+  height: 28px;
+  display: block;
+  border-radius: 100%;
+  background-color: #edbe00;
+}
+
+.span_temp_min {
+  width: 28px;
+  height: 28px;
+  display: block;
+  border-radius: 100%;
+  background-color: #6acde9;
+}
+
+/* ALERTAS */
+
+.div_alertas {
+  margin-top: 90px;
+  margin-bottom: 90px;
+}
+
+.div_titulo {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.div_titulo #select_rota {
+  font-size: 36px;
+  font-weight: 600;
+  color: #002649;
+  padding: 20px 40px;
+  -webkit-appearance: none; /*Retira icone do select*/
+  background-color: white;
+  border-radius: 10px;
+  border: 1px solid #002649;
+  box-shadow: rgba(67, 126, 216, 0.3) 4px 4px 25px;
+}
+
+.div_alertas_mensagens {
+  width: 100%;
+  height: fit-content;
+  padding: 78px 48px;
+  border: 1px solid #002649;
+  box-shadow: rgba(67, 126, 216, 0.3) 4px 4px 25px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+}
+
+.div_alerta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 36px;
+  font-weight: 500;
+}
+
+.yellow {
+  color: #bc560d;
+}
+
+.red {
+  color: #bc0d4d;
+}
+
+/* RODAPÉ */
+footer {
+  width: 100%;
+  padding: 32px 10%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #002649;
+}
+
+footer img {
+  width: 173px;
+}
+
+footer .div_links {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.link {
+  font-size: 24px;
+  font-weight: 500;
+  color: #edbe00;
+  text-decoration: none;
+}

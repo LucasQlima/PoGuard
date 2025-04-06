@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temperaturas | Polus</title>
+    <link rel="stylesheet" href="../styles/monitoramento.css">
+    <link rel="shortcut icon" href="../assets/icons/icon_polus.png" type="image/x-icon">
+</head>
+
+<body>
+
+    <!-- DASHBOARD -->
+    <div class="container div_dashboard">
+        <h2 class="titulo"> <span class="span_green"></span> <span>Rotas Ativas</span></h2>
+        <div class="div_menu">
+            <div class="div_grafico">
+                <canvas id="canvas_grafico">
+
+                </canvas>
+            </div>
+            <div class="div_rotas">
+                <div class="select div_rota">
+                    <h3>Rota</h3>
+                </div>
+                <div class="div_rota">
+                    <h3>Rota</h3>
+                </div>
+                <div class="div_rota">
+                    <h3>Rota</h3>
+                </div>
+                <div class="div_rota">
+                    <h3>Rota</h3>
+                </div>
+                <div class="div_rota div_mais_rotas">
+                    <span class="span_blue"></span>
+                    <span class="span_blue"></span>
+                    <span class="span_blue"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TEMPERATURAS -->
+
+    <div class="container">
+        <div class=" div_temperaturas">
+            <div>
+                <span class="span_temp_max"></span>
+                <p>Temperatura máxima</p>
+            </div>
+            <div>
+                <span class="span_temp_min"></span>
+                <p>Temperatura mínima</p>
+            </div>
+
+        </div>
+    </div>
+
+
+
+    <!-- SELEÇÃO DE SENSORES -->
+
+    <!-- <div class="div_sensores">
+        <div class="div_sensor"><span>Sensor</span></div>
+        <div class="div_sensor"><span>Sensor</span></div>
+        <div class="div_sensor"><span>Sensor</span></div>
+    </div> -->
+
+    <!-- ALERTAS -->
+    <div class="container div_alertas">
+        <div class="div_titulo">
+            <h2 class="titulo">
+                <img src="../assets/icons/icon-alert.png" alt="icone de alerta">
+                Alertas
+            </h2>
+            <select id="select_rota">
+                <option value="1">
+                    Rota 1
+                </option>
+                <option value="2">
+                    Rota 2
+                </option>
+                <option value="3">
+                    Rota 3
+                </option>
+                <option value="4">
+                    Rota 4
+                </option>
+            </select>
+        </div>
+
+
+        <div class="div_alertas_mensagens">
+            <div class="div_alerta yellow">
+                <span class="span_yellow"></span>
+                <p>10:25 - SENSOR 3 : Temperatura minima atingida.</p>
+            </div>
+            <div class="div_alerta yellow">
+                <span class="span_yellow"></span>
+                <p>10:26 - SENSOR 3 : Temperatura mínima atingida.</p>
+            </div>
+            <div class="div_alerta yellow">
+                <span class="spa_red"></span>
+                <p>10:31 - SENSOR 2 : Temperatura acima do máximo: 5.1 Cº</p>
+            </div>
+            <div class="div_alerta red">
+                <span class="spa_red"></span>
+                <p>10:33 - SENSOR 2 : Temperatura acima do máximo: 6.5 Cº</p>
+            </div>
+            <div class="div_alerta red">
+                <span class="span_red"></span>
+                <p>10:38 - SENSOR 2 : Temperatura acima do máximo: 6.0 Cº</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- RODAPÉ -->
+    <footer>
+        <img src="../assets/imgs/logo-polus.png" alt="">
+        <div class="div_links">
+            <a class="link" href="">inicio</a>
+            <a class="link" href="">Parceiros</a>
+        </div>
+        <div class="div_links">
+            <a class="link" href="">Produtos</a>
+            <a class="link" href="">Sobre nós</a>
+        </div>
+        <div class="div_links">
+            <a class="link" href="">Calculadora Financeira</a>
+            <a class="link" href="">Torne-se parceiro</a>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        new Chart(canvas_grafico, {
+            type: 'line',
+            data: {
+                labels: Array.from({ length: 8 }).map((label, i) => {
+
+                    var date = new Date().setMinutes(new Date().getMinutes() - i)
+                    return `${new Date(date).getHours()}: ${new Date(date).getMinutes()}`
+                }).reverse(),
+                datasets: [
+                    {
+                        label: "Temperatura maxima",
+                        data: Array.from({ length: 8 }).map(() => {
+                            return 5
+                        }),
+                        borderColor: '#EDBE00',
+                        backgroundColor: '#EDBE00',
+                    },
+                    {
+                        label: "Sensor 1",
+                        data: [2, 2.5, 2.3, 2.7, 3, 3.7, 3.7, 3.8],
+                        borderColor: '#252DC3',
+                        backgroundColor: '#252DC3',
+                    },
+                    {
+                        label: "Sensor 2",
+                        data: [4, 3.5, 3.2, 3.0, 2.5, 2.7, 3, 3.5],
+                        borderColor: '#986AE9',
+                        backgroundColor: '#986AE9',
+                    },
+                    {
+                        label: "Temperatura minima",
+                        data: Array.from({ length: 8 }).map(() => {
+                            return 1
+                        }),
+                        borderColor: '#6ACDE9',
+                        backgroundColor: '#6ACDE9',
+                    }
+                ]
+            }
+        })
+    </script>
+</body>
+
+</html>

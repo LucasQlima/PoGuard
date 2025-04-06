@@ -39,7 +39,7 @@ body {
 
 .container {
   width: 100%;
-  padding: 66px 10%;
+  padding: 66px 5%;
 }
 
 /* PARCEIROS */
@@ -81,25 +81,13 @@ body {
   line-height: 70px;
   color: #002649;
 }
-.div_card .div_image {
-  z-index: 1;
-}
+
 .div_card .div_image img {
   width: 666px;
   height: 592px;
-  z-index: 1;
-}
-
-.div_card .div_image::before {
-  content: " ";
-  display: block;
-  width: 666px;
-  height: 592px;
   border-radius: 10px;
-  background-color: #002649;
-  position: absolute;
-  z-index: -1;
-  transform: translate(35px, 35px);
+
+  box-shadow: 35px 35px #002649;
 }
 
 /* RODAPÉ */
