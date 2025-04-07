@@ -16,6 +16,156 @@ body {
 }
 /* COMPONENTES */
 
+/* NAVBAR */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: #EAECEF;
+  height: 130px;
+  padding: 0 75px;
+  box-sizing: border-box;
+  border-bottom: #437ED8 solid 2px;
+}
+
+.navbar .navbar-logo {
+  display: flex;
+  flex-direction: row;
+  width: 130px;
+  height: 130px;
+  align-items: center;
+}
+
+.navbar ul {
+  justify-content: flex-end;
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  gap: 70px;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar ul li {
+  align-self: center;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.navbar .login {
+  gap: 0px;
+}
+
+.navbar .login img {
+  background: #002649;
+  border-radius: 50%;
+  margin-right: 15px;
+}
+
+.navbar .login li a {
+  font-weight: bold;
+  color: black;
+  text-decoration: none;
+}
+
+.navbar .login li a span {
+  font-size: 19px;
+  font-weight: 500;
+  display: block;
+  color: black;
+}
+
+/* CARROSSEL */
+.carousel {
+  margin-top: 50px;
+  border: 2px solid black;
+  display: flex;
+  flex-direction: row;
+  justify-self: center;
+  width: 80%;
+  height: 555px;
+}
+
+
+/* CAIXA DE TEXTO */
+.polus-geral {
+  display: flex;
+  justify-self: center;
+  margin-top: 50px;
+  width: 80%;
+  height: 700px;
+}
+
+.polus {
+  position: relative;
+  border: #002649 solid 10px;
+  padding: 40px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  height: 570px;
+}
+
+.polus .caminhao {
+  position: absolute;
+  bottom: -90px; /* para sair da borda azul */
+  right: -8px;  /* ajuste fino à direita */
+  width: 390px;
+  height: auto;
+}
+
+.polus .caminhao img {
+  width: 100%;
+  height: auto;
+}
+
+.polus .texto h1 {
+  justify-self: center;
+  color: #002649;
+  font-weight: bold;
+  font-size: 60px;
+  margin: 0;
+}
+
+.polus .texto p {
+  font-size: 30px;
+  margin: 15px 0;
+  line-height: 1.5;
+  width: 80%;
+}
+
+.polus .texto .final-texto{
+  width: 68%;
+}
+
+.botao-calc {
+  text-align: center;
+}
+
+.botao-calc button {
+  background-color: #f1e74d;
+  border: none;
+  font-size: 22px;
+  padding: 15px 30px;
+  font-weight: bold;
+  color: #09213f;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+/* DIVISÓRIA */
+
+.divsoria{
+  border: #437ED833 solid 2px;
+  margin-top: 100px;
+  margin-bottom: 100px
+}
+
+/*  */
+
 .titulo {
   font-weight: 600;
   font-size: 76px;
