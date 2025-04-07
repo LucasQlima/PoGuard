@@ -1,208 +1,168 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
     <div style="background-color: #000046;">
         <img src="mascote empresa-PO.png" width="8%" height="8%">
     </div>
     <h2> CALCULADORA FINANCEIRA</h2>
     <h4 style="color: #141466;">Monitoramento de Temperatura em Baús Refrigerados</h4>
+    <h4>De acordo com a  Instrução Normativa (IN) nº 76/2018 do Ministério da Agricultura, Pecuária e Abastecimento (MAPA) </h4>
+    <table style="border: 1; background-color: black;" >
+        <thread >
+            <tr style="background-color: rgb(214, 214, 214);">
+                <th> Tipo Produto </th>
+                <th> Temperatura Mínima </th>
+                <th> Tempratura Máxima </th>
+            </tr>
+        </thread>
+        <tbody>
+            <tr style="background-color: white;">
+                <td> Laticínios </td>
+                <td style="text-align: center;"> 0°C </td>
+                <td style="text-align: center;"> 4°C </td>
+            </tr>
+            <tr style="background-color: white;">
+                <td> Carnes </td>
+                <td style="text-align: center;"> 0°C </td>
+                <td style="text-align: center;"> 7°C </td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
     <hr style="color: rgba(114, 120, 34, 0.63);">
+    
+    
+    
+    
+    
     <div>
         <h4> INFORMAÇÕES DO PRODUTO</h4>
         Nome do produto:
-        <input type="text" id="id_nome_prod" style="background-color: rgba(247, 248, 194, 0.392);">
+        <select name="" id="select_nome" style="background-color: rgba(247, 248, 194, 0.392);">
+            <option>Laticínios</option>
+            <option>Carnes</option>
+        </select>
 
         <br><br>
 
         Preço unitário do produto:
-        <input type="number" id="id_preco_prod" placeholder="R$00,00" style="background-color: rgba(247, 248, 194, 0.392);">
+        <input type="number" id="id_preco_prod" placeholder="R$00,00"
+            style="background-color: rgba(247, 248, 194, 0.392);">
 
 
         <br><br>
 
-        Quantidade de produtos: 
+        Quantidade de produtos:
         <input type="number" id="id_qtd_prod" style="background-color: rgba(247, 248, 194, 0.392);">
 
         <br><br>
-
-        Temperatura máxima:
-        <input type="number" id="id_temp_max_prod" placeholder="Em °C"style="background-color: rgba(247, 248, 194, 0.392);">
-
-        <br><br>
-
-        Temperatura mínima:
-        <input type="number" id="id_temp_min_prod" placeholder="Em °C"style="background-color: rgba(247, 248, 194, 0.392);">
-
-        <br><br>
-
-      
         
-        <h4> INFORMAÇÕES DO VEÍCULO</h4>
-        Placa do veículo: 
-        <input type="text" id="id_placa_veic" placeholder="ABC1D23" style="background-color: rgba(247, 248, 194, 0.392);">
+
+
+
+        <h4> INFORMAÇÃO DO BAÚ</h4>
+        Temperatura média do Bau:
+        <input type="number" id="id_temp_bau" placeholder="Em °C" style="background-color: rgba(247, 248, 194, 0.392);">
 
         <br><br>
 
-        Nome do motorista:
-        <input type="text" id="id_nome_veic" style="background-color: rgba(247, 248, 194, 0.392);">
 
+
+
+
+        <h4> INFORMAÇÕES SOBRE PERDAS</h4>
+        
+        Já sofreu alguma perda:
+        <select name="" id="select_perda" style="background-color: rgba(247, 248, 194, 0.392);">
+            <option>Não</option>
+            <option>Sim</option>
+            
+        </select>
         <br><br>
+        Caso sim, informe o valor:
+        <input type="text" id="id_valor" placeholder="R$00.00" style="background-color: rgba(247, 248, 194, 0.392);">
 
-        <h4> INFORMAÇÕES DOS SENSORES</h4>
-        Temperatura média do sensor 1: 
-        <input type="number" id="id_sensor_1" placeholder="Em °C" style="background-color: rgba(247, 248, 194, 0.392);">
-
-        <br><br>
-
-        Temperatura média do sensor 2:
-        <input type="number" id="id_sensor_2" placeholder="Em °C"style="background-color: rgba(247, 248, 194, 0.392);">
-
-        <br><br>
-        Temperatura média do sensor 3:
-        <input type="number" id="id_sensor_3" placeholder="Em °C" style="background-color: rgba(247, 248, 194, 0.392);">
         <br><br>
 
         <button onclick="calcular()">Analisar situação</button>
-
-        <div id="id_mensagem"></div>
+        
     </div>
+    <br><br>
     
-
+    
+    <div id="div_mensagem"></div>
+    
 </body>
+
 </html>
 <script>
-    function calcular(){
-        // Produto
-        var nomeProd = id_nome_prod.value
-        var precoProd = Number(id_preco_prod.value)
-        var quantidade = Number(id_qtd_prod.value)
-        var temperatura_maxima = Number(id_temp_max_prod.value)
-        var temperatura_minima = Number(id_temp_min_prod.value)        
-        // Veículo
-        var placaVeic = id_placa_veic.value
-        var nomeMotoristas = id_nome_veic. value
-        // Sensor
-        var s1 = Number(id_sensor_1.value)
-        var s2 = Number(id_sensor_2.value)
-        var s3 = Number(id_sensor_3.value)
-        // Validação
-        var exib = 0;
-        // Calculos
-        var precoTotal = precoProd * quantidade
-        var precoS3 = precoTotal*0.6
-        var precoS2 = precoTotal*0.7
-        var precoS1 = precoTotal*0.85
-        if(temperatura_maxima == ''){
-            alert("Você deve informar a temperatura máxima!")
-        } else if (temperatura_maxima < temperatura_minima) {
-            alert("A temperatura máxima deve ser maior do que a minima!")
-        } else {
-                id_mensagem.innerHTML =
-            `
-                <hr style="color: rgba(114, 120, 34, 0.63);">
+    function calcular() {
 
-                O veículo de placa <b>${placaVeic}</b> dirigido pelo motorista <b>${nomeMotoristas}</b> saiu para realizar o frete.<br>
-                A carga que o veículo carrega é composta por <b>${quantidade}</b> unidades de <b>${nomeProd}</b>, cada unidade possui um preço de <b>R$${precoProd.toFixed(2)}</b>. Totalizando o preço total daquela carga em <b>R$${precoTotal.toFixed(2)}</b>.
-                <br><br>
-            `
-            if(s1 <= temperatura_maxima)
-                if(s1 >= temperatura_minima)
-                    id_mensagem.innerHTML += `O sensor 1 teve uma temperatura média de: <b>${s1}°C</b><br>`
-                else {
-                    id_mensagem.innerHTML += `Cuidado! O sensor 1 teve uma temperatura média de: <b style="color:blue">${s1}°C</b> <br>A temperatura média do sensor 1 está abaixo da temperatura miníma do produto!<br><br>`
-                    exib += 1
+        // informações o produto
+        var NomeProd = select_nome.value
+        var PrecoUniProd = Number(id_preco_prod.value)
+        var QtdProd = Number(id_qtd_prod.value)
+
+        var TotalProd = Number(PrecoUniProd * QtdProd)
+        var totalPerda = 0
+
+        // informações do bau
+        var TempBau = Number(id_temp_bau.value)
+
+        // informações sobre perda
+        var Perda = select_perda.value
+        var QtdPerda = Number(id_valor.value)
+
+        // mensagem
+        var mensagem = ""
+
+
+        if (NomeProd == "Laticínios") {
+            if (TempBau >= 0 && TempBau <= 4) {
+                mensagem = `De acordo com os dados obtidos não houve perda de mercadoria.`
+            } else {
+                if (TempBau == 5 || TempBau == -1) {
+                    TotalPerda = TotalProd * 0.05
+                    mensagem = `De acordo com os dados obtidos está havendo uma possivel perda de 5% <b style="color: red">(R$${TotalPerda})</b>. No valor total de R$${TotalProd}.`
+                }
+                else if (TempBau == 6 || TempBau < -2) {
+                    TotalPerda = TotalProd * 0.10
+                    mensagem = `De acordo com os dados obtidos está havendo uma possivel perda de 10% <b style="color: red">(R$${TotalPerda})</b>. No valor total de R$${TotalProd}.`
                 } else {
-                id_mensagem.innerHTML += `Cuidado! O sensor 1 teve uma temperatura média de: <b style="color:red">${s1}°C</b> <br>A temperatura média do sensor 1 está acima da temperatura máxima do produto!<br><br>`
-                exib += 1
+                    TotalPerda = TotalProd * 0.15
+                    mensagem = `De acordo com os dados obtidos está havendo uma possivel perda de 15% <b style="color: red">(R$${TotalPerda})</b>. No valor total de R$${TotalProd}.`
+                }
             }
-            if(s2 <= temperatura_maxima)
-                if(s2 >= temperatura_minima)
-                    id_mensagem.innerHTML += `O sensor 2 teve uma temperatura média de: <b>${s2}°C</b><br>`
-                else {
-                    id_mensagem.innerHTML += `Cuidado! O sensor 2 teve uma temperatura média de: <b style="color:blue">${s2}°C</b> <br>A temperatura média do sensor 2 está abaixo da temperatura miníma do produto!<br><br>`
-                    exib += 1
+        } else {
+            if (TempBau >= 0 && TempBau <= 7) {
+                mensagem = `De acordo com os dados obtidos não houve perda de mercadoria.`
+            } else {
+                if (TempBau == 8 || TempBau == -1) {
+                    TotalPerda = TotalProd * 0.05
+                    mensagem = `De acordo com os dados obtidos está havendo uma possivel perda de 5% <b style="color: red">(R$${TotalPerda})</b>. No valor total de R$${TotalProd}.`
+                }
+                else if (TempBau == 9 || TempBau < -2) {
+                    TotalPerda = TotalProd * 0.10
+                    mensagem = `De acordo com os dados obtidos está havendo uma possivel perda de 10% <b style="color: red">(R$${TotalPerda})</b>. No valor total de R$${TotalProd}.`
                 } else {
-                id_mensagem.innerHTML += `Cuidado! O sensor 2 teve uma temperatura média de: <b style="color:red">${s2}°C</b> <br>A temperatura média do sensor 2 está acima da temperatura máxima do produto!<br><br>`
-                exib += 1
-            }
-                
-            if(s3 <= temperatura_maxima)
-                if(s3 >= temperatura_minima)
-                    id_mensagem.innerHTML += `O sensor 3 teve uma temperatura média de: <b>${s3}°C</b>`
-                else {
-                    id_mensagem.innerHTML += `Cuidado! O sensor 3 teve uma temperatura média de: <b style="color:blue">${s3}°C</b> <br>A temperatura média do sensor 3 está abaixo da temperatura miníma do produto!<br>`
-                    exib += 1
-                } else {
-                id_mensagem.innerHTML += `Cuidado! O sensor 3 teve uma temperatura média de: <b style="color:red">${s3}°C</b> <br>A temperatura média do sensor 3 está acima da temperatura máxima do produto!<br>`
-                exib += 1
+                    TotalPerda = TotalProd * 0.15
+                    mensagem = `De acordo com os dados obtidos está havendo uma possivel perda de 15% <b style="color: red">(R$${TotalPerda})</b>  No valor total de R$${TotalProd}.`
+                }
             }
         }
-        if(exib == 3)
-            id_mensagem.innerHTML += `<br><hr style="color: rgba(114, 120, 34, 0.63);"><b>Todos</b> os sensores tiveram uma média de temperatura acima ou abaixo do permitido. O cálculo de perda depende de diversos fatores, mas pode estimar que o prejuízo é de 40%!<br>Valor atualizado:<br>
-        
-        <table style="border: 1; background-color: black;" >
-            <thread >
-                <tr style="background-color: rgb(214, 214, 214);">
-                    <th> Valor original </th>
-                    <th> Valor pós perda </th>
-                    <th> Prejuízo </th>
-                </tr>
-            </thread>
-            <tbody>
-                <tr style="background-color: white;">
-                    <td> R$${precoTotal.toFixed(2)} </td>
-                    <td> R$${precoS3.toFixed(2)} </td>
-                    <td> R$${(precoTotal- precoS3).toFixed(2)} </td>
-                </tr>
-            </tbody>
-        </table>
-
-
-                `
-        else if(exib == 2)
-            id_mensagem.innerHTML += `<br><hr style="color: rgba(114, 120, 34, 0.63);"><br> 2 sensores tiveram uma média de temperatura acima ou abaixo do permitido. O cálculo de perda depende de diversos fatores, mas pode estimar que o prejuízo é de 30%!<br><br> Valor atualizado da carga: <br>
-        
-            <table style="border: 1; background-color: black;" >
-            <thread >
-                <tr style="background-color: rgb(214, 214, 214);">
-                    <th> Valor original </th>
-                    <th> Valor pós perda </th>
-                    <th> Prejuízo </th>
-                </tr>
-            </thread>
-            <tbody>
-                <tr style="background-color: white;">
-                    <td> R$${precoTotal.toFixed(2)} </td>
-                    <td> R$${precoS2.toFixed(2)} </td>
-                    <td> R$${(precoTotal- precoS2).toFixed(2)} </td>
-                </tr>
-            </tbody>
-        </table>
-            `
-        else if(exib == 1)
-            id_mensagem.innerHTML += `<br><hr style="color: rgba(114, 120, 34, 0.63);"><br> 1 dos sensores teve uma média de temperatura acima ou abaixo do permitido. O cálculo de perda depende de diversos fatores, mas pode estimar que o prejuízo é de 15%!<br><br> Valor atualizado da carga: <br>
-            
-            <table style="border: 1; background-color: black;" >
-            <thread >
-                <tr style="background-color: rgb(214, 214, 214);">
-                    <th> Valor original </th>
-                    <th> Valor pós perda </th>
-                    <th> Prejuízo </th>
-                </tr>
-            </thread>
-            <tbody>
-                <tr style="background-color: white;">
-                    <td> R$${precoTotal.toFixed(2)} </td>
-                    <td> R$${precoS1.toFixed(2)} </td>
-                    <td> R$${(precoTotal- precoS1).toFixed(2)} </td>
-                </tr>
-            </tbody>
-        </table>
-            `
-    }   
+    
+        if(Perda == "Sim"){
+            mensagem += ` E como informado , houve um gasto de R$${QtdPerda} com perdas de mercadorias, com nosso serviço conseguiremos ajuda-lo a reduzir esse custo em até <b style="color:green"> 15% (R$${QtdPerda * 0.15}) </b>.`
+        }else{
+            mensagem += ` E como informado , não houve gasto com perdas anteriores, mas com nossos serviços conseguimos minimar possiveis gastos desnecessários em até <b style="color:green"> 15% </b> e tambem possiveis multas.`
+        }   
+        div_mensagem.innerHTML = `${mensagem}`
+    }
 </script>
