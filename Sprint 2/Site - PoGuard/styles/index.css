@@ -83,7 +83,7 @@ body {
   display: flex;
   flex-direction: row;
   justify-self: center;
-  width: 80%;
+  width: 90%;
   height: 555px;
 }
 
@@ -93,7 +93,7 @@ body {
   display: flex;
   justify-self: center;
   margin-top: 50px;
-  width: 80%;
+  width: 90%;
   height: 700px;
 }
 
@@ -111,8 +111,8 @@ body {
 
 .polus .caminhao {
   position: absolute;
-  bottom: -90px; /* para sair da borda azul */
-  right: -8px;  /* ajuste fino à direita */
+  bottom: -90px;
+  right: -8px;
   width: 390px;
   height: auto;
 }
@@ -126,7 +126,7 @@ body {
   justify-self: center;
   color: #002649;
   font-weight: bold;
-  font-size: 60px;
+  font-size: 48px;
   margin: 0;
 }
 
@@ -141,42 +141,37 @@ body {
   width: 68%;
 }
 
+/* Calculadora */
 .botao-calc {
   text-align: center;
 }
 
 .botao-calc button {
+  width: 500px;
+  height: 100px;
   background-color: #f1e74d;
   border: none;
-  font-size: 22px;
+  font-size: 30px;
   padding: 15px 30px;
   font-weight: bold;
   color: #09213f;
   cursor: pointer;
   border-radius: 8px;
+  margin-bottom: 100px;
 }
 
-/* DIVISÓRIA */
-
-.divsoria{
-  border: #437ED833 solid 2px;
-  margin-top: 100px;
-  margin-bottom: 100px
-}
-
-/*  */
-
+/* SECÇÃO PARCEIROS */
 .titulo {
-  font-weight: 600;
-  font-size: 76px;
+  font-weight: bold;
+  font-size: 48px;
   color: #000;
   padding-bottom: 14px;
-  border-bottom: 12px solid #002649;
+  border-bottom: 6px solid #002649;
   width: fit-content;
 }
 .sub_titulo {
-  font-weight: 300;
-  font-size: 36px;
+  font-weight: 400;
+  font-size: 30px;
   margin-top: 30px;
 }
 
@@ -202,12 +197,13 @@ body {
 }
 
 .div_parceiro img {
-  width: 324px;
-  height: 324px;
+  width: 280px;
+  height: 280px;
 }
 .div_parceiro h2 {
   font-weight: 300;
-  font-size: 48px;
+  font-size: 30px;
+  font-weight: 500;
   text-align: center;
   margin-top: 30px;
 }
@@ -227,14 +223,14 @@ body {
 
 .div_card p {
   font-weight: 500;
-  font-size: 48px;
+  font-size: 30px;
   line-height: 70px;
   color: #002649;
 }
 
 .div_card .div_image img {
-  width: 666px;
-  height: 592px;
+  width: 576px;
+  height: 502px;
   border-radius: 10px;
 
   box-shadow: 35px 35px #002649;
