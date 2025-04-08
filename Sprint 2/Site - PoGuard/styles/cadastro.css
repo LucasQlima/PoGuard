@@ -19,24 +19,35 @@ body {
 /* COMPONENTES */
 .banner {
     width: 50%;
-    height: 700px;
+    height: 100%;
+    position: relative;
+    background: #666464;
+}
+.banner p {
+    position: absolute;
+    left: 20px;
+    bottom: 20px;
+    color: white;
+    font-size: 18px;
 }
 
 .banner img {
     width: 100%;
-    height: 741px;
+    height: 100%;
+    object-fit: cover;
 }
 
 .login-geral {
     display: flex;
     flex-direction: row;
+    height: 100%;
 }
 
 .entrar {
-    justify-items: center;
     width: 50%;
-    height: 741px;
-    align-content: center;
+    height: 100%;
+    justify-items: center;
+    align-self: center;
 }
 
 .titulo {
