@@ -1,0 +1,146 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Graphics</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+    <h1>Graphics</h1>
+    <div style="display: flex;">
+        <div style="width: 50%;">
+            <h1>Dashboard das temeperaturas de Carnes</h1>
+            <canvas id="sensorDigital"></canvas>
+        </div>
+
+        <div style="width: 50%;">
+            <h1>Dashboard das temeperaturas de Lacticinios</h1>
+
+            <canvas id="sensorDigital2"></canvas>
+        </div>
+    </div>
+
+    <script>
+
+        const minNumbers = Array.from({ length: 10 }).map(() => 4)
+        const maxNumbers = Array.from({ length: 10 }).map(() => 0)
+
+        var sensorDigital = new Chart(document.getElementById('sensorDigital').getContext('2d'), {
+            type: 'line',
+            data: {
+                datasets: [{
+                    label: 'Temperatura do báu',
+                    borderColor: '#63B1BC',
+                    backgroundColor: '#ED145B'
+                }, {
+                    label: 'Temperatura Maxima',
+                    data: minNumbers,
+                    borderColor: '#f00',
+                    backgroundColor: '#f00'
+                }, {
+                    label: 'Temperatura Minima',
+                    data: maxNumbers,
+                    borderColor: '#00f',
+                    backgroundColor: '#00f'
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        beginAtZero: true
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Temperatura'
+                        },
+                        beginAtZero: true,
+                    },
+                },
+            }
+        });
+
+        const maxNumbers2 = Array.from({ length: 10 }).map(() => 7)
+        var sensorDigital2 = new Chart(document.getElementById('sensorDigital2').getContext('2d'), {
+            type: 'line',
+            data: {
+                datasets: [{
+                    label: 'Temperatura do báu',
+                    borderColor: '#63B1BC',
+                    backgroundColor: '#ED145B'
+                }, {
+                    label: 'Temperatura Maxima',
+                    data: maxNumbers2,
+                    borderColor: '#f00',
+                    backgroundColor: '#f00'
+                }, {
+                    label: 'Temperatura Minima',
+                    data: maxNumbers,
+                    borderColor: '#00f',
+                    backgroundColor: '#00f'
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        beginAtZero: true
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Temperatura'
+                        },
+                        beginAtZero: true,
+                    },
+                },
+            }
+        });
+
+        var paginacao = {};
+        var tempo = {};
+
+        function obterDados(grafico, grafico2, endpoint) {
+            fetch('http://localhost:3300/sensores/' + endpoint)
+                .then(response => response.json())
+                .then(valores => {
+                    if (paginacao[endpoint] == null) {
+                        paginacao[endpoint] = 0;
+                    }
+                    if (tempo[endpoint] == null) {
+                        tempo[endpoint] = 0;
+                    }
+
+                    var ultimaPaginacao = paginacao[endpoint];
+                    paginacao[endpoint] = valores.length;
+                    valores = valores.slice(ultimaPaginacao);
+                    valores.forEach((valor) => {
+                        if (grafico.data.labels.length == 10 && grafico.data.datasets[0].data.length == 10) {
+                            grafico.data.labels.shift();
+                            grafico.data.datasets[0].data.shift();
+
+                            grafico2.data.labels.shift();
+                            grafico2.data.datasets[0].data.shift();
+
+                        }
+
+                        grafico.data.labels.push(tempo[endpoint]++);
+                        grafico.data.datasets[0].data.push(parseFloat(valor));
+                        grafico.update();
+
+                        grafico2.data.labels.push(tempo[endpoint]++);
+                        grafico2.data.datasets[0].data.push(parseFloat(valor));
+                        grafico2.update();
+                    });
+                })
+                .catch(error => console.error('Erro ao obter dados:', error));
+        }
+
+        setInterval(() => {
+            obterDados(sensorDigital, sensorDigital2, 'digital');
+
+        }, 1000);
+    </script>
+</body>
