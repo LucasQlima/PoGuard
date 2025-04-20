@@ -23,7 +23,7 @@ body {
   align-items: center;
   height: 100%;
   width: 100%;
-  background-color: antiquewhite;
+  background-color: #eaecef;
 }
 
 /* COMPONENTES */
@@ -107,6 +107,10 @@ body {
   padding-top: 1px;
   margin-top: 5px;
   margin-bottom: 20px;
+}
+
+#div_mensagem {
+  padding: 10px 0px;
 }
 
 .botao {
