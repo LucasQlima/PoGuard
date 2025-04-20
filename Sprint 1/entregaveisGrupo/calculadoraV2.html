@@ -130,14 +130,18 @@
             } else {
                 if (TempBau == 5 || TempBau == -1) {
                     TotalPerda = TotalProd * 0.05
-                    mensagem = `De acordo com os dados obtidos está havendo uma possivel perda de 5% <b style="color: red">(R$${TotalPerda})</b>. No valor total de R$${TotalProd}.`
+                    mensagem = `Com o total de RS${TotalProd} em mecardorias e os dados obtidos, é estimado uma possivel perda de até 5% <b style="color: red">(R$${TotalPerda})</b>.`
                 }
                 else if (TempBau == 6 || TempBau < -2) {
                     TotalPerda = TotalProd * 0.10
-                    mensagem = `De acordo com os dados obtidos está havendo uma possivel perda de 10% <b style="color: red">(R$${TotalPerda})</b>. No valor total de R$${TotalProd}.`
-                } else {
+                    mensagem = `Com o total de RS${TotalProd} em mecardorias e os dados obtidos, é estimado uma possivel perda de até 10% <b style="color: red">(R$${TotalPerda})</b>.`
+                } 
+                else if(TempBau == 7 || TempBau <= -3){
                     TotalPerda = TotalProd * 0.15
-                    mensagem = `De acordo com os dados obtidos está havendo uma possivel perda de 15% <b style="color: red">(R$${TotalPerda})</b>. No valor total de R$${TotalProd}.`
+                    mensagem = `Com o total de RS${TotalProd} em mecardorias e os dados obtidos, é estimado uma possivel perda de até 15% <b style="color: red">(R$${TotalPerda})</b>.`
+                }else {
+                    TotalPerda = TotalProd ;
+                    mensagem = `De acordo com os dados obtidos está correndo o risco de uma perda aproximada de 100% da sua mercadoria. No valor de R$${TotalPerda}`
                 }
             }
         } else {
@@ -146,14 +150,17 @@
             } else {
                 if (TempBau == 8 || TempBau == -1) {
                     TotalPerda = TotalProd * 0.05
-                    mensagem = `De acordo com os dados obtidos está havendo uma possivel perda de 5% <b style="color: red">(R$${TotalPerda})</b>. No valor total de R$${TotalProd}.`
+                    mensagem = `Com o total de RS${TotalProd} em mecardorias e os dados obtidos, é estimado uma possivel perda de até 5% <b style="color: red">(R$${TotalPerda})</b>.`
                 }
                 else if (TempBau == 9 || TempBau < -2) {
                     TotalPerda = TotalProd * 0.10
-                    mensagem = `De acordo com os dados obtidos está havendo uma possivel perda de 10% <b style="color: red">(R$${TotalPerda})</b>. No valor total de R$${TotalProd}.`
-                } else {
+                    mensagem = `Com o total de RS${TotalProd} em mecardorias e os dados obtidos, é estimado uma possivel perda de até 10% <b style="color: red">(R$${TotalPerda})</b>.`
+                }  else if(TempBau == 10 || TempBau <= -3){
                     TotalPerda = TotalProd * 0.15
-                    mensagem = `De acordo com os dados obtidos está havendo uma possivel perda de 15% <b style="color: red">(R$${TotalPerda})</b>  No valor total de R$${TotalProd}.`
+                    mensagem = `Com o total de RS${TotalProd} em mecardorias e os dados obtidos, é estimado uma possivel perda de até 15% <b style="color: red">(R$${TotalPerda})</b>.`
+                }else {
+                    TotalPerda = TotalProd ;
+                    mensagem = `De acordo com os dados obtidos está correndo o risco de uma perda aproximada de 100% da sua mercadoria. No valor de R$${TotalPerda}`
                 }
             }
         }
@@ -161,7 +168,7 @@
         if(Perda == "Sim"){
             mensagem += ` E como informado , houve um gasto de R$${QtdPerda} com perdas de mercadorias, com nosso serviço conseguiremos ajuda-lo a reduzir esse custo em até <b style="color:green"> 15% (R$${QtdPerda * 0.15}) </b>.`
         }else{
-            mensagem += ` E como informado , não houve gasto com perdas anteriores, mas com nossos serviços conseguimos minimar possiveis gastos desnecessários em até <b style="color:green"> 15% </b> e tambem possiveis multas.`
+            mensagem += ` E como informado , não houve gasto com perdas anteriores, mas com nossos serviços conseguimos minimizar possiveis gastos desnecessários em até <b style="color:green"> 15% </b> e tambem possiveis multas.`
         }   
         div_mensagem.innerHTML = `${mensagem}`
     }

@@ -20,7 +20,7 @@
         <div class="textos">
             <div class="nome">
                 <p>nome:</p>
-                <input type="text" id="input_email" class="input" placeholder="fulado da silva pereira lima">
+                <input type="text" id="input_nome" class="input" placeholder="fulano da silva pereira lima">
             </div>
             <div class="email">
                 <p>email:</p>
@@ -35,16 +35,38 @@
                 <input type="text" id="input_confSenha" class="input" placeholder="*************************">
             </div>
             <div class="empresa">
-                <p>codigo da empressa:</p>
+                <p>codigo da empresa:</p>
                 <input type="text" id="input_codEmpresa" class="input" placeholder="*************">
             </div>
             <div class="botao">
                 <p>Já possui uma conta? <a href="./login.html">clique aqui</a><br>para fazer login</p>
-                <button id="btn-entrar">ENTRAR</button>
+                <button id="btn-entrar" onclick="validarCadastro()">ENTRAR</button>
             </div>
         </div>
     </div>
 
+    <div id="div_mensagem"></div>
+
+    <script>
+      function validarCadastro() {
+        var email = input_email.value;
+        var senha = input_senha.value;
+        var confSenha = input_confSenha.value;
+        var mensagem = "";
+
+        if (email.indexOf('@') === -1) {
+          mensagem = 'O email deve conter o símbolo @.';
+        } else if (senha.length <= 6 || !/[0-9]/.test(senha)) {
+          mensagem = 'A senha deve ter mais de 6 caracteres e pelo menos um número.';
+        } else if (senha !== confSenha) {
+          mensagem = 'A confirmação de senha deve ser igual à senha.';
+        } else {
+          mensagem = 'Cadastro válido!';
+        }
+
+        div_mensagem.innerHTML = mensagem;
+      }
+    </script>
 </body>
 
 </html>
