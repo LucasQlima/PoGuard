@@ -18,7 +18,7 @@ html {
 body {
   background-color: #2a5aa3;
   display: flex;
-  flex-direction: row;
+  flex-direction: row-reverse;
   justify-content: center;
   align-items: center;
   height: 100%;
@@ -31,7 +31,7 @@ body {
   width: 50%;
   height: 100%;
   position: relative;
-  background-image: url("../assets/imgs/foto-cadastro-login.png");
+  background-image: url("../assets/imgs/image\ 1.png");
   background-position: center right;
   background-size: cover;
   border-right: 1px solid #002649;

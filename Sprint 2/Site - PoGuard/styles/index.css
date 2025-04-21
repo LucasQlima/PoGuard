@@ -4,6 +4,7 @@
     primary foreground: #002649
 */
 @import url("https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
 * {
   margin: 0;
   padding: 0;
@@ -14,6 +15,7 @@
 body {
   background-color: white;
 }
+
 /* COMPONENTES */
 
 /* NAVBAR */
@@ -26,7 +28,6 @@ body {
   height: 130px;
   padding: 0 75px;
   box-sizing: border-box;
-  border-bottom: #437ED8 solid 2px;
 }
 
 .navbar .navbar-logo {
@@ -76,25 +77,52 @@ body {
   color: black;
 }
 
-/* CARROSSEL */
-.carousel {
-  margin-top: 50px;
-  border: 2px solid black;
+/* FOOTER */
+.footer {
+  border-radius: 5px;
   display: flex;
   flex-direction: row;
   justify-self: center;
-  width: 90%;
-  height: 555px;
+  width: 100%;
+  height: 700px;
+  background: #EECA67;
 }
 
+.imagem_grafico {
+  width: 50%;
+  height: 100%;
+}
+
+.footer img {
+  padding: 10%;
+  width: 100%;
+  height: 100%;
+}
+
+.texto_footer {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1%;
+  padding-right: 5%;
+}
+
+.footer .texto_footer p {
+  font-size: 64px;
+  font-weight: bold;
+}
 
 /* CAIXA DE TEXTO */
 .polus-geral {
   display: flex;
   justify-self: center;
-  margin-top: 50px;
+  margin-top: 100px;
   width: 90%;
-  height: 700px;
+  height: auto;
+  margin-bottom: 100px;
 }
 
 .polus {
@@ -106,7 +134,7 @@ body {
   flex-direction: column;
   gap: 20px;
   width: 100%;
-  height: 570px;
+  height: auto;
 }
 
 .polus .caminhao {
@@ -126,52 +154,134 @@ body {
   justify-self: center;
   color: #002649;
   font-weight: bold;
-  font-size: 48px;
+  font-size: 64px;
   margin: 0;
 }
 
 .polus .texto p {
-  font-size: 30px;
+  font-size: 32px;
   margin: 15px 0;
   line-height: 1.5;
   width: 80%;
 }
 
-.polus .texto .final-texto{
+.polus .texto .final-texto {
   width: 68%;
+  height: auto;
 }
 
 /* Calculadora */
 .botao-calc {
-  text-align: center;
+  display: flex;
+  flex-direction: row;
+  justify-items: center;
+  align-items: center;
 }
 
-.botao-calc button {
-  width: 500px;
+.botao_calc button {
+  display: flex;
+  flex-direction: row;
+  justify-self: center;
+  justify-items: center;
+  width: 37%;
   height: 100px;
   background-color: #f1e74d;
   border: none;
-  font-size: 30px;
-  padding: 15px 30px;
-  font-weight: bold;
-  color: #09213f;
   cursor: pointer;
   border-radius: 8px;
   margin-bottom: 100px;
+  padding: 0px;
 }
 
-/* SECÇÃO PARCEIROS */
+button p {
+  width: 100%;
+  display: flex;
+  justify-items: center;
+  flex-direction: row;
+  justify-self: center;
+  align-self: center;
+  font-size: 36px;
+  font-weight: bold;
+  color: #09213f;
+  padding-right: 4%;
+}
+
+.botao_calc img {
+  height: 70%;
+  align-self: center;
+  padding-left: 4%;
+  padding-right: 4%;
+}
+
+/* SECÇÃO SERVICOS */
+.servicos {
+  background: #EAECEF;
+}
+
 .titulo {
   font-weight: bold;
-  font-size: 48px;
+  font-size: 64px;
   color: #000;
   padding-bottom: 14px;
   border-bottom: 6px solid #002649;
   width: fit-content;
 }
+
+.sub_titulo {
+  width: 50%;
+  font-weight: 400;
+  font-size: 32px;
+  margin-top: 30px;
+}
+
+.separador {
+  display: block;
+  border-bottom: 4px solid #437ed833;
+  width: 80%;
+  margin: auto;
+}
+
+.container {
+  width: 100%;
+  padding: 66px 5%;
+}
+
+/* SERVICOS */
+
+.div_parceiros .div_imagens {
+  margin-top: 0px;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+
+.div_parceiro img {
+  width: 280px;
+  height: 280px;
+}
+
+.div_parceiro h2 {
+  font-weight: 300;
+  font-size: 36px;
+  font-weight: 500;
+  text-align: center;
+  margin-top: 30px;
+}
+
+
+/* SECÇÃO PARCEIROS */
+.titulo {
+  font-weight: bold;
+  font-size: 64px;
+  color: #000;
+  padding-bottom: 14px;
+  border-bottom: 6px solid #002649;
+  width: fit-content;
+}
+
 .sub_titulo {
   font-weight: 400;
-  font-size: 30px;
+  font-size: 32px;
   margin-top: 30px;
 }
 
@@ -200,9 +310,10 @@ body {
   width: 280px;
   height: 280px;
 }
+
 .div_parceiro h2 {
   font-weight: 300;
-  font-size: 30px;
+  font-size: 36px;
   font-weight: 500;
   text-align: center;
   margin-top: 30px;
@@ -223,7 +334,7 @@ body {
 
 .div_card p {
   font-weight: 500;
-  font-size: 30px;
+  font-size: 36px;
   line-height: 70px;
   color: #002649;
 }
@@ -236,29 +347,96 @@ body {
   box-shadow: 35px 35px #002649;
 }
 
-/* RODAPÉ */
+/* RODAPE */
 footer {
   width: 100%;
-  padding: 32px 10%;
+  background: #EAECEF;
+  padding-top: 40px;
+  padding-left: 10%;
+  padding-right: 10%;
+  box-sizing: border-box;
+}
+
+.redirecionamento {
+  width: 100%;
   display: flex;
-  align-items: center;
+  flex-wrap: wrap;
   justify-content: space-between;
-  background-color: #002649;
+  margin-top: 2%;
+  }
+
+.link_footer {
+  width: 23%;
+  min-width: 200px;
 }
 
-footer img {
-  width: 173px;
-}
-
-footer .div_links {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
+.link_footer h1 {
+  font-size: 30px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #333;
 }
 
 .link {
-  font-size: 24px;
-  font-weight: 500;
-  color: #edbe00;
+  display: flex;
+  flex-direction: column;
+}
+
+.link2 {
+  display: flex;
+  flex-direction: column;
+}
+
+.link a {
+  color: #555;
   text-decoration: none;
+  font-size: 20px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.link2 a {
+  color: #555;
+  text-decoration: none;
+  font-size: 20px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.link a img {
+  margin-right: 8px;
+  width: 20px;
+  height: 20px;
+}
+
+.link2 a img {
+  margin-left: 8px;
+  width: 16px;
+  height: 16px;
+}
+
+.informacoes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.informacoes img {
+  height: 150px;
+}
+
+.informacoes p {
+  margin: 0;
+  color: #666;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.informacoes p img {
+  margin-right: 5px;
+  height: 16px;
 }
