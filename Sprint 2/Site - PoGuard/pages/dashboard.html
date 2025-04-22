@@ -1,27 +1,376 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/Sprint 2/Site - PoGuard/styles/index.css">
+    <link rel="stylesheet" href="../styles/dashboard.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <title>Dashboard | Polus</title>
 </head>
+
 <body>
     <!-- NAVBAR -->
-    <nav class="navbar">
-        <div class="navbar-logo">
-            <img style="width: 180px; height: 180px;" src="../assets/imgs/logo-polus.png" alt="Logo">
+    <div class="nav-bar-left">
+        <div class="top">
+            <div class="image">
+                <img src="../assets/imgs/logo-dash.png" alt="logo poguard" width="173">
+            </div>
+            <div class="links">
+                <ul>
+                    <li id="active"><img src="../assets/icons/dash.png" alt="icone dash"><a href="">Dashboard</a></li>
+                    <li>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="36" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-bell-icon lucide-bell">
+                            <path d="M10.268 21a2 2 0 0 0 3.464 0" />
+                            <path
+                                d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326" />
+                        </svg>
+                        <a href="">Notificação</a>
+                    </li>
+                    <li>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="36" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-truck-icon lucide-truck">
+                            <path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2" />
+                            <path d="M15 18H9" />
+                            <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14" />
+                            <circle cx="17" cy="18" r="2" />
+                            <circle cx="7" cy="18" r="2" />
+                        </svg>
+                        <a href="">Baús refrigerados</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-        <ul>
-            <li><a href="#">Inicio</a></li>
-            <li><a href="parceiros.html">Parceiros</a></li>
-            <li><a href="produtos.html">Produtos</a></li>
-            <li><a href="sobre-nos.html">Sobre nós</a></li>
-        </ul>
-        <ul class="login"><img style="width: 100px; height: 100px;" src="../assets/icons/icon_polus.png"
-                alt="icone polus">
-            <li><a href="login.html">Seja nosso parceiro <span>ou faça login</span></a></li>
-        </ul>
-    </nav>
+
+        <div class="bottom">
+            <div class="profile">
+                <img src="../assets/icons/profile-person.png" alt="imagem de perfil">
+                <div>
+                    <h5>HENRY FRANZ</h5>
+                    <hr>
+                    <p>Empressa XPTO</p>
+                </div>
+            </div>
+
+            <div id="logo-exit">
+                <svg xmlns="http://www.w3.org/2000/svg" width="38" height="40" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-log-out-icon lucide-log-out">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                    <polyline points="16 17 21 12 16 7" />
+                    <line x1="21" x2="9" y1="12" y2="12" />
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content-right">
+        <h1>Overview</h1>
+        <div class="charts">
+            <div class="card-chart card-chart-line">
+                <div class="title">
+                    <h2>Baú Refrigerado De Placa: <b>MPE1M49</b> - FRIGORIFICO</h2>
+
+                    <div class="link">
+                        <a href="">Ver mais</a> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-arrow-right-icon lucide-arrow-right">
+                            <path d="M5 12h14" />
+                            <path d="m12 5 7 7-7 7" />
+                        </svg>
+                    </div>
+                </div>
+                <div id="div_canvas_chart_line">
+                    <canvas id="canvas_chart_line"></canvas>
+                </div>
+            </div>
+            <div class="card-chart-pie-right">
+                <div class="card-chart card-chart-pie">
+                    <div class="title">
+                        <h2>Monitoramento</h2>
+
+                        <div class="link">
+                            <a href="">Ver mais</a> <svg xmlns="http://www.w3.org/2000/svg" width="37.5" height="37.5"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round"
+                                class="lucide lucide-arrow-right-icon lucide-arrow-right">
+                                <path d="M5 12h14" />
+                                <path d="m12 5 7 7-7 7" />
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div id="div_canvas_chart_pie">
+                        <canvas id="canvas_chart_pie"></canvas>
+                    </div>
+                </div>
+
+                <div class="indicators">
+                    <div class="indicator indicator-chart-line">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="37.5" height="37.5" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" class="lucide lucide-badge-alert-icon lucide-badge-alert">
+                            <path
+                                d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z" />
+                            <line x1="12" x2="12" y1="8" y2="12" />
+                            <line x1="12" x2="12.01" y1="16" y2="16" />
+                        </svg>
+                        <h4>
+                            O sensor B da Carga X ultrapassou 5°
+                        </h4>
+                    </div>
+                    <div class="indicator indicator-chart-pie">
+
+                        <h4><b>100%</b></h4>
+                        <h4>
+                            Todas rotas monitoradas.
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="contant-notifications">
+
+            <h1>Notificações</h1>
+
+            <div class="notifications">
+                <div class="notification notification-yellow">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-badge-alert-icon lucide-badge-alert">
+                        <path
+                            d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z" />
+                        <line x1="12" x2="12" y1="8" y2="12" />
+                        <line x1="12" x2="12.01" y1="16" y2="16" />
+
+                        <div class="texts">
+                            <div class="titles">
+                                <h3>
+                                    Temperatura dentro do ideal.
+                                </h3>
+                                <div class="time">
+                                    Há 20 minuto atrás </div>
+                            </div>
+                            <p>
+                                No baú refrigerado de placa: <b>MPE1M49</b> a temperatura voltou ao ideal,
+                                atualmente se encontra com 0°C.
+                            </p>
+                        </div>
+
+                        <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-arrow-right-icon lucide-arrow-right">
+                            <path d="M5 12h14" />
+                            <path d="m12 5 7 7-7 7" />
+                        </svg>
+                    </svg>
+                </div>
+
+                <div class="notification notification-green">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-badge-alert-icon lucide-badge-alert">
+                        <path
+                            d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z" />
+                        <line x1="12" x2="12" y1="8" y2="12" />
+                        <line x1="12" x2="12.01" y1="16" y2="16" />
+
+                        <div class="texts">
+                            <div class="titles">
+                                <h3>
+                                    Uma carga corre perrigo!. </h3>
+                                <div class="time">
+                                    Há 22 minuto atrás </div>
+                            </div>
+                            <p>No baú refrigerado de placa: <b>MPE1M49</b> teve um aumento de abrupto na temperatura,
+                                foi dectado pelo <b>sensor B</b>
+                            </p>
+                        </div>
+
+                        <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-arrow-right-icon lucide-arrow-right">
+                            <path d="M5 12h14" />
+                            <path d="m12 5 7 7-7 7" />
+                        </svg>
+                    </svg>
+                </div>
+
+
+            </div>
+            <div class="notifications">
+                <div class="notification notification-red">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-badge-alert-icon lucide-badge-alert">
+                        <path
+                            d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z" />
+                        <line x1="12" x2="12" y1="8" y2="12" />
+                        <line x1="12" x2="12.01" y1="16" y2="16" />
+
+                        <div class="texts">
+                            <div class="titles">
+                                <h3>
+                                    Uma carga corre perrigo!. </h3>
+                                <div class="time">
+                                    Há 23 minuto atrás </div>
+                            </div>
+                            <p>
+                                No baú refrigerado de placa: <b>MPE1M49</b> teve um aumento de temperatura fora do
+                                ideal, foi dectado pelo <b>sensor B</b>
+                            </p>
+                        </div>
+
+                        <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-arrow-right-icon lucide-arrow-right">
+                            <path d="M5 12h14" />
+                            <path d="m12 5 7 7-7 7" />
+                        </svg>
+                    </svg>
+                </div>
+
+                <div class="notification notification-yellow">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-badge-alert-icon lucide-badge-alert">
+                        <path
+                            d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z" />
+                        <line x1="12" x2="12" y1="8" y2="12" />
+                        <line x1="12" x2="12.01" y1="16" y2="16" />
+
+                        <div class="texts">
+                            <div class="titles">
+                                <h3>
+                                    Houve uma variação de temperatura.
+                                </h3>
+                                <div class="time">
+                                    Há 25 minuto atrás
+                                </div>
+                            </div>
+                            <p>No baú refrigerado de placa: <b>MPE1M49</b> teve um aumento de temperatura fora do ideal,
+                                foi
+                                dectado pelo <b>sensor B</b>
+                            </p>
+                        </div>
+
+                        <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-arrow-right-icon lucide-arrow-right">
+                            <path d="M5 12h14" />
+                            <path d="m12 5 7 7-7 7" />
+                        </svg>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        var chartTemperature = new Chart(canvas_chart_line, {
+            type: 'line',
+            data: {
+                labels: ["15:55", "15:56", "15:57", "15:58", "15:59", "16:00"],
+                datasets: [ // linhas
+                    {
+                        label: "Temperatura Maxima",
+                        data: [5, 5, 5, 5, 5, 5, 5],
+                        backgroundColor: "#f00",
+                        borderColor: "#f00"
+                    }, {
+                        label: "Sensor A",
+                        data: [1, 2, 1, 3, 3, 5],
+                        backgroundColor: "#FBE38E",
+                        borderColor: "#FBE38E"
+                    },
+                    {
+                        label: "Sensor B",
+                        data: [2, 4, 5, 6, 6, 4, 6],
+                        backgroundColor: "#9A89FF",
+                        borderColor: "#9A89FF"
+                    },
+                    {
+                        label: "Sensor C",
+                        data: [2, 3, 4, 2, 3, 4, 2],
+                        backgroundColor: "#4BAD7E",
+                        borderColor: "#4BAD7E"
+                    },
+                    {
+                        label: "Temperatura Minima",
+                        data: [0, 0, 0, 0, 0, 0],
+                        backgroundColor: "#00f",
+                        borderColor: "#00f"
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Horario'
+                        },
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Temperatura °C'
+                        },
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: {
+                            font: {
+                                size: 16
+                            }
+                        }
+                    },
+
+                }
+            }
+        })
+
+
+        var chartColors = new Chart(canvas_chart_pie, {
+            type: 'pie',
+            data: {
+                labels: [
+                    'Monitorados',
+                    'Não Monitorados',
+                ],
+                datasets: [{
+                    data: [100, 0],
+                    backgroundColor: [
+                        '#d3f9e7',
+                        'rgb(255, 99, 132)',
+                    ],
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: {
+                                size: 16
+                            }
+                        }
+                    },
+
+                }
+            }
+        })
+    </script>
 </body>
+
 </html>
