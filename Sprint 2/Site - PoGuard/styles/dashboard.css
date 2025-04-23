@@ -125,6 +125,7 @@ svg {
   background-color: white;
   border: 1px solid #002649;
   border-radius: 10px;
+  overflow-y: auto;
 }
 
 h1 {

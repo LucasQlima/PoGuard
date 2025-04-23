@@ -10,6 +10,7 @@
   padding: 0;
   box-sizing: border-box;
   font-family: "Barlow", sans-serif;
+  scroll-behavior: smooth;
 }
 
 body {
@@ -24,7 +25,7 @@ body {
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  background: #EAECEF;
+  background: #eaecef;
   height: 130px;
   padding: 0 75px;
   box-sizing: border-box;
@@ -54,6 +55,10 @@ body {
   font-weight: bold;
 }
 
+.navbar ul li a {
+  color: #002649;
+  text-decoration: none;
+}
 .navbar .login {
   gap: 0px;
 }
@@ -85,7 +90,7 @@ body {
   justify-self: center;
   width: 100%;
   height: 700px;
-  background: #EECA67;
+  background: #eeca67;
 }
 
 .imagem_grafico {
@@ -97,6 +102,7 @@ body {
   padding: 10%;
   width: 100%;
   height: 100%;
+  object-fit: contain;
 }
 
 .texto_footer {
@@ -133,7 +139,8 @@ body {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  width: 100%;
+  width: 90%;
+  margin: auto;
   height: auto;
 }
 
@@ -215,7 +222,7 @@ button p {
 
 /* SECÇÃO SERVICOS */
 .servicos {
-  background: #EAECEF;
+  background: #eaecef;
 }
 
 .titulo {
@@ -243,7 +250,7 @@ button p {
 
 .container {
   width: 100%;
-  padding: 66px 5%;
+  padding: 66px 10%;
 }
 
 /* SERVICOS */
@@ -268,7 +275,6 @@ button p {
   margin-top: 30px;
 }
 
-
 /* SECÇÃO PARCEIROS */
 .titulo {
   font-weight: bold;
@@ -290,11 +296,6 @@ button p {
   border-bottom: 4px solid #437ed833;
   width: 80%;
   margin: auto;
-}
-
-.container {
-  width: 100%;
-  padding: 66px 5%;
 }
 
 /* PARCEIROS */
@@ -350,7 +351,7 @@ button p {
 /* RODAPE */
 footer {
   width: 100%;
-  background: #EAECEF;
+  background: #eaecef;
   padding-top: 40px;
   padding-left: 10%;
   padding-right: 10%;
@@ -363,7 +364,7 @@ footer {
   flex-wrap: wrap;
   justify-content: space-between;
   margin-top: 2%;
-  }
+}
 
 .link_footer {
   width: 23%;
