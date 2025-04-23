@@ -69,7 +69,7 @@ CONSTRAINT statusSensor CHECK(statusSensor IN ('ativo', 'inativo', 'manutenção
 CREATE TABLE TBL_DADO(
 idDado INT AUTO_INCREMENT,
 temperatura DECIMAL(4,2) NOT NULL,
-dataHora DATETIME NOT NULL,
+dataHora DATETIME,
 fkSensor INT,
 PRIMARY KEY(idDado, fkSensor),
 CONSTRAINT fkDadoSensor FOREIGN KEY  (fkSensor) REFERENCES TBL_SENSOR(idSensor)
@@ -215,3 +215,7 @@ SELECT veiculo.placa AS 'Placa do Veículo',
        ON veiculo.idVeiculo = carga.fkVeiculo
        JOIN TBL_SENSOR AS sensor 
        ON sensor.id
+
+
+
+
