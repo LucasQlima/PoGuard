@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador Financeiro</title>
+    <link rel="stylesheet" href="../styles/simulador.css">
+    <link rel="shortcut icon" href="../assets/icons/icon_polus.png" type="image/x-icon">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="navbar-logo">
+            <img style="width: 180px; height: 180px;" src="../assets/imgs/logo-polus.png" alt="Logo">
+        </div>
+        <ul>
+            <li><a href="index.html" class="button-nav">Inicio</a></li>
+            <li><a href="parceiros.html" class="button-nav">Parceiros</a></li>
+            <li><a href="produtos.html" class="button-nav">Produtos</a></li>
+            <li><a href="sobre-nos.html" class="button-nav">Sobre nós</a></li>
+        </ul>
+        <ul class="login"><img style="width: 100px; height: 100px;" src="../assets/icons/icon_polus.png"
+                alt="icone polus">
+            <li><a href="login.html">Seja nosso parceiro <span>ou faça login</span></a></li>
+        </ul>
+    </nav>
+
+    <!-- CONTEUDO -->
+    <div class="container">
+        <div class="container-inicial">
+            <div class="container-titulo">
+                <h1 class="title">Simulador Financeiro</h1>
+                <p>Realize simulações utilizando os dados do seu negócio para visualizar o potencial de redução de
+                    perdas que nossa solução oferece!</p>
+            </div>
+            <div class="container-informativo">
+                <h3>Informativo:</h3>
+                <h4>De acordo com a Instrução Normativa (IN) nº 76/2018 do Ministério da Agricultura, Pecuária e
+                    Abastecimento (MAPA) </h4>
+                <table style="border: 1; background-color: black;">
+                    <thread>
+                        <tr>
+                            <th> Tipo Produto </th>
+                            <th> Temperatura Mínima </th>
+                            <th> Tempratura Máxima </th>
+                        </tr>
+                    </thread>
+                    <tbody>
+                        <tr>
+                            <td style="font-weight: bold; text-align: center;"> Laticínios </td>
+                            <td style="text-align: center;"> 0°C </td>
+                            <td style="text-align: center;"> 4°C </td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold; text-align: center;"> Carnes </td>
+                            <td style="text-align: center;"> 0°C </td>
+                            <td style="text-align: center;"> 7°C </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+        <!-- CALCULO -->
+        <div class="container-conteudo">
+            <div class="container-calculo" id="container_calculo">
+                <div class="campo-calculo">
+                    <span>1</span>
+                    <h4>INFORMAÇÕES DO PRODUTO</h4>
+                </div>
+                <div class="campo">
+                    <p>Nome/tipo do produto:</p>
+                    <select id="select_nome">
+                        <option>Laticínios</option>
+                        <option>Carnes</option>
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <p>Preço unitário do produto:</p>
+                    <input type="number" id="id_preco_prod" placeholder="R$00,00">
+                </div>
+
+                <div class="campo">
+                    <p>Quantidade de produtos:</p>
+                    <input type="number" id="id_qtd_prod">
+                </div>
+
+                <div class="campo-calculo">
+                    <span>2</span>
+                    <h4>INFORMAÇÃO DO BAÚ</h4>
+                </div>
+                <div class="campo">
+                    <p>Temperatura média do Bau:</p>
+                    <input type="number" id="id_temp_bau" placeholder="Em °C">
+                </div>
+
+
+                <div class="campo-calculo">
+                    <span>3</span>
+                    <h4>INFORMAÇÕES SOBRE PERDAS</h4>
+                </div>
+
+                <div class="campo">
+                    <p>Já sofreu alguma perda?</p>
+                    <select name="" id="select_perda" onchange="mostrar()">
+                        <option>Não</option>
+                        <option>Sim</option>
+                    </select>
+                </div>
+
+                <div id="div_input_perda"></div>
+
+                <button onclick="calcular()">Analisar situação</button>
+            </div>
+
+            <div class="container-resultado">
+                <h4>Resultados</h4>
+                <div class="container-kpi" id="div_kpi"></div>
+                <div class="chart-container">
+                    <canvas id="pizzaChart"></canvas>
+                </div>
+                <div class="container-resultado-texto" id="div_resultado"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- RODAPÉ -->
+    <footer>
+        <img src="../assets/imgs/logo-polus.png" alt="">
+        <div class="div_links">
+            <a class="link" href="">inicio</a>
+            <a class="link" href="">Parceiros</a>
+        </div>
+        <div class="div_links">
+            <a class="link" href="">Produtos</a>
+            <a class="link" href="">Sobre nós</a>
+        </div>
+        <div class="div_links">
+            <a class="link" href="">Calculadora Financeira</a>
+            <a class="link" href="">Torne-se parceiro</a>
+        </div>
+    </footer>
+</body>
+
+</html>
+<script>
+    function mostrar() {
+        if (select_perda.value == "Sim") {
+            div_input_perda.innerHTML = `<div class="campo"><p>Informe o valor:</p>
+            <input type="text" id="id_valor" placeholder="R$00.00"></div>`
+        } else {
+            div_input_perda.innerHTML = ``
+        }
+    }
+
+    function calcular() {
+
+        // informações o produto
+        var NomeProd = select_nome.value
+        var PrecoUniProd = Number(id_preco_prod.value)
+        var QtdProd = Number(id_qtd_prod.value)
+
+        var TotalProd = Number(PrecoUniProd * QtdProd)
+        var totalPerda = TotalProd
+
+        // informações do baú
+        var TempBau = Number(id_temp_bau.value)
+
+        // informações sobre perda
+        var Perda = select_perda.value
+
+        // mensagem
+        div_kpi.style.borderWidth = '2px';
+        div_kpi.style.borderStyle = 'solid';
+        div_kpi.style.borderColor = 'black';
+        var mensagem = ``
+        div_kpi.innerHTML = `<h5>Valor total da carga</h5>
+                            <p id="valor_kpi">R$${TotalProd}</p>`
+
+        // Parametro do gráfico
+        var parametroPerda = TotalProd
+        var parametroRedução = 0
+
+
+        if (NomeProd == "Laticínios") {
+            if (TempBau >= 0 && TempBau <= 4) {
+                mensagem = `<P>De acordo com os dados obtidos não houve perda de mercadoria.</p>`
+            } else {
+                if (TempBau == 5 || TempBau == -1) {
+                    TotalPerda = TotalProd * 0.05
+                    parametroPerda = TotalProd * 0.95
+                    mensagem = `<p>Com o total de <b>R$${TotalProd}</b> em mecardorias e os dados obtidos, é estimado uma possivel perda de até <b>5% (R$${TotalPerda})</b>.</p>`
+                }
+                else if (TempBau == 6 || TempBau < -2) {
+                    TotalPerda = TotalProd * 0.10
+                    parametroPerda = TotalProd * 0.90
+                    mensagem = `<p>Com o total de <b>R$${TotalProd}</b> em mecardorias e os dados obtidos, é estimado uma possivel perda de até <b>10% (R$${TotalPerda})</b>.</p>`
+                }
+                else if (TempBau == 7 || TempBau <= -3) {
+                    TotalPerda = TotalProd * 0.15
+                    parametroPerda = TotalProd * 0.85
+                    mensagem = `<p>Com o total de <b>R$${TotalProd}</b> em mecardorias e os dados obtidos, é estimado uma possivel perda de até <b>15% (R$${TotalPerda})</b>.</p>`
+                } else {
+                    TotalPerda = TotalProd;
+                    mensagem = `<p>De acordo com os dados obtidos você está correndo o risco de uma perda total da sua mercadoria. No valor de <b>R$${TotalPerda}</b></p>`
+                }
+            }
+        } else {
+            if (TempBau >= 0 && TempBau <= 7) {
+                mensagem = `<p>De acordo com os dados obtidos não houve perda de mercadoria.</p>`
+            } else {
+                if (TempBau == 8 || TempBau == -1) {
+                    TotalPerda = TotalProd * 0.05
+                    parametroPerda = TotalProd * 0.95
+                    mensagem = `<p>Com o total de <b>R$${TotalProd}<b> em mecardorias e os dados obtidos, é estimado uma possivel perda de até <b>5% (R$${TotalPerda})</b>.</p>`
+                }
+                else if (TempBau == 9 || TempBau < -2) {
+                    TotalPerda = TotalProd * 0.10
+                    parametroPerda = TotalProd * 0.90
+                    mensagem = `<p>Com o total de <b>R$${TotalProd}</b> em mecardorias e os dados obtidos, é estimado uma possivel perda de até <b>10% (R$${TotalPerda})</b>.</p>`
+                } else if (TempBau == 10 || TempBau <= -3) {
+                    TotalPerda = TotalProd * 0.15
+                    parametroPerda = TotalProd * 0.85
+                    mensagem = `<p>Com o total de <b>R$${TotalProd}</b> em mecardorias e os dados obtidos, é estimado uma possivel perda de até <b>15% (R$${TotalPerda})</b>.</p>`
+                } else {
+                    TotalPerda = TotalProd;
+                    mensagem = `<p>De acordo com os dados obtidos você está correndo o risco de uma perda total da sua mercadoria. No valor de <b>R$${TotalPerda}</b>. Cuidado!</p>`
+                }
+            }
+        }
+
+        if (Perda == "Sim") {
+            var QtdPerda = Number(id_valor.value)
+            mensagem += `<p>Como informado , houve um gasto de R$${QtdPerda} com perdas de mercadorias. Com nosso serviço conseguiremos ajuda-lo a reduzir esse custo em até <b> 15% (R$${QtdPerda * 0.15}) </b>.</p>
+            <button onclick="login.html">Adquira o Poguard!</button>`
+        } else {
+            mensagem += ` <p>Não houve gastos com perdas anteriores, mas, com nossos serviços, conseguimos minimizar possíveis gastos desnecessários em até. <b>15%, além de adequar sua empresa às normas regulamentares</b>.</p>
+            <button onclick="login.html">Adquira o Poguard!</button>`
+        }
+
+        div_resultado.innerHTML = `${mensagem}`
+
+        // GRAFICO
+        // Obter o contexto do canvas
+        const grafico = document.getElementById('pizzaChart').getContext('2d');
+
+        // Dados para o gráfico
+        const data = {
+            labels: ['Perdas', 'Redução de prejuízo'],
+            datasets: [{
+                data: [parametroPerda, TotalPerda],
+                backgroundColor: [
+                    '#FF6384',
+                    '#36A2EB',
+                ],
+                borderColor: '#fff',
+                borderWidth: 2
+            }]
+        };
+
+        // Opções de configuração
+        const options = {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Redução de perda após adquirir o Poguard',
+                    font: {
+                        size: 16
+                    }
+                },
+            }
+        };
+
+        // Criar o gráfico de pizza
+        const pizzaChart = new Chart(grafico, {
+            type: 'pie',
+            data: data,
+            options: options
+        });
+    }
+</script>
