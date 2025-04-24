@@ -149,6 +149,8 @@
 
 </html>
 <script>
+    var verificador = 0
+
     function mostrar() {
         if (select_perda.value == "Sim") {
             div_input_perda.innerHTML = `<div class="campo"><p>Informe o valor:</p>
@@ -174,117 +176,121 @@
         // informações sobre perda
         var Perda = select_perda.value
 
-        // mensagem
-        div_kpi.style.borderWidth = '2px';
-        div_kpi.style.borderStyle = 'solid';
-        div_kpi.style.borderColor = 'black';
-        var mensagem = ``
-        div_kpi.innerHTML = `<h5>Valor total da carga</h5>
+        if ((PrecoUniProd > 0 && QtdProd > 0 && TempBau > 0)) {
+            // mensagem
+            div_kpi.style.borderWidth = '2px';
+            div_kpi.style.borderStyle = 'solid';
+            div_kpi.style.borderColor = 'black';
+            var mensagem = ``
+            div_kpi.innerHTML = `<h5>Valor total da carga</h5>
                             <p id="valor_kpi">R$${TotalProd}</p>`
 
-        // Parametro do gráfico
-        var parametroPerda = TotalProd
-        var parametroRedução = 0
+            // Parametro do gráfico
+            var parametroPerda = TotalProd
+            var parametroRedução = 0
 
 
-        if (NomeProd == "Laticínios") {
-            if (TempBau >= 0 && TempBau <= 4) {
-                mensagem = `<P>De acordo com os dados obtidos não houve perda de mercadoria.</p>`
-            } else {
-                if (TempBau == 5 || TempBau == -1) {
-                    TotalPerda = TotalProd * 0.05
-                    parametroPerda = TotalProd * 0.95
-                    mensagem = `<p>Com o total de <b>R$${TotalProd}</b> em mecardorias e os dados obtidos, é estimado uma possivel perda de até <b>5% (R$${TotalPerda})</b>.</p>`
-                }
-                else if (TempBau == 6 || TempBau < -2) {
-                    TotalPerda = TotalProd * 0.10
-                    parametroPerda = TotalProd * 0.90
-                    mensagem = `<p>Com o total de <b>R$${TotalProd}</b> em mecardorias e os dados obtidos, é estimado uma possivel perda de até <b>10% (R$${TotalPerda})</b>.</p>`
-                }
-                else if (TempBau == 7 || TempBau <= -3) {
-                    TotalPerda = TotalProd * 0.15
-                    parametroPerda = TotalProd * 0.85
-                    mensagem = `<p>Com o total de <b>R$${TotalProd}</b> em mecardorias e os dados obtidos, é estimado uma possivel perda de até <b>15% (R$${TotalPerda})</b>.</p>`
+            if (NomeProd == "Laticínios") {
+                if (TempBau >= 0 && TempBau <= 4) {
+                    mensagem = `<P>De acordo com os dados obtidos não houve perda de mercadoria.</p>`
                 } else {
-                    TotalPerda = TotalProd;
-                    mensagem = `<p>De acordo com os dados obtidos você está correndo o risco de uma perda total da sua mercadoria. No valor de <b>R$${TotalPerda}</b></p>`
-                }
-            }
-        } else {
-            if (TempBau >= 0 && TempBau <= 7) {
-                mensagem = `<p>De acordo com os dados obtidos não houve perda de mercadoria.</p>`
-            } else {
-                if (TempBau == 8 || TempBau == -1) {
-                    TotalPerda = TotalProd * 0.05
-                    parametroPerda = TotalProd * 0.95
-                    mensagem = `<p>Com o total de <b>R$${TotalProd}<b> em mecardorias e os dados obtidos, é estimado uma possivel perda de até <b>5% (R$${TotalPerda})</b>.</p>`
-                }
-                else if (TempBau == 9 || TempBau < -2) {
-                    TotalPerda = TotalProd * 0.10
-                    parametroPerda = TotalProd * 0.90
-                    mensagem = `<p>Com o total de <b>R$${TotalProd}</b> em mecardorias e os dados obtidos, é estimado uma possivel perda de até <b>10% (R$${TotalPerda})</b>.</p>`
-                } else if (TempBau == 10 || TempBau <= -3) {
-                    TotalPerda = TotalProd * 0.15
-                    parametroPerda = TotalProd * 0.85
-                    mensagem = `<p>Com o total de <b>R$${TotalProd}</b> em mecardorias e os dados obtidos, é estimado uma possivel perda de até <b>15% (R$${TotalPerda})</b>.</p>`
-                } else {
-                    TotalPerda = TotalProd;
-                    mensagem = `<p>De acordo com os dados obtidos você está correndo o risco de uma perda total da sua mercadoria. No valor de <b>R$${TotalPerda}</b>. Cuidado!</p>`
-                }
-            }
-        }
-
-        if (Perda == "Sim") {
-            var QtdPerda = Number(id_valor.value)
-            mensagem += `<p>Como informado , houve um gasto de R$${QtdPerda} com perdas de mercadorias. Com nosso serviço conseguiremos ajuda-lo a reduzir esse custo em até <b> 15% (R$${QtdPerda * 0.15}) </b>.</p>
-            <button onclick="login.html">Adquira o Poguard!</button>`
-        } else {
-            mensagem += ` <p>Não houve gastos com perdas anteriores, mas, com nossos serviços, conseguimos minimizar possíveis gastos desnecessários em até. <b>15%, além de adequar sua empresa às normas regulamentares</b>.</p>
-            <button onclick="login.html">Adquira o Poguard!</button>`
-        }
-
-        div_resultado.innerHTML = `${mensagem}`
-
-        // GRAFICO
-        // Obter o contexto do canvas
-        const grafico = document.getElementById('pizzaChart').getContext('2d');
-
-        // Dados para o gráfico
-        const data = {
-            labels: ['Perdas', 'Redução de prejuízo'],
-            datasets: [{
-                data: [parametroPerda, TotalPerda],
-                backgroundColor: [
-                    '#FF6384',
-                    '#36A2EB',
-                ],
-                borderColor: '#fff',
-                borderWidth: 2
-            }]
-        };
-
-        // Opções de configuração
-        const options = {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'top',
-                },
-                title: {
-                    display: true,
-                    text: 'Redução de perda após adquirir o Poguard',
-                    font: {
-                        size: 16
+                    if (TempBau == 5 || TempBau == -1) {
+                        TotalPerda = TotalProd * 0.05
+                        parametroPerda = TotalProd * 0.95
+                        mensagem = `<p>Com o total de <b>R$${TotalProd}</b> em mecardorias e os dados obtidos, é estimado uma possivel perda de até <b>5% (R$${TotalPerda})</b>.</p>`
                     }
-                },
+                    else if (TempBau == 6 || TempBau < -2) {
+                        TotalPerda = TotalProd * 0.10
+                        parametroPerda = TotalProd * 0.90
+                        mensagem = `<p>Com o total de <b>R$${TotalProd}</b> em mecardorias e os dados obtidos, é estimado uma possivel perda de até <b>10% (R$${TotalPerda})</b>.</p>`
+                    }
+                    else if (TempBau == 7 || TempBau <= -3) {
+                        TotalPerda = TotalProd * 0.15
+                        parametroPerda = TotalProd * 0.85
+                        mensagem = `<p>Com o total de <b>R$${TotalProd}</b> em mecardorias e os dados obtidos, é estimado uma possivel perda de até <b>15% (R$${TotalPerda})</b>.</p>`
+                    } else {
+                        TotalPerda = TotalProd;
+                        mensagem = `<p>De acordo com os dados obtidos você está correndo o risco de uma perda total da sua mercadoria. No valor de <b>R$${TotalPerda}</b></p>`
+                    }
+                }
+            } else {
+                if (TempBau >= 0 && TempBau <= 7) {
+                    mensagem = `<p>De acordo com os dados obtidos não houve perda de mercadoria.</p>`
+                } else {
+                    if (TempBau == 8 || TempBau == -1) {
+                        TotalPerda = TotalProd * 0.05
+                        parametroPerda = TotalProd * 0.95
+                        mensagem = `<p>Com o total de <b>R$${TotalProd}<b> em mecardorias e os dados obtidos, é estimado uma possivel perda de até <b>5% (R$${TotalPerda})</b>.</p>`
+                    }
+                    else if (TempBau == 9 || TempBau < -2) {
+                        TotalPerda = TotalProd * 0.10
+                        parametroPerda = TotalProd * 0.90
+                        mensagem = `<p>Com o total de <b>R$${TotalProd}</b> em mecardorias e os dados obtidos, é estimado uma possivel perda de até <b>10% (R$${TotalPerda})</b>.</p>`
+                    } else if (TempBau == 10 || TempBau <= -3) {
+                        TotalPerda = TotalProd * 0.15
+                        parametroPerda = TotalProd * 0.85
+                        mensagem = `<p>Com o total de <b>R$${TotalProd}</b> em mecardorias e os dados obtidos, é estimado uma possivel perda de até <b>15% (R$${TotalPerda})</b>.</p>`
+                    } else {
+                        TotalPerda = TotalProd;
+                        mensagem = `<p>De acordo com os dados obtidos você está correndo o risco de uma perda total da sua mercadoria. No valor de <b>R$${TotalPerda}</b>. Cuidado!</p>`
+                    }
+                }
             }
-        };
 
-        // Criar o gráfico de pizza
-        const pizzaChart = new Chart(grafico, {
-            type: 'pie',
-            data: data,
-            options: options
-        });
+            if (Perda == "Sim") {
+                var QtdPerda = Number(id_valor.value)
+                mensagem += `<p>Como informado , houve um gasto de R$${QtdPerda} com perdas de mercadorias. Com nosso serviço conseguiremos ajuda-lo a reduzir esse custo em até <b> 15% (R$${QtdPerda * 0.15}) </b>.</p>
+            <button onclick="login.html">Adquira o Poguard!</button>`
+            } else {
+                mensagem += ` <p>Não houve gastos com perdas anteriores, mas, com nossos serviços, conseguimos minimizar possíveis gastos desnecessários em até. <b>15%, além de adequar sua empresa às normas regulamentares</b>.</p>
+            <button onclick="login.html">Adquira o Poguard!</button>`
+            }
+
+            div_resultado.innerHTML = `${mensagem}`
+
+            // GRAFICO
+            // Obter o contexto do canvas
+            const grafico = document.getElementById('pizzaChart').getContext('2d');
+
+            // Dados para o gráfico
+            const data = {
+                labels: ['Valor da carga', 'Redução de prejuízo'],
+                datasets: [{
+                    data: [parametroPerda, TotalPerda],
+                    backgroundColor: [
+                        '#FF6384',
+                        '#36A2EB',
+                    ],
+                    borderColor: '#fff',
+                    borderWidth: 2
+                }]
+            };
+
+            // Opções de configuração
+            const options = {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Redução de perda após adquirir o Poguard',
+                        font: {
+                            size: 16
+                        }
+                    },
+                }
+            };
+
+            // Criar o gráfico de pizza
+            const pizzaChart = new Chart(grafico, {
+                type: 'pie',
+                data: data,
+                options: options
+            });
+        } else {
+            alert('Insira todas as informações!')
+        }
     }
 </script>
