@@ -200,7 +200,7 @@ body {
   padding: 0px;
 }
 
-button p {
+button a {
   width: 100%;
   display: flex;
   justify-items: center;
@@ -211,6 +211,7 @@ button p {
   font-weight: bold;
   color: #09213f;
   padding-right: 4%;
+  text-decoration: none;
 }
 
 .botao_calc img {
