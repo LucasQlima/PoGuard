@@ -220,6 +220,10 @@ button p {
   padding-right: 4%;
 }
 
+button a {
+  text-decoration: none;
+  color: #fff700;
+}
 /* SECÇÃO SERVICOS */
 .servicos {
   background: #eaecef;
