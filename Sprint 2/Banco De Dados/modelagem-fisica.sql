@@ -1,5 +1,18 @@
 CREATE DATABASE PoGuard;
+DROP DATABASE PoGuard;
 USE PoGuard;
+
+-- TABELA EMPRESA
+-- DROP TABLE TBL_EMPRESA;
+CREATE TABLE TBL_EMPRESA(
+idEmpresa INT PRIMARY KEY AUTO_INCREMENT,
+nome VARCHAR(100) NOT NULL,
+cnpj CHAR(18) NOT NULL,
+email VARCHAR(100) NOT NULL,
+telefone CHAR(13),
+CONSTRAINT chkEmailEmpresa CHECK(email LIKE '%@%')
+);
+
 
 -- TABELA USUARIO
 -- DROP TABLE TBL_USUARIO;
@@ -18,16 +31,6 @@ CONSTRAINT chkEmailUsuario CHECK (email LIKE '%@%'),
 CONSTRAINT chkCargo CHECK (cargo IN ('funcionario', 'gerente'))
 );
 
--- TABELA EMPRESA
--- DROP TABLE TBL_EMPRESA;
-CREATE TABLE TBL_EMPRESA(
-idEmpresa INT PRIMARY KEY AUTO_INCREMENT,
-nome VARCHAR(100) NOT NULL,
-cnpj CHAR(18) NOT NULL,
-email VARCHAR(100) NOT NULL,
-telefone CHAR(13),
-CONSTRAINT chkEmailEmpresa CHECK(email LIKE '%@%')
-);
 
 -- TABELA VEICULO
 -- DROP TABLE TBL_VEICULO;
@@ -88,14 +91,14 @@ CONSTRAINT chkStatusAlerta CHECK (statusAlerta IN ('verde', 'amarelo', 'vermelho
 CONSTRAINT fkAlertaDado FOREIGN KEY (fkDado) REFERENCES TBL_DADO(idDado)
 );
 
-INSERT INTO TBL_USUARIO VALUES 
-(default, "Guilherme Dias", "gui.dias@poguard.com", 12345678900, 40028922, "123B!g@00", "gerente", 1), 
-(default, "Lucas Queiroz", "lucas.queiroz@poguard.com", 00987654321, 89224002, "00aaa123@P", "funcionario", 2);   
-
 INSERT INTO TBL_EMPRESA (nome, cnpj, email, telefone) 
 VALUES 
 ('Empresa Exemplo 1', '12.345.678/0001-90', 'contato@empresa1.com', '1234567890123'),
 ('Empresa Exemplo 2', '98.765.432/0001-87', 'contato@empresa2.com', '9876543210987');
+
+INSERT INTO TBL_USUARIO VALUES 
+(default, "Guilherme Dias", "gui.dias@poguard.com", 12345678900, 40028922, "123B!g@00", "gerente", 1), 
+(default, "Lucas Queiroz", "lucas.queiroz@poguard.com", 00987654321, 89224002, "00aaa123@P", "funcionario", 2);   
 
 INSERT INTO TBL_VEICULO (placa, modelo, motoristo, fkEmpresa) 
 VALUES 
@@ -142,6 +145,12 @@ SELECT usuario.nome AS 'Nome do Integrante',
        empresa.nome AS 'Nome da Empresa'
        FROM TBL_EMPRESA as empresa JOIN TBL_USUARIO AS usuario 
        ON empresa.idEmpresa = usuario.fkEmpresa;
+       
+SELECT empresa.nome AS 'Nome da Empresa',
+	   veiculo.placa AS'Placa do Veículo', 
+	   veiculo.motoristo AS 'Motorista' 
+       FROM TBL_EMPRESA as empresa JOIN TBL_VEICULO AS veiculo 
+       ON empresa.idEmpresa = veiculo.fkEmpresa;
 
 SELECT empresa.nome AS 'Nome da Empresa', 
 	   veiculo.placa AS 'Placa do veículo', 
@@ -204,17 +213,6 @@ SELECT empresa.nome AS 'Nome da Empresa',
        ON dado.idDado = alerta.fkDado
        WHERE idEmpresa = 2;
        
-SELECT veiculo.placa AS 'Placa do Veículo', 
-	   carga.tipoCarga AS 'Tipo da Carga', 
-       sensor.statusSensor AS 'Status do Sensor', 
-       dado.temperatura AS 'Temperatura Atual', 
-       alerta.titulo AS 'Mensagem do alerta', 
-       alerta.statusAlerta AS 'Status do alerta'
-       FROM TBL_VEICULO AS veiculo
-       JOIN TBL_CARGA AS carga
-       ON veiculo.idVeiculo = carga.fkVeiculo
-       JOIN TBL_SENSOR AS sensor 
-       ON sensor.id
 
 
 
