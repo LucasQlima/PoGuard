@@ -72,7 +72,7 @@ CONSTRAINT statusSensor CHECK(statusSensor IN ('ativo', 'inativo', 'manutenção
 CREATE TABLE TBL_DADO(
 idDado INT AUTO_INCREMENT,
 temperatura DECIMAL(4,2) NOT NULL,
-dataHora DATETIME,
+dataHora DATETIME DEFAULT CURRENT_TIMESTAMP,
 fkSensor INT,
 PRIMARY KEY(idDado, fkSensor),
 CONSTRAINT fkDadoSensor FOREIGN KEY  (fkSensor) REFERENCES TBL_SENSOR(idSensor)

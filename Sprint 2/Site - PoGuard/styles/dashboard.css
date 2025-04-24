@@ -137,7 +137,7 @@ h1 {
 .charts {
   display: flex;
   gap: 20px;
-  height: 600px;
+  height: auto;
   margin-bottom: 10px;
 }
 .card-chart {
