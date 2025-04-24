@@ -12,21 +12,22 @@
 
 <body>
     <!-- NAVBAR -->
-    <nav class="navbar">
+    <nav class="navbar" id="navbar">
         <div class="navbar-logo">
             <img style="width: 180px; height: 180px;" src="../assets/imgs/logo-polus.png" alt="Logo">
         </div>
         <ul>
-            <li><a href="index.html" class="button-nav">Inicio</a></li>
-            <li><a href="parceiros.html" class="button-nav">Parceiros</a></li>
-            <li><a href="produtos.html" class="button-nav">Produtos</a></li>
-            <li><a href="sobre-nos.html" class="button-nav">Sobre nós</a></li>
+            <li><a href="#navbar">Inicio</a></li>
+            <li><a href="#produtos">Produtos</a></li>
+            <li><a href="#parceiros">Parceiros</a></li>
+            <li><a href="#sobre_nos">Sobre nós</a></li>
         </ul>
         <ul class="login"><img style="width: 100px; height: 100px;" src="../assets/icons/icon_polus.png"
                 alt="icone polus">
             <li><a href="login.html">Seja nosso parceiro <span>ou faça login</span></a></li>
         </ul>
     </nav>
+
 
     <!-- CONTEUDO -->
     <div class="container">
@@ -69,7 +70,6 @@
         <div class="container-conteudo">
             <div class="container-calculo" id="container_calculo">
                 <div class="campo-calculo">
-                    <span>1</span>
                     <h4>INFORMAÇÕES DO PRODUTO</h4>
                 </div>
                 <div class="campo">
@@ -91,7 +91,6 @@
                 </div>
 
                 <div class="campo-calculo">
-                    <span>2</span>
                     <h4>INFORMAÇÃO DO BAÚ</h4>
                 </div>
                 <div class="campo">
@@ -101,7 +100,6 @@
 
 
                 <div class="campo-calculo">
-                    <span>3</span>
                     <h4>INFORMAÇÕES SOBRE PERDAS</h4>
                 </div>
 
@@ -121,8 +119,10 @@
             <div class="container-resultado">
                 <h4>Resultados</h4>
                 <div class="container-kpi" id="div_kpi"></div>
-                <div class="chart-container">
-                    <canvas id="pizzaChart"></canvas>
+                <div id="chart_container">
+                    <div class="chart-container">
+                        <canvas id="pizzaChart"></canvas>
+                    </div>
                 </div>
                 <div class="container-resultado-texto" id="div_resultado"></div>
             </div>
@@ -131,18 +131,46 @@
 
     <!-- RODAPÉ -->
     <footer>
-        <img src="../assets/imgs/logo-polus.png" alt="">
-        <div class="div_links">
-            <a class="link" href="">inicio</a>
-            <a class="link" href="">Parceiros</a>
+        <div class="redirecionamento">
+            <div class="link_footer">
+                <h1>REDES SOCIAIS</h1>
+                <div class="link">
+                    <a href=""><img src="../assets/icons/instagram_15713420 1.png" alt=""> @polus_insta</a>
+                    <a href=""><img src="../assets/icons/image 13.png" alt=""> @polusface</a>
+                    <a href=""><img src="../assets/icons/image 15.png" alt=""> @polus_yt</a>
+                </div>
+            </div>
+            <div class="link_footer">
+                <h1>CONTATO</h1>
+                <div class="link">
+                    <a href=""><img src="../assets/icons/Vector.png" alt=""> +55 11 967603378</a>
+                    <a href=""><img src="../assets/icons/Frame.png" alt=""> polus@gmal.com</a>
+                </div>
+            </div>
+            <div class="link_footer">
+                <h1>EMPRESA</h1>
+                <div class="link2">
+                    <a href="">home <img class="img1" src="../assets/icons/icon lik.png" alt=""></a>
+                    <a href="">dashboard <img class="img1" src="../assets/icons/icon lik.png" alt=""></a>
+                    <a href="">historico <img class="img1" src="../assets/icons/icon lik.png" alt=""></a>
+                    <a href="">configurações <img class="img1" src="../assets/icons/icon lik.png" alt=""></a>
+                </div>
+            </div>
+            <div class="link_footer">
+                <h1>MAPA DO SITE</h1>
+                <div class="link2">
+                    <a href="">Voltar ao topo <img class="img1" src="../assets/icons/icon lik.png" alt=""></a>
+                    <a href="">Parceiros <img class="img1" src="../assets/icons/icon lik.png" alt=""></a>
+                    <a href="">Produtos <img class="img1" src="../assets/icons/icon lik.png" alt=""></a>
+                    <a href="">Sobre nós <img class="img1" src="../assets/icons/icon lik.png" alt=""></a>
+                    <a href="">Calculadora financeira <img class="img1" src="../assets/icons/icon lik.png" alt=""></a>
+                </div>
+            </div>
         </div>
-        <div class="div_links">
-            <a class="link" href="">Produtos</a>
-            <a class="link" href="">Sobre nós</a>
-        </div>
-        <div class="div_links">
-            <a class="link" href="">Calculadora Financeira</a>
-            <a class="link" href="">Torne-se parceiro</a>
+        <div class="informacoes">
+            <img src="../assets/imgs/logo-polus.png" alt="">
+            <p>Copyright © 2025 | POLUS</p>
+            <p><img src="../assets/icons/image 16.png" alt="">Brasil Português</p>
         </div>
     </footer>
 </body>
@@ -176,7 +204,7 @@
         // informações sobre perda
         var Perda = select_perda.value
 
-        if ((PrecoUniProd > 0 && QtdProd > 0 && TempBau > 0)) {
+        if ((PrecoUniProd > 0 && QtdProd > 0)) {
             // mensagem
             div_kpi.style.borderWidth = '2px';
             div_kpi.style.borderStyle = 'solid';
@@ -188,51 +216,65 @@
             // Parametro do gráfico
             var parametroPerda = TotalProd
             var parametroRedução = 0
-
+            
 
             if (NomeProd == "Laticínios") {
                 if (TempBau >= 0 && TempBau <= 4) {
-                    mensagem = `<P>De acordo com os dados obtidos não houve perda de mercadoria.</p>`
+                    mensagem = `<P>De acordo com os dados obtidos não houve perda de mercadoria.<br></p>`
+                    chart_container.innerHTML = ``
                 } else {
                     if (TempBau == 5 || TempBau == -1) {
                         TotalPerda = TotalProd * 0.05
                         parametroPerda = TotalProd * 0.95
-                        mensagem = `<p>Com o total de <b>R$${TotalProd}</b> em mecardorias e os dados obtidos, é estimado uma possivel perda de até <b>5% (R$${TotalPerda})</b>.</p>`
+                        mensagem = `<p>Com o total de <b>R$${TotalProd}</b> em mecardorias e os dados obtidos, é estimado uma possivel perda de até <b>5% (R$${TotalPerda})</b>.</p><br>`
+                        chart_container.innerHTML = `<div class="chart-container">
+                                        <canvas id="pizzaChart"></canvas>
+                                        </div><br>`;
                     }
-                    else if (TempBau == 6 || TempBau < -2) {
+                    else if (TempBau == 6 || TempBau == -2) {
                         TotalPerda = TotalProd * 0.10
                         parametroPerda = TotalProd * 0.90
-                        mensagem = `<p>Com o total de <b>R$${TotalProd}</b> em mecardorias e os dados obtidos, é estimado uma possivel perda de até <b>10% (R$${TotalPerda})</b>.</p>`
+                        mensagem = `<p>Com o total de <b>R$${TotalProd}</b> em mecardorias e os dados obtidos, é estimado uma possivel perda de até <b>10% (R$${TotalPerda})</b>.</p><br>`;
+                        chart_container.innerHTML = `<div class="chart-container">
+                                        <canvas id="pizzaChart"></canvas>
+                                        </div><br>`;
                     }
-                    else if (TempBau == 7 || TempBau <= -3) {
+                    else if (TempBau == 7 || TempBau == -3) {
                         TotalPerda = TotalProd * 0.15
                         parametroPerda = TotalProd * 0.85
-                        mensagem = `<p>Com o total de <b>R$${TotalProd}</b> em mecardorias e os dados obtidos, é estimado uma possivel perda de até <b>15% (R$${TotalPerda})</b>.</p>`
+                        mensagem = `<p>Com o total de <b>R$${TotalProd}</b> em mecardorias e os dados obtidos, é estimado uma possivel perda de até <b>15% (R$${TotalPerda})</b>.</p><br>`;
+                        chart_container.innerHTML = `<div class="chart-container">
+                                        <canvas id="pizzaChart"></canvas>
+                                        </div><br>`;
                     } else {
                         TotalPerda = TotalProd;
-                        mensagem = `<p>De acordo com os dados obtidos você está correndo o risco de uma perda total da sua mercadoria. No valor de <b>R$${TotalPerda}</b></p>`
+                        mensagem = `<p>De acordo com os dados obtidos você está correndo o risco de uma perda total da sua mercadoria. No valor de <b>R$${TotalPerda}</b></p><br>`;
+                        chart_container.innerHTML = `<div class="chart-container">
+                                        <canvas id="pizzaChart"></canvas>
+                                        </div><br>`;
                     }
                 }
             } else {
                 if (TempBau >= 0 && TempBau <= 7) {
-                    mensagem = `<p>De acordo com os dados obtidos não houve perda de mercadoria.</p>`
+                    mensagem = `<p>De acordo com os dados obtidos não houve perda de mercadoria.</p><br>`
+                    chart_container.innerHTML = ``
                 } else {
                     if (TempBau == 8 || TempBau == -1) {
                         TotalPerda = TotalProd * 0.05
                         parametroPerda = TotalProd * 0.95
-                        mensagem = `<p>Com o total de <b>R$${TotalProd}<b> em mecardorias e os dados obtidos, é estimado uma possivel perda de até <b>5% (R$${TotalPerda})</b>.</p>`
+                        mensagem = `<p>Com o total de <b>R$${TotalProd}<b> em mecardorias e os dados obtidos, é estimado uma possivel perda de até <b>5% (R$${TotalPerda})</b>.</p><br>`
                     }
-                    else if (TempBau == 9 || TempBau < -2) {
+                    else if (TempBau == 9 || TempBau == -2) {
                         TotalPerda = TotalProd * 0.10
                         parametroPerda = TotalProd * 0.90
-                        mensagem = `<p>Com o total de <b>R$${TotalProd}</b> em mecardorias e os dados obtidos, é estimado uma possivel perda de até <b>10% (R$${TotalPerda})</b>.</p>`
-                    } else if (TempBau == 10 || TempBau <= -3) {
+                        mensagem = `<p>Com o total de <b>R$${TotalProd}</b> em mecardorias e os dados obtidos, é estimado uma possivel perda de até <b>10% (R$${TotalPerda})</b>.</p><br>`
+                    } else if (TempBau == 10 || TempBau == -3) {
                         TotalPerda = TotalProd * 0.15
                         parametroPerda = TotalProd * 0.85
-                        mensagem = `<p>Com o total de <b>R$${TotalProd}</b> em mecardorias e os dados obtidos, é estimado uma possivel perda de até <b>15% (R$${TotalPerda})</b>.</p>`
+                        mensagem = `<p>Com o total de <b>R$${TotalProd}</b> em mecardorias e os dados obtidos, é estimado uma possivel perda de até <b>15% (R$${TotalPerda})</b>.</p><br>`
                     } else {
                         TotalPerda = TotalProd;
-                        mensagem = `<p>De acordo com os dados obtidos você está correndo o risco de uma perda total da sua mercadoria. No valor de <b>R$${TotalPerda}</b>. Cuidado!</p>`
+                        mensagem = `<p>De acordo com os dados obtidos você está correndo o risco de uma perda total da sua mercadoria. No valor de <b>R$${TotalPerda}</b>. Cuidado!</p><br>`
                     }
                 }
             }
@@ -240,10 +282,10 @@
             if (Perda == "Sim") {
                 var QtdPerda = Number(id_valor.value)
                 mensagem += `<p>Como informado , houve um gasto de R$${QtdPerda} com perdas de mercadorias. Com nosso serviço conseguiremos ajuda-lo a reduzir esse custo em até <b> 15% (R$${QtdPerda * 0.15}) </b>.</p>
-            <button onclick="login.html">Adquira o Poguard!</button>`
+            <button onclick="cadastro.html"><a href="cadastro.html">Adquira o Poguard!</a></button>`
             } else {
                 mensagem += ` <p>Não houve gastos com perdas anteriores, mas, com nossos serviços, conseguimos minimizar possíveis gastos desnecessários em até. <b>15%, além de adequar sua empresa às normas regulamentares</b>.</p>
-            <button onclick="login.html">Adquira o Poguard!</button>`
+            <button onclick="cadastro.html"><a href="cadastro.html">Adquira o Poguard!</a></button>`
             }
 
             div_resultado.innerHTML = `${mensagem}`
@@ -275,7 +317,7 @@
                     },
                     title: {
                         display: true,
-                        text: 'Redução de perda após adquirir o Poguard',
+                        text: 'Redução de perda após adquirir o PoGuard',
                         font: {
                             size: 16
                         }
