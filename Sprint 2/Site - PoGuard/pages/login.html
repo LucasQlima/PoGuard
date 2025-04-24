@@ -34,7 +34,7 @@
                 <p>codigo da empresa:</p>
                 <input type="text" id="input_codEmpresa" class="input" placeholder="*************">
             </div>
-            <div id="div_mensagem"></div>
+            <div id="div_mensagem" style="color: red; font-weight: bold;"></div>
             <div class="botao">
                 <p>Não possui conta?<a href="cadastro.html"> registre-se aqui</a></p>
                 <button id="btn-entrar" onclick="validarLogin()">ENTRAR</button>
@@ -51,15 +51,20 @@
             var codEmpresa = input_codEmpresa.value;
             var mensagem = "";
 
-            if (senha.length <= 6 || !/[0-9]/.test(senha)) {
-                mensagem = 'A senha deve ter mais de 6 caracteres e pelo menos um número.';
-            } else if (senha !== confSenha) {
-                mensagem = 'A confirmação de senha deve ser igual à senha.';
-            } else {
-                mensagem = 'Login válido!';
-                window.location.href = "dashboard.html";
-            }
-
+            if (email.indexOf('@') === -1) {
+        mensagem = 'O email deve conter o símbolo @.';
+        alert('O email deve conter o símbolo @.');
+      } else if (senha.length <= 6 || !/[0-9]/.test(senha)) {
+        mensagem = 'A senha deve ter mais de 6 caracteres e pelo menos um número.';
+        alert('A senha deve ter mais de 6 caracteres e pelo menos um número.');
+      } else if (senha !== confSenha) {
+        mensagem = 'A confirmação de senha deve ser igual à senha.';
+        alert('A confirmação de senha deve ser igual à senha.');
+      } else {
+        mensagem = 'Cadastro válido!';
+        alert('Login válido!');
+        window.location.href = "dashboard.html";
+      }
             div_mensagem.innerHTML = mensagem;
         }
     </script>
