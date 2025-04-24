@@ -19,6 +19,7 @@ body {
 /* COMPONENTES */
 
 /* NAVBAR */
+/* NAVBAR */
 .navbar {
   display: flex;
   align-items: center;
@@ -58,7 +59,6 @@ body {
   color: #002649;
   text-decoration: none;
 }
-
 .navbar .login {
   gap: 0px;
 }
