@@ -190,7 +190,7 @@ body {
   flex-direction: row;
   justify-self: center;
   justify-items: center;
-  width: 37%;
+  width: auto;
   height: 100px;
   background-color: #f1e74d;
   border: none;
@@ -221,6 +221,8 @@ button p {
 }
 
 button a {
+  display: flex;
+  flex-direction: row;
   text-decoration: none;
   color: #fff700;
 }
