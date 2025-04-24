@@ -49,7 +49,7 @@ const serial = async (
 
     // processa os dados recebidos do Arduino
     arduino.pipe(new serialport.ReadlineParser({ delimiter: '\r\n' })).on('data', async (data) => {
-        console.log(data);        
+        console.log(`Temperatura atual: ${data}`);        
         valoresSensorAnalogico.push(data);
 
         // insere os dados no banco de dados (se habilitado)
