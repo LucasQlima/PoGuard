@@ -94,7 +94,7 @@
                     <h4>INFORMAÇÃO DO BAÚ</h4>
                 </div>
                 <div class="campo">
-                    <p>Temperatura média do Bau:</p>
+                    <p>Temperatura média do Baú:</p>
                     <input type="number" id="id_temp_bau" placeholder="Em °C">
                 </div>
 
@@ -197,7 +197,7 @@
         var QtdProd = Number(id_qtd_prod.value)
 
         var TotalProd = Number(PrecoUniProd * QtdProd)
-        var totalPerda = TotalProd
+        var totalPerda = TotalProd;
 
         // informações do baú
         var TempBau = Number(id_temp_bau.value)
@@ -264,20 +264,31 @@
                     if (TempBau == 8 || TempBau == -1) {
                         TotalPerda = TotalProd * 0.05
                         parametroPerda = TotalProd * 0.95
-                        mensagem = `<p>Com o total de <b>R$${TotalProd}<b> em mecardorias e os dados obtidos, é estimado uma possivel perda de até <b>5% (R$${TotalPerda})</b>.</p><br>`
+                        mensagem = `<p>Com o total de <b>R$${TotalProd}</b> em mercadorias e os dados obtidos, é estimado uma possivel perda de até <b>5% (R$${TotalPerda})</b>.</p><br>`;
+                        chart_container.innerHTML = `<div class="chart-container">
+                                        <canvas id="pizzaChart"></canvas>
+                                        </div><br>`;
                     }
                     else if (TempBau == 9 || TempBau == -2) {
                         TotalPerda = TotalProd * 0.10
                         parametroPerda = TotalProd * 0.90
-                        mensagem = `<p>Com o total de <b>R$${TotalProd}</b> em mecardorias e os dados obtidos, é estimado uma possivel perda de até <b>10% (R$${TotalPerda})</b>.</p><br>`
+                        mensagem = `<p>Com o total de <b>R$${TotalProd}</b> em mercadorias e os dados obtidos, é estimado uma possivel perda de até <b>10% (R$${TotalPerda})</b>.</p><br>`;
+                        chart_container.innerHTML = `<div class="chart-container">
+                                        <canvas id="pizzaChart"></canvas>
+                                        </div><br>`;
                     } else if (TempBau == 10 || TempBau == -3) {
                         TotalPerda = TotalProd * 0.15
                         parametroPerda = TotalProd * 0.85
-                        mensagem = `<p>Com o total de <b>R$${TotalProd}</b> em mecardorias e os dados obtidos, é estimado uma possivel perda de até <b>15% (R$${TotalPerda})</b>.</p><br>`
+                        mensagem = `<p>Com o total de <b>R$${TotalProd}</b> em mercadorias e os dados obtidos, é estimado uma possivel perda de até <b>15% (R$${TotalPerda})</b>.</p><br>`
+                        chart_container.innerHTML+= `<div class="chart-container">
+                                        <canvas id="pizzaChart"></canvas>
+                                        </div><br>`;
                     } else {
-                        totalPerda = 0
                         TotalPerda = TotalProd;
-                        mensagem = `<p>De acordo com os dados obtidos você está correndo o risco de uma perda total da sua mercadoria. No valor de <b>R$${TotalPerda}</b>. Cuidado!</p><br>`
+                        mensagem = `<p>De acordo com os dados obtidos você está correndo o risco de uma perda total da sua mercadoria. No valor de <b>R$${TotalPerda}</b>. Cuidado!</p><br>`;
+                        chart_container.innerHTML = `<div class="chart-container">
+                                        <canvas id="pizzaChart"></canvas>
+                                        </div><br>`;
                     }
                 }
             }
@@ -287,7 +298,7 @@
                 mensagem += `<p>Como informado , houve um gasto de R$${QtdPerda} com perdas de mercadorias. Com nosso serviço conseguiremos ajuda-lo a reduzir esse custo em até <b> 15% (R$${QtdPerda * 0.15}) </b>.</p>
             <button onclick="cadastro.html"><a href="cadastro.html">Adquira o Poguard!</a></button>`
             } else {
-                mensagem += ` <p>Não houve gastos com perdas anteriores, mas, com nossos serviços, conseguimos minimizar possíveis gastos desnecessários em até <b>15%, além de adequar sua empresa às normas regulamentares</b>.</p>
+                mensagem += `<p>Não houve gastos com perdas anteriores, mas, com nossos serviços, conseguimos minimizar possíveis gastos desnecessários em até <b>15%</b>, além de adequar sua empresa às normas regulamentares.</p>
             <button onclick="cadastro.html"><a href="cadastro.html">Adquira o Poguard!</a></button>`
             }
 
