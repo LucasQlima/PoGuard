@@ -62,12 +62,6 @@ body {
   border-bottom: 6px solid #002649;
 }
 
-.nome {
-  font-size: 18px;
-  font-weight: 400;
-  width: 500px;
-}
-
 .email {
   font-size: 18px;
   font-weight: 400;
@@ -75,18 +69,6 @@ body {
 }
 
 .senha {
-  font-size: 18px;
-  font-weight: 400;
-  width: 500px;
-}
-
-.conf-senha {
-  font-size: 18px;
-  font-weight: 400;
-  width: 500px;
-}
-
-.empresa {
   font-size: 18px;
   font-weight: 400;
   width: 500px;

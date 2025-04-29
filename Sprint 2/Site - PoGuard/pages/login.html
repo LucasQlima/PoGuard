@@ -26,14 +26,6 @@
                 <p>Senha:</p>
                 <input type="password" id="input_senha" class="input" placeholder="*************************">
             </div>
-            <div class="conf-senha">
-                <p>Confirme a senha:</p>
-                <input type="password" id="input_confSenha" class="input" placeholder="*************************">
-            </div>
-            <div class="empresa">
-                <p>Código da empresa:</p>
-                <input type="password" id="input_codEmpresa" class="input" placeholder="*************">
-            </div>
             <div id="div_mensagem" style="color: red; font-weight: bold;"></div>
             <div class="botao">
                 <p>Não possui conta?<a href="cadastro.html"> Registre-se aqui</a></p>
@@ -47,8 +39,6 @@
         function validarLogin() {
             var email = input_email.value;
             var senha = input_senha.value;
-            var confSenha = input_confSenha.value;
-            var codEmpresa = input_codEmpresa.value;
             var mensagem = "";
 
             if (email.indexOf('@') === -1) {
@@ -57,9 +47,6 @@
             } else if (senha.length <= 6 || !/[0-9]/.test(senha)) {
                 mensagem = 'A senha deve ter mais de 6 caracteres e pelo menos um número.';
                 alert('A senha deve ter mais de 6 caracteres e pelo menos um número.');
-            } else if (senha !== confSenha) {
-                mensagem = 'A confirmação de senha deve ser igual à senha.';
-                alert('A confirmação de senha deve ser igual à senha.');
             } else {
                 mensagem = 'Cadastro válido!';
                 alert('Login válido!');
