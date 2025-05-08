@@ -49,8 +49,33 @@
                 alert('A senha deve ter mais de 6 caracteres e pelo menos um número.');
             } else {
                 mensagem = 'Cadastro válido!';
-                alert('Login válido!');
-                window.location.href = "dashboard.html";
+
+                fetch("http://localhost:3333/usuarioRoute/autenticar", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        emailServer: email,
+                        senhaServer: senha
+                    })
+                }).then((response) => {
+                    response.json().then(resultado => {
+                        sessionStorage.EMAIL_USUARIO = resultado.email;
+                        sessionStorage.NOME_USUARIO = resultado.nome;
+                        sessionStorage.ID_USUARIO = resultado.idUsuario;
+                        sessionStorage.EMPRESA = resultado.empresa
+                        sessionStorage.FK_EMPRESA = resultado.fkEmpresa
+
+
+                        alert('Login válido!');
+                        window.location.href = "dashboard.html";
+                    })
+                }).catch(() => {
+                    console.log("deu ruim")
+                })
+
+
             }
             div_mensagem.innerHTML = mensagem;
         }

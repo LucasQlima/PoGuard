@@ -6,8 +6,12 @@ function cadastrar(req, res) {
     var email = req.body.emailServer
     var senha = req.body.senhaServer
 
-    usuarioModel.cadastrar(nome, email, senha)
+    var fkEmpresa = req.body.fkEmpresaServer
+    var codigoAtivacao = req.body.codigoAtivacaoServer
+    var cargo = 'funcionario'
 
+    // TO-DO: verficar código de ativação da empresa se for valido
+    usuarioModel.cadastrar(nome, email, senha, cargo, fkEmpresa)
         .then(
             function (resultado) {
                 res.json(resultado)
@@ -39,7 +43,9 @@ function autenticar(req, res) {
                     idUsuario: resultado[0].idUsuario,
                     nome: resultado[0].nome,
                     email: resultado[0].email,
-                    senha: resultado[0].senha
+                    senha: resultado[0].senha,
+                    empresa: resultado[0].empresa,
+                    fkEmpresa: resultado[0].fkEmpresa
                 });
             } else {
                 res.status(403).json({ erro: "Email e/ou senha inválidos!" });

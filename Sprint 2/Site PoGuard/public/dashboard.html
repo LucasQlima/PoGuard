@@ -51,9 +51,9 @@
             <div class="profile">
                 <img src="../assets/icons/profile-person.png" alt="imagem de perfil">
                 <div>
-                    <h5>HENRY FRANZ</h5>
+                    <h5 id="noma_usuario"></h5>
                     <hr>
-                    <p>Empressa XPTO</p>
+                    <p id="nome_empresa"></p>
                 </div>
             </div>
 
@@ -278,6 +278,9 @@
     </div>
 
     <script>
+
+        noma_usuario.innerHTML = sessionStorage.NOME_USUARIO
+        nome_empresa.innerHTML = sessionStorage.EMPRESA
 
         var chartTemperature = new Chart(canvas_chart_line, {
             type: 'line',
