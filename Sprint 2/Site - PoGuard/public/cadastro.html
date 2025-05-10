@@ -35,7 +35,7 @@
         <input type="password" id="input_confSenha" class="input" placeholder="*************************">
       </div>
       <div class="empresa">
-        <p>Código de ativação:</p>
+        <p>Código de ativação da empresa:</p>
         <input type="password" id="input_codigo_ativacao" class="input" placeholder="*************">
       </div>
       <div id="div_mensagem" style="color: red; font-weight: bold;"></div>
@@ -76,8 +76,7 @@
             nomeServer: nome,
             emailServer: email,
             senhaServer: senha,
-            fkEmpresaServer: sessionStorage.FK_EMPRESA,
-            codigoAtivacaoServer: codigoAtivacao
+            fkEmpresaServer: sessionStorage.FK_EMPRESA
           })
         }).then((response) => {
           mensagem = 'Cadastro válido!';
