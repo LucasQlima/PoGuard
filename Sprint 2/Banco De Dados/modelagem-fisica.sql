@@ -10,6 +10,7 @@ nome VARCHAR(100) NOT NULL,
 cnpj CHAR(18) NOT NULL,
 email VARCHAR(100) NOT NULL,
 telefone CHAR(13),
+codigoEmpresa CHAR(10) UNIQUE,
 CONSTRAINT chkEmailEmpresa CHECK(email LIKE '%@%')
 );
 
@@ -87,10 +88,10 @@ CONSTRAINT chkStatusAlerta CHECK (statusAlerta IN ('verde', 'amarelo', 'vermelho
 CONSTRAINT fkAlertaDado FOREIGN KEY (fkDado) REFERENCES TBL_DADO(idDado)
 );
 
-INSERT INTO TBL_EMPRESA (nome, cnpj, email, telefone) 
+INSERT INTO TBL_EMPRESA (nome, cnpj, email, telefone, codigoEmpresa) 
 VALUES 
-('Empresa Exemplo 1', '12.345.678/0001-90', 'contato@empresa1.com', '1234567890123'),
-('Empresa Exemplo 2', '98.765.432/0001-87', 'contato@empresa2.com', '9876543210987');
+('Empresa Exemplo 1', '12.345.678/0001-90', 'contato@empresa1.com', '1234567890123', "123@B876"),
+('Empresa Exemplo 2', '98.765.432/0001-87', 'contato@empresa2.com', '9876543210987', "999!C543");
 
 INSERT INTO TBL_USUARIO VALUES 
 (default, "Guilherme Dias", "gui.dias@poguard.com", "123B!g@00", "gerente", 1), 

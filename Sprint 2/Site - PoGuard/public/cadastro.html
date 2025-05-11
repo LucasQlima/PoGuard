@@ -54,7 +54,7 @@
       var email = input_email.value;
       var senha = input_senha.value;
       var confSenha = input_confSenha.value;
-      var codigoAtivacao = input_codigo_ativacao.value
+      var codigoEmpresa = input_codigo_ativacao.value
       var mensagem = "";
 
       if (email.indexOf('@') === -1) {
@@ -67,7 +67,7 @@
         mensagem = 'A confirmação de senha deve ser igual à senha.';
         alert('A confirmação de senha deve ser igual à senha.');
       } else {
-        fetch("http://localhost:3333/usuarioRoute/cadastrar", {
+        fetch("http://localhost:8080/usuarioRoute/cadastrar", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -76,7 +76,7 @@
             nomeServer: nome,
             emailServer: email,
             senhaServer: senha,
-            fkEmpresaServer: sessionStorage.FK_EMPRESA
+            codigoEmpresaServer: codigoEmpresa
           })
         }).then((response) => {
           mensagem = 'Cadastro válido!';

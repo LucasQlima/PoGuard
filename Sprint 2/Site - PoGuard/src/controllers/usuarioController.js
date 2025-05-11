@@ -1,15 +1,22 @@
 var usuarioModel = require("../models/usuarioModel")
+var empresaModel = require("../models/empresaModel")
 
 //Cadastrar
 function cadastrar(req, res) {
     var nome = req.body.nomeServer
     var email = req.body.emailServer
     var senha = req.body.senhaServer
-    var fkEmpresa = req.body.fkEmpresaServer
+    var codigoEmpresa = req.body.codigoEmpresaServer
     var cargo = 'funcionario'
-    
-    // TO-DO: verificar código de ativação da empresa se for valido
-    usuarioModel.cadastrar(nome, email, senha, cargo, fkEmpresa)
+  
+    empresaModel.encontrarEmpresaPeloCodigo(codigoEmpresa)
+        .then(
+            function(resultadoEmpresa) {
+                console.log(resultadoEmpresa)
+                if(resultadoEmpresa.length == 0) {
+                    res.status(400) 
+                }
+        usuarioModel.cadastrar(nome, email, senha, cargo, resultadoEmpresa[0].idEmpresa)
         .then(
             function (resultado) {
                 res.json(resultado)
@@ -23,6 +30,11 @@ function cadastrar(req, res) {
                 res.status(500).json(erro.sqlMessage)
             }
         )
+    }
+)
+
+    // TO-DO: verificar código de ativação da empresa se for valido
+    
 }
 
 //Autenticar
