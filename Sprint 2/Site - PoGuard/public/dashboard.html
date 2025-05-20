@@ -31,29 +31,19 @@
                         </svg>
                         <a href="">Notificação</a>
                     </li>
-                    <li>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="36" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="lucide lucide-truck-icon lucide-truck">
-                            <path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2" />
-                            <path d="M15 18H9" />
-                            <path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14" />
-                            <circle cx="17" cy="18" r="2" />
-                            <circle cx="7" cy="18" r="2" />
-                        </svg>
-                        <a href="">Baús refrigerados</a>
-                    </li>
                 </ul>
             </div>
         </div>
 
         <div class="bottom">
             <div class="profile">
-                <img src="../assets/icons/profile-person.png" alt="imagem de perfil">
+                <span>
+                    <p>H</p>
+                </span>
                 <div>
-                    <h5 id="noma_usuario"></h5>
+                    <h5 id="noma_usuario">Julia</h5>
                     <hr>
-                    <p id="nome_empresa"></p>
+                    <p id="nome_empresa">Sptech</p>
                 </div>
             </div>
 
@@ -73,311 +63,113 @@
 
     <!-- CONTENT -->
     <div class="content-right">
-        <h1>Overview - 25/04</h1>
-        <div class="charts">
-            <div class="card-chart card-chart-line">
-                <div class="title">
-                    <h2>Baú Refrigerado De Placa: <b>MPE1M49</b> - LATICÍNIOS</h2>
+        <h1>
+            Visão Geral - Dashboard - <span id="span_data">19/05</span>
+        </h1>
 
-                    <div class="link">
-                        <a href="">Ver mais</a> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round"
-                            class="lucide lucide-arrow-right-icon lucide-arrow-right">
-                            <path d="M5 12h14" />
-                            <path d="m12 5 7 7-7 7" />
-                        </svg>
-                    </div>
+
+        <div class="div_kpis">
+            <div class="frota-ativa card">
+                <h4>
+                    Frota Ativa
+                </h4>
+
+                <span>
+                    <h3>
+                        3/4
+                    </h3>
+                    <span>
+                        75%
+                    </span>
+                </span>
+
+                <div class="progresso">
+                    <div class="progresso-barra"></div>
                 </div>
-                <div id="div_canvas_chart_line">
-                    <canvas id="canvas_chart_line"></canvas>
-                </div>
+
+                <p>1 veículo inativo</p>
+
+                <img src="./assets/imgs/truck-icon.png" alt="icon" width="48" height="48">
             </div>
-            <div class="card-chart-pie-right">
-                <div class="card-chart card-chart-pie">
-                    <div class="title">
-                        <h2>Monitoramento</h2>
 
-                        <div class="link">
-                            <a href="">Ver mais</a> <svg xmlns="http://www.w3.org/2000/svg" width="37.5" height="37.5"
-                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round"
-                                class="lucide lucide-arrow-right-icon lucide-arrow-right">
-                                <path d="M5 12h14" />
-                                <path d="m12 5 7 7-7 7" />
-                            </svg>
-                        </div>
+            <div class="grafico-frota card">
+                <h4>
+                    Caminhões em estado crítico durante a semana
+                </h4>
+                <div class="charts">
+                    <div class="chart-container">
+                        <canvas id="chart"></canvas>
                     </div>
-
-                    <div id="div_canvas_chart_pie">
-                        <canvas id="canvas_chart_pie"></canvas>
+                    <div class="chart-container">
+                        <canvas id="chart2"></canvas>
                     </div>
                 </div>
 
-                <div class="indicators">
-                    <div class="indicator indicator-chart-line">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="37.5" height="37.5" viewBox="0 0 24 24"
-                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" class="lucide lucide-badge-alert-icon lucide-badge-alert">
-                            <path
-                                d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z" />
-                            <line x1="12" x2="12" y1="8" y2="12" />
-                            <line x1="12" x2="12.01" y1="16" y2="16" />
-                        </svg>
-                        <h4>
-                            O sensor B da Carga X ultrapassou 4°C
-                        </h4>
-                    </div>
-                    <div class="indicator indicator-chart-pie">
+                <img src="./assets/imgs/chart-icon.png" alt="icon" width="48" height="48">
+            </div>
+        </div>
 
-                        <h4><b>100%</b></h4>
-                        <h4>
-                            Todas as rotas estão monitoradas.
-                        </h4>
-                    </div>
+        <div class="alerts">
+            <div class="card">
+                <div class="topo">
+                    <h2>
+                        Alertas de Temperatura
+                    </h2>
+                    <a href="./">Ver todos</a>
                 </div>
             </div>
         </div>
 
-        <div class="contant-notifications">
-
-            <h1>Notificações</h1>
-
-            <div class="notifications">
-                <div class="notification notification-green">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        class="lucide lucide-badge-alert-icon lucide-badge-alert">
-                        <path
-                            d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z" />
-                        <line x1="12" x2="12" y1="8" y2="12" />
-                        <line x1="12" x2="12.01" y1="16" y2="16" />
-
-                        <div class="texts">
-                            <div class="titles">
-                                <h3>
-                                    Temperatura dentro do ideal.
-                                </h3>
-                                <div class="time">
-                                    Há 20 minutos atrás </div>
-                            </div>
-                            <p>
-                                No baú refrigerado de placa: <b>MPE1M49</b> a temperatura voltou ao ideal,
-                                atualmente se encontra com 0°C.
-                            </p>
-                        </div>
-
-                        <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="lucide lucide-arrow-right-icon lucide-arrow-right">
-                            <path d="M5 12h14" />
-                            <path d="m12 5 7 7-7 7" />
-                        </svg>
-                    </svg>
-                </div>
-
-                <div class="notification notification-red">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        class="lucide lucide-badge-alert-icon lucide-badge-alert">
-                        <path
-                            d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z" />
-                        <line x1="12" x2="12" y1="8" y2="12" />
-                        <line x1="12" x2="12.01" y1="16" y2="16" />
-
-                        <div class="texts">
-                            <div class="titles">
-                                <h3>
-                                    Uma carga corre perrigo! </h3>
-                                <div class="time">
-                                    Há 22 minutos atrás </div>
-                            </div>
-                            <p>No baú refrigerado de placa: <b>MPE1M49</b> teve um aumento abrupto na temperatura,
-                                que foi detectado pelo <b>sensor B</b>
-                            </p>
-                        </div>
-
-                        <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="lucide lucide-arrow-right-icon lucide-arrow-right">
-                            <path d="M5 12h14" />
-                            <path d="m12 5 7 7-7 7" />
-                        </svg>
-                    </svg>
-                </div>
-
-
-            </div>
-            <div class="notifications">
-                <div class="notification notification-red">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        class="lucide lucide-badge-alert-icon lucide-badge-alert">
-                        <path
-                            d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z" />
-                        <line x1="12" x2="12" y1="8" y2="12" />
-                        <line x1="12" x2="12.01" y1="16" y2="16" />
-
-                        <div class="texts">
-                            <div class="titles">
-                                <h3>
-                                    Uma carga corre perrigo! </h3>
-                                <div class="time">
-                                    Há 23 minutos atrás </div>
-                            </div>
-                            <p>
-                                No baú refrigerado de placa: <b>MPE1M49</b> teve um aumento de temperatura fora do
-                                ideal, foi dectado pelo <b>sensor B</b>
-                            </p>
-                        </div>
-
-                        <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="lucide lucide-arrow-right-icon lucide-arrow-right">
-                            <path d="M5 12h14" />
-                            <path d="m12 5 7 7-7 7" />
-                        </svg>
-                    </svg>
-                </div>
-
-                <div class="notification notification-yellow">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        class="lucide lucide-badge-alert-icon lucide-badge-alert">
-                        <path
-                            d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z" />
-                        <line x1="12" x2="12" y1="8" y2="12" />
-                        <line x1="12" x2="12.01" y1="16" y2="16" />
-
-                        <div class="texts">
-                            <div class="titles">
-                                <h3>
-                                    Houve uma variação de temperatura.
-                                </h3>
-                                <div class="time">
-                                    Há 25 minuto atrás
-                                </div>
-                            </div>
-                            <p>No baú refrigerado de placa: <b>MPE1M49</b> teve um aumento de temperatura fora do ideal,
-                                que
-                                foi
-                                dectado pelo <b>sensor B</b>
-                            </p>
-                        </div>
-
-                        <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="lucide lucide-arrow-right-icon lucide-arrow-right">
-                            <path d="M5 12h14" />
-                            <path d="m12 5 7 7-7 7" />
-                        </svg>
-                    </svg>
-                </div>
-            </div>
-        </div>
     </div>
 
-    <script>
 
-        noma_usuario.innerHTML = sessionStorage.NOME_USUARIO
-        nome_empresa.innerHTML = sessionStorage.EMPRESA
-
-        var chartTemperature = new Chart(canvas_chart_line, {
-            type: 'line',
-            data: {
-                labels: ["15:55", "15:56", "15:57", "15:58", "15:59", "16:00"],
-                datasets: [ // linhas
-                    {
-                        label: "Temperatura Maxima",
-                        data: [4, 4, 4, 4, 4, 4, 4],
-                        backgroundColor: "#f00",
-                        borderColor: "#f00"
-                    }, {
-                        label: "Sensor A",
-                        data: [1, 2, 1, 3, 3, 4],
-                        backgroundColor: "#FBE38E",
-                        borderColor: "#FBE38E"
-                    },
-                    {
-                        label: "Sensor B",
-                        data: [2, 4, 5, 6, 6, 4, 6],
-                        backgroundColor: "#9A89FF",
-                        borderColor: "#9A89FF"
-                    },
-                    {
-                        label: "Sensor C",
-                        data: [2, 3, 4, 2, 3, 4, 2],
-                        backgroundColor: "#4BAD7E",
-                        borderColor: "#4BAD7E"
-                    },
-                    {
-                        label: "Temperatura Minima",
-                        data: [0, 0, 0, 0, 0, 0],
-                        backgroundColor: "#00f",
-                        borderColor: "#00f"
-                    }
-                ]
-            },
-            options: {
-                scales: {
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Horario'
-                        },
-                    },
-                    y: {
-                        title: {
-                            display: true,
-                            text: 'Temperatura °C'
-                        },
-                    }
-                },
-                plugins: {
-                    legend: {
-                        labels: {
-                            font: {
-                                size: 16
-                            }
-                        }
-                    },
-
-                }
-            }
-        })
-
-
-        var chartColors = new Chart(canvas_chart_pie, {
-            type: 'pie',
-            data: {
-                labels: [
-                    'Monitorados (3)',
-                    'Não Monitorados (0)',
-                ],
-                datasets: [{
-                    data: [3, 0],
-                    backgroundColor: [
-                        '#d3f9e7',
-                        'rgb(255, 99, 132)',
-                    ],
-                    hoverOffset: 4
-                }]
-            },
-            options: {
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: {
-                            font: {
-                                size: 16
-                            }
-                        }
-                    },
-
-                }
-            }
-        })
-    </script>
 </body>
 
 </html>
+
+<script>
+
+
+    const data = {
+        labels: ["domingo", "segunda ", "terça ", "quarta ", "quinta ", "ontem", "hoje"],
+        datasets: [{
+            label: 'Semana',
+            data: [3, 4, 5, 6, 3, 4, 5, 3, 4],
+            backgroundColor: [
+                '#2563EB',
+                '#2563EB',
+                '#2563EB',
+                '#2563EB',
+                '#2563EB',
+                '#2563EB',
+                '#2563EB'
+            ],
+            borderColor: [
+                '#2563EB',
+                '#2563EB',
+                '#2563EB',
+                '#2563EB',
+                '#2563EB',
+                '#2563EB',
+                '#2563EB'
+            ],
+            borderWidth: 1
+        }]
+    };
+
+    const config = {
+        type: 'bar',
+        data: data,
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            responsive: true
+        },
+    };
+
+    const chart = new Chart('chart', config)
+    const chart2 = new Chart('chart2', config)
+</script>
