@@ -67,6 +67,9 @@ svg {
   background-color: #2563eb;
   border-radius: 4px;
 }
+#active svg {
+  color: #ffffff;
+}
 
 #active a {
   color: #ffffff;
