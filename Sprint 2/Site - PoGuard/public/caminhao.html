@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles/caminhao.css">
+    <link rel="shortcut icon" href="../assets/icons/icon_polus.png" type="image/x-icon">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Dashboard | Polus</title>
+</head>
+
+<body>
+    <!-- NAVBAR -->
+    <div class="nav-bar-left">
+        <div class="top">
+            <div class="image">
+                <img src="../assets/imgs/logo-dash.png" alt="logo poguard" width="173">
+            </div>
+            <div class="links">
+                <ul>
+                    <li id="active"><img src="../assets/icons/dash.png" alt="icone dash"><a href="">Dashboard</a></li>
+                    <li>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="36" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-bell-icon lucide-bell">
+                            <path d="M10.268 21a2 2 0 0 0 3.464 0" />
+                            <path
+                                d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326" />
+                        </svg>
+                        <a href="">Notificação</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="bottom">
+            <div class="profile">
+                <span>
+                    <p>H</p>
+                </span>
+                <div>
+                    <h5 id="noma_usuario">Julia</h5>
+                    <hr>
+                    <p id="nome_empresa">Sptech</p>
+                </div>
+            </div>
+
+            <div id="logo-exit">
+                <a href="index.html">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="38" height="40" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-log-out-icon lucide-log-out">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                        <polyline points="16 17 21 12 16 7" />
+                        <line x1="21" x2="9" y1="12" y2="12" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content-right">
+
+        <h1>
+            Dashboard - MXK-9661
+        </h1>
+
+        <div class="card">
+            <h2>Sensores</h2>
+            <div class="cards-kpi">
+                <div class="card-kpi card-green">
+                    <div class="topo">
+                        <h3>
+                            Porta
+                        </h3>
+                        <p>
+                            Local mais quente
+                        </p>
+                    </div>
+
+
+                    <div class="baixo">
+                        <div class="legenda">
+                            <p>Temperatura</p>
+                            <p>Status</p>
+                        </div>
+
+                        <div class="destaque">
+                            <p>-17°C</p>
+                            <p>Ideal</p>
+                        </div>
+                    </div>
+
+                    <img src="./assets/imgs/sensor-green.png" width="24" height="35" />
+                </div>
+                <div class="card-kpi card-yellow">
+                    <div class="topo">
+                        <h3>
+                            Meio
+                        </h3>
+                        <p>
+                            Local intermediário
+                        </p>
+                    </div>
+
+
+                    <div class="baixo">
+                        <div class="legenda">
+                            <p>Temperatura</p>
+                            <p>Status</p>
+                        </div>
+
+                        <div class="destaque">
+                            <p>-15°C</p>
+                            <p>Alerta</p>
+                        </div>
+                    </div>
+
+                    <img src="./assets/imgs/sensor-yellow.png" width="24" height="35" />
+                </div>
+                <div class="card-kpi card-red">
+                    <div class="topo">
+                        <h3>
+                            Fundo
+                        </h3>
+                        <p>
+                            Local mais frio
+                        </p>
+                    </div>
+
+
+                    <div class="baixo">
+                        <div class="legenda">
+                            <p>Temperatura</p>
+                            <p>Status</p>
+                        </div>
+
+                        <div class="destaque">
+                            <p>-12°C</p>
+                            <p>Crítico</p>
+                        </div>
+                    </div>
+
+                    <img src="./assets/imgs/sensor-red.png" width="24" height="35" />
+                </div>
+                <div class="card-kpi  card-media">
+                    <div class="topo">
+                        <h3>
+                            Temperatura Média
+                        </h3>
+                        <p>
+                            Todos os sensores ativos
+                        </p>
+                    </div>
+
+
+                    <div class="baixo">
+                        <div class="legenda">
+                            <p>Temperatura</p>
+                            <p>Status</p>
+                        </div>
+
+                        <div class="destaque">
+                            <p>-14°C</p>
+                            <p>Crítico</p>
+                        </div>
+                    </div>
+
+                    <img src="./assets/imgs/sensor-green.png" id="sensor-1" />
+                    <img src="./assets/imgs/sensor-yellow.png" id="sensor-2" />
+                    <img src="./assets/imgs/sensor-red.png" id="sensor-3" />
+
+                </div>
+            </div>
+        </div>
+
+        <div class="dash-content">
+            <div class="card dash">
+                <h2>Baú congelado - Tempo Real</h2>
+
+                <div class="chart">
+                    <canvas id="canvas_chart_temperature"></canvas>
+                </div>
+            </div>
+            <div class="card legend">
+                <h2>Legenda</h2>
+
+                <div class="cards">
+                    <div class="card-kpi card-green">
+                        <div class="topo">
+                            <h3>
+                                Ideal
+                            </h3>
+
+                        </div>
+
+
+                        <p>
+                            Tempo fora do padrão , dentro de 1 hora. </p>
+                        <img src="./assets/imgs/sensor-green.png" width="24" height="35" />
+                    </div>
+                    <div class="card-kpi card-yellow">
+                        <div class="topo">
+                            <h3>
+                                Alerta
+                            </h3>
+
+                        </div>
+
+
+                        <p>
+                            Tempo fora do padrão , entre 1 hora a 2 horas. </p>
+                        <img src="./assets/imgs/sensor-yellow.png" width="24" height="35" />
+                    </div>
+                    <div class="card-kpi card-red">
+                        <div class="topo">
+                            <h3>
+                                Crítico
+                            </h3>
+
+                        </div>
+
+
+                        <p>
+                            Tempo fora dopadrão , apartir de 2 horas. </p>
+                        <img src="./assets/imgs/sensor-red.png" width="24" height="35" />
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+</body>
+
+</html>
+
+<script>
+    const options = {
+        type: 'line',
+        data: {
+            labels: ["12:00 PM", "12:01 PM", "12:02 PM", "12:03 PM", "12:04 PM", "12:05 PM", "12:06 PM"],
+            datasets: [{
+                label: 'Sensor da Porta',
+                data: [-14, -15, -18, -17, -15, -18, -17, -15, -18, -17],
+                borderColor: '#FDECB0',
+                backgroundColor: '#FDECB0',
+            },
+            {
+                label: 'Sensor do Meio',
+                data: [-16, -14, -13, -15, -14, -13, -15, -14, -14, -15],
+                borderColor: '#9B8EFB',
+                backgroundColor: '#9B8EFB',
+            },
+            {
+                label: 'Sensor do Fundo',
+                data: [-14, -13, -14, -13, -11, -11, -13, -14, -13, -12],
+                borderColor: '#A9F4D0',
+                backgroundColor: '#A9F4D0',
+            }
+            ]
+        }
+    }
+
+    const chart = new Chart(
+        canvas_chart_temperature,
+        options
+    );
+
+
+</script>
