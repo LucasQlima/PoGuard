@@ -1,0 +1,154 @@
+@import url("https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Megrim&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+}
+
+body {
+  width: 100%;
+  height: 100vh;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+}
+
+.nav-bar-left {
+  width: 20%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 40px;
+}
+
+.nav-bar-left .image {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 78px;
+}
+
+.top .links ul {
+  list-style-type: none;
+}
+
+svg {
+  color: #2563eb;
+}
+
+.top .links ul li {
+  width: 100%;
+  padding: 15px 20px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  cursor: pointer;
+  transition: 0.2s all;
+}
+
+.top .links ul li:hover {
+  background-color: #2563eb;
+  color: #ffffff;
+}
+.top .links ul li:hover a,
+.top .links ul li:hover svg {
+  color: #ffffff;
+}
+
+.top .links ul li a {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+#active {
+  background-color: #2563eb;
+  border-radius: 4px;
+}
+
+#active svg {
+  color: #ffffff;
+}
+#active a {
+  color: #ffffff;
+}
+
+.nav-bar-left .bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 4px solid #2563eb;
+  padding-top: 20px;
+}
+
+.bottom .profile {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.bottom .profile span {
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  background-color: #2563eb;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ffffff;
+}
+
+.bottom .profile span p {
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.bottom .profile div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.bottom .profile h5 {
+  font-size: 20px;
+}
+
+.bottom .profile p {
+  font-size: 14px;
+}
+
+.bottom #logo-exit {
+  cursor: pointer;
+  padding: 5px;
+  transition: 0.2s all;
+}
+
+.bottom #logo-exit:hover {
+  background-color: #2563eb;
+  border-radius: 4px;
+  color: #ffffff;
+}
+
+.bottom #logo-exit:hover svg {
+  color: #ffffff;
+}
+
+/* RIGHT */
+
+.content-right {
+  width: 80%;
+  height: 100vh;
+  padding: 20px 40px;
+  background-color: #eef2ff;
+  overflow-y: auto;
+}
+
+.content-right h1 {
+  font-size: 24px;
+  color: #002649;
+  font-weight: 800;
+  margin-bottom: 18px;
+  transform: translateX(-20px);
+}
