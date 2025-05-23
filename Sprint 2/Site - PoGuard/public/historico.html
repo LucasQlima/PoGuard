@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../styles/historico.css">
+    <link rel="stylesheet" href="../public/styles/dashboard.css">
     <link rel="shortcut icon" href="../assets/icons/icon_polus.png" type="image/x-icon">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -16,7 +17,7 @@
     <div class="nav-bar-left">
         <div class="top">
             <div class="image">
-                <a href="./dashboard.html"><img src="../assets/imgs/logo-dash.png" alt="logo poguard" width="173"></a>
+                <a href="./dashboard.html"><img src="../public/assets/imgs/logo-dash.png" alt="logo poguard" width="173"></a>
             </div>
             <div class="links">
                 <ul>
@@ -74,12 +75,114 @@
     <div class="content-right">
 
         <h1>
-            Dashboard - MXK-9661
+            Notificações
         </h1>
 
 
-    </div>
+        <div class="alerts">
+                <div class="card">
+                    <div class="topo">
+                        <h2>
+                            Alertas de Temperatura
+                        </h2>
+                    </div>
+                    <table>
+                        <tr id="table-head">
+                            <th>Veículo</th>
+                            <th>Porta</th>
+                            <th>Centro</th>
+                            <th>Fundo</th>
+                            <th>Status</th>
+                            <th>Temperatura</th>
+                        </tr>
+                        <tr class="row-red">
+                            <td class="truck">
+                                <img src="./assets/icons/trunck-red.png" alt="truck red" width="40" height="40">
+                                <span>
+                                    <h3>Caminhão NAS-4071</h3>
+                                    <p>Congelados</p>
+                                </span>
+                            </td>
+                            <td>
+                                <img src="./assets/icons/icon-green.png" alt="truck red" width="48" height="48">
+                            </td>
+                            <td>
+                                <img src="./assets/icons/icon-yellow.png" alt="truck red" width="48" height="48">
+                            </td>
+                            <td>
+                                <img src="./assets/icons/icon-red.png" alt="truck red" width="48" height="48">
+                            </td>
+                            <td class="">
+                                <span class="status red">Crítico</span>
+                            </td>
+                            <td class="temperature">
+                                <h3 class="title-red">
+                                    -14°C
+                                </h3>
+                                <p>Ideal: -18°C</p>
+                            </td>
+                        </tr>
 
+                        <tr class="row-yellow">
+                            <td class="truck">
+                                <img src="./assets/icons/trunck-yellow.png" alt="truck red" width="40" height="40">
+                                <span>
+                                    <h3>Caminhão NAS-4071</h3>
+                                    <p>Congelados</p>
+                                </span>
+                            </td>
+                            <td>
+                                <img src="./assets/icons/icon-green.png" alt="truck red" width="48" height="48">
+                            </td>
+                            <td>
+                                <img src="./assets/icons/icon-green.png" alt="truck red" width="48" height="48">
+                            </td>
+                            <td>
+                                <img src="./assets/icons/icon-yellow.png" alt="truck red" width="48" height="48">
+                            </td>
+                            <td class="">
+                                <span class="status yellow">Alerta</span>
+                            </td>
+                            <td class="temperature">
+                                <h3 class="title-yellow">
+                                    -14°C
+                                </h3>
+                                <p>Ideal: -16°C</p>
+                            </td>
+                        </tr>
+
+                        <tr class="row-green">
+                            <td class="truck">
+                                <img src="./assets/icons/trunck-green.png" alt="truck red" width="40" height="40">
+                                <span>
+                                    <h3>Caminhão NAS-4071</h3>
+                                    <p>Congelados</p>
+                                </span>
+                            </td>
+                            <td>
+                                <img src="./assets/icons/icon-green.png" alt="truck red" width="48" height="48">
+                            </td>
+                            <td>
+                                <img src="./assets/icons/icon-green.png" alt="truck red" width="48" height="48">
+                            </td>
+                            <td>
+                                <img src="./assets/icons/icon-green.png" alt="truck red" width="48" height="48">
+                            </td>
+                            <td class="">
+                                <span class="status green">Ideal</span>
+                            </td>
+                            <td class="temperature">
+                                <h3 class="title-green">
+                                    -20°C
+                                </h3>
+                                <p>Ideal: -18°C</p>
+                            </td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+        </div>
 
 </body>
 
