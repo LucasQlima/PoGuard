@@ -16,11 +16,20 @@
     <div class="nav-bar-left">
         <div class="top">
             <div class="image">
-                <img src="../assets/imgs/logo-dash.png" alt="logo poguard" width="173">
+                <a href="./dashboard.html"><img src="../assets/imgs/logo-dash.png" alt="logo poguard" width="173"></a>
             </div>
             <div class="links">
                 <ul>
-                    <li id="active"><img src="../assets/icons/dash.png" alt="icone dash"><a href="">Dashboard</a></li>
+                    <li id="active">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="36" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-chart-pie-icon lucide-chart-pie">
+                            <path
+                                d="M21 12c.552 0 1.005-.449.95-.998a10 10 0 0 0-8.953-8.951c-.55-.055-.998.398-.998.95v8a1 1 0 0 0 1 1z" />
+                            <path d="M21.21 15.89A10 10 0 1 1 8 2.83" />
+                        </svg>
+                        <a href="">Dashboard</a>
+                    </li>
                     <li>
                         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="36" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -29,7 +38,7 @@
                             <path
                                 d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326" />
                         </svg>
-                        <a href="">Notificação</a>
+                        <a href="./historico.html">Notificação</a>
                     </li>
                 </ul>
             </div>
@@ -115,11 +124,271 @@
                     <h2>
                         Alertas de Temperatura
                     </h2>
-                    <a href="./">Ver todos</a>
+                    <a href="./historico.html">Ver todos</a>
                 </div>
+                <table>
+                    <tr id="table-head">
+                        <th>Veículo</th>
+                        <th>Porta</th>
+                        <th>Centro</th>
+                        <th>Fundo</th>
+                        <th>Status</th>
+                        <th>Temperatura</th>
+                    </tr>
+                    <tr class="row-red">
+                        <td class="truck">
+                            <img src="./assets/icons/trunck-red.png" alt="truck red" width="40" height="40">
+                            <span>
+                                <h3>Caminhão NAS-4071</h3>
+                                <p>Congelados</p>
+                            </span>
+                        </td>
+                        <td>
+                            <img src="./assets/icons/icon-green.png" alt="truck red" width="48" height="48">
+                        </td>
+                        <td>
+                            <img src="./assets/icons/icon-yellow.png" alt="truck red" width="48" height="48">
+                        </td>
+                        <td>
+                            <img src="./assets/icons/icon-red.png" alt="truck red" width="48" height="48">
+                        </td>
+                        <td class="">
+                            <span class="status red">Crítico</span>
+                        </td>
+                        <td class="temperature">
+                            <h3 class="title-red">
+                                -14°C
+                            </h3>
+                            <p>Ideal: -18°C</p>
+                        </td>
+                    </tr>
+
+                    <tr class="row-yellow">
+                        <td class="truck">
+                            <img src="./assets/icons/trunck-yellow.png" alt="truck red" width="40" height="40">
+                            <span>
+                                <h3>Caminhão NAS-4071</h3>
+                                <p>Congelados</p>
+                            </span>
+                        </td>
+                        <td>
+                            <img src="./assets/icons/icon-green.png" alt="truck red" width="48" height="48">
+                        </td>
+                        <td>
+                            <img src="./assets/icons/icon-green.png" alt="truck red" width="48" height="48">
+                        </td>
+                        <td>
+                            <img src="./assets/icons/icon-yellow.png" alt="truck red" width="48" height="48">
+                        </td>
+                        <td class="">
+                            <span class="status yellow">Alerta</span>
+                        </td>
+                        <td class="temperature">
+                            <h3 class="title-yellow">
+                                -14°C
+                            </h3>
+                            <p>Ideal: -16°C</p>
+                        </td>
+                    </tr>
+
+                    <tr class="row-green">
+                        <td class="truck">
+                            <img src="./assets/icons/trunck-green.png" alt="truck red" width="40" height="40">
+                            <span>
+                                <h3>Caminhão NAS-4071</h3>
+                                <p>Congelados</p>
+                            </span>
+                        </td>
+                        <td>
+                            <img src="./assets/icons/icon-green.png" alt="truck red" width="48" height="48">
+                        </td>
+                        <td>
+                            <img src="./assets/icons/icon-green.png" alt="truck red" width="48" height="48">
+                        </td>
+                        <td>
+                            <img src="./assets/icons/icon-green.png" alt="truck red" width="48" height="48">
+                        </td>
+                        <td class="">
+                            <span class="status green">Ideal</span>
+                        </td>
+                        <td class="temperature">
+                            <h3 class="title-green">
+                                -20°C
+                            </h3>
+                            <p>Ideal: -18°C</p>
+                        </td>
+                    </tr>
+
+                </table>
             </div>
         </div>
 
+        <div class="visao-frota card">
+            <h2 class="title">Visão da Frota</h2>
+
+            <div class="pesquisa">
+                <div class="filtros">
+                    <select name="" id="">
+                        <option value="" selected>
+                            Todos os veículos
+                        </option>
+                    </select>
+
+                    <select name="" id="">
+                        <option value="" selected>
+                            Todos os status
+                        </option>
+                    </select>
+
+                    <select name="" id="">
+                        <option value="" selected>
+                            Últimas 24 horas
+                        </option>
+                    </select>
+                </div>
+
+                <label for="input_pesquisa" class="input-pesquisa">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2   " stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-search-icon lucide-search" style="color:#9ca3af">
+                        <path d="m21 21-4.34-4.34" />
+                        <circle cx="11" cy="11" r="8" />
+                    </svg>
+                    <input type="text" name="" id="input_pesquisa">
+                </label>
+            </div>
+
+            <div class="cards-caminhoes">
+                <a href="./caminhao.html" class="card-caminhao card-green">
+                    <div class="topo">
+                        <h3>
+                            Caminhão MXK-9661
+                        </h3>
+                        <p>
+                            Congelado
+                        </p>
+                    </div>
+
+                    <div class="visao">
+                        <img src="./assets/icons/olho.png" width="20" height="20" alt="olho">
+                        <p>Carlos Silva</p>
+                    </div>
+
+                    <div class="baixo">
+                        <div class="legenda">
+                            <p>Temperatura</p>
+                            <p>Status</p>
+                        </div>
+
+                        <div class="destaque">
+                            <p>-18°C</p>
+                            <p>Normal</p>
+                        </div>
+                    </div>
+
+                    <span>
+
+                    </span>
+                </a>
+                <a href="./caminhao.html" class="card-caminhao card-yellow">
+                    <div class="topo">
+                        <h3>
+                            Caminhão MXK-9661
+                        </h3>
+                        <p>
+                            Congelado
+                        </p>
+                    </div>
+
+                    <div class="visao">
+                        <img src="./assets/icons/olho.png" width="20" height="20" alt="olho">
+                        <p>Carlos Silva</p>
+                    </div>
+
+                    <div class="baixo">
+                        <div class="legenda">
+                            <p>Temperatura</p>
+                            <p>Status</p>
+                        </div>
+
+                        <div class="destaque">
+                            <p>-18°C</p>
+                            <p>Normal</p>
+                        </div>
+                    </div>
+
+                    <span>
+
+                    </span>
+                </a>
+                <a href="./caminhao.html" class="card-caminhao card-red">
+                    <div class="topo">
+                        <h3>
+                            Caminhão MXK-9661
+                        </h3>
+                        <p>
+                            Congelado
+                        </p>
+                    </div>
+
+                    <div class="visao">
+                        <img src="./assets/icons/olho.png" width="20" height="20" alt="olho">
+                        <p>Carlos Silva</p>
+                    </div>
+
+                    <div class="baixo">
+                        <div class="legenda">
+                            <p>Temperatura</p>
+                            <p>Status</p>
+                        </div>
+
+                        <div class="destaque">
+                            <p>-18°C</p>
+                            <p>Normal</p>
+                        </div>
+                    </div>
+
+                    <span>
+
+                    </span>
+                </a>
+                <a href="./caminhao.html" class="card-caminhao card-zinc">
+                    <div class="topo">
+                        <h3>
+                            Caminhão MXK-9661
+                        </h3>
+                        <p>
+                            Congelado
+                        </p>
+                    </div>
+
+                    <div class="visao">
+                        <img src="./assets/icons/olho-fechado.png" width="20" height="20" alt="olho">
+                        <p>Carlos Silva</p>
+                    </div>
+
+                    <div class="baixo">
+                        <div class="legenda">
+                            <p>Temperatura</p>
+                            <p>Status</p>
+                        </div>
+
+                        <div class="destaque">
+                            <p>-18°C</p>
+                            <p>Inativo</p>
+                        </div>
+                    </div>
+
+                    <span>
+
+                    </span>
+                </a>
+            </div>
+
+            <p class="expandir">
+                Ver todos os veículos
+            </p>
+        </div>
     </div>
 
 
