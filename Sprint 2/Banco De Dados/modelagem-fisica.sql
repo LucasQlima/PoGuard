@@ -82,7 +82,7 @@ CONSTRAINT fkAlertaDado FOREIGN KEY (fkDado) REFERENCES TBL_DADO(idDado)
 CREATE TABLE TBL_HISTORICO (
 idHistorico INT AUTO_INCREMENT,
 dataInicio DATETIME NOT NULL,
-dataFim DATETIME NOT NULL,
+dataFim DATETIME,
 fkUsuario INT,
 fkEmpresa INT,
 fkVeiculo INT,
@@ -139,10 +139,10 @@ INSERT INTO TBL_DADO (temperatura, dataHora, fkSensor) VALUES
 (-17.80, '2023-11-01 08:10:00', 1),
 (-20.10, '2023-11-01 08:00:00', 2),
 (-15.50, '2023-11-01 08:05:00', 2),
-(-12.30, '2023-11-01 08:10:00', 3),
-(-18.75, '2023-11-01 09:00:00', 4),
-(-19.90, '2023-11-01 09:05:00', 4),
-(-5.20, '2023-11-01 09:00:00', 7),
+(-12.30, '2023-11-01 08:10:00', 2),
+(-18.75, '2023-11-01 08:00:00', 3),
+(-19.90, '2023-11-01 08:05:00', 3),
+(-5.20, '2023-11-01 08:10:00', 3),
 (2.50, '2023-11-01 09:05:00', 7),
 (-18.30, '2023-11-01 10:00:00', 9),
 (-18.60, '2023-11-01 10:05:00', 9),
@@ -167,7 +167,8 @@ INSERT INTO TBL_HISTORICO (dataInicio, dataFim, fkUsuario, fkEmpresa, fkVeiculo)
 ('2023-11-01 07:30:00', '2023-11-01 15:30:00', 3, 2, 3),
 
 -- Histórico do gerente Pedro Costa com o veículo Ford Cargo 2429
-('2023-11-01 06:00:00', '2023-11-01 18:00:00', 5, 3, 5);
+('2023-11-01 06:00:00', '2023-11-01 18:00:00', 5, 3, 5),
+('2023-11-01 06:00:00', null, 3, 2, 4);
 
 -- Verificação básica dos dados inseridos
 SELECT * FROM TBL_EMPRESA;
@@ -184,19 +185,53 @@ SELECT * FROM TBL_DADO;
 
 SELECT * FROM TBL_ALERTA; 
 
--- -- VIEWS
+SELECT * FROM TBL_HISTORICO;
+
+
+-- TESTE
+-- TESTE
+-- TESTE
+			select
+				d2.temperatura
+			from
+				TBL_DADO d2 join TBL_SENSOR s2
+					on s2.idSensor = d2.fkSensor
+                join TBL_VEICULO v2
+					on v2.idVeiculo = s2.fkVeiculo
+			where
+                v2.idVeiculo = 1 AND s2.localSensor = 'Centro'
+			LIMIT 1;
+
+-- -- VIEWS -- --
 CREATE VIEW vw_login_page as 
 	SELECT 
 		idUsuario,
 		email,
         senha
 	FROM
-		TBL_USUARIO
-	WHERE
-		email = '${email}' AND
-        senha = '${senha}';
-        
-        
+		TBL_USUARIO;
+	
+select 
+	* 
+from 
+	vw_login_page 
+WHERE
+	email = '${email}' AND senha = '${senha}';
+-- ---------------------------------------------
+
+    
+CREATE VIEW vw_navbar as
+	SELECT
+		u.nome as usuario,
+		e.nome as empresa
+	FROM 
+		TBL_USUARIO u JOIN TBL_EMPRESA e
+			ON e.idEmpresa = u.fkEmpresa;
+		
+select * from vw_navbar;
+-- ---------------------------------------------
+
+
 CREATE VIEW vw_frota_ativa as 
 	SELECT 
 		COUNT(v.idVeiculo) as Frota,
@@ -219,8 +254,107 @@ CREATE VIEW vw_frota_ativa as
 		JOIN TBL_HISTORICO h
 			ON v.idVeiculo = h.fkVeiculo;
 	
-    select * from vw_frota_ativa;
+select * from vw_frota_ativa;
+-- ---------------------------------------------
 
+
+-- CREATE VIEW vw_veiculo_semana as
+--	SELECT
+    -- ANALISE NECESSARIA
+    -- ANALISE NECESSARIA
+    -- ANALISE NECESSARIA
+    -- ANALISE NECESSARIA
+    
+-- ---------------------------------------------
+
+
+CREATE VIEW vw_alertas as 
+	SELECT
+		v.idVeiculo as idVeiculo,
+        v.placa as placa,
+        (
+			select
+				d2.temperatura
+			from
+				TBL_DADO d2 join TBL_SENSOR s2
+					on s2.idSensor = d2.fkSensor
+                join TBL_VEICULO v2
+					on v2.idVeiculo = s2.fkVeiculo
+			where
+                v2.idVeiculo = 1 AND s2.localSensor = 'Porta'
+            LIMIT 1
+		) as porta,
+        (
+			select
+				d2.temperatura
+			from
+				TBL_DADO d2 join TBL_SENSOR s2
+					on s2.idSensor = d2.fkSensor
+                join TBL_VEICULO v2
+					on v2.idVeiculo = s2.fkVeiculo
+			where
+                v2.idVeiculo = 1 AND s2.localSensor = 'Centro'
+            LIMIT 1
+        ) as centro,
+        (
+			select
+				d2.temperatura
+			from
+				TBL_DADO d2 join TBL_SENSOR s2
+					on s2.idSensor = d2.fkSensor
+                join TBL_VEICULO v2
+					on v2.idVeiculo = s2.fkVeiculo
+			where
+                v2.idVeiculo = 1 AND s2.localSensor = 'Fundo'
+            LIMIT 1
+        ) as fundo,
+			(
+            (
+            select
+				d2.temperatura
+			from
+				TBL_DADO d2 join TBL_SENSOR s2
+					on s2.idSensor = d2.fkSensor
+                join TBL_VEICULO v2
+					on v2.idVeiculo = s2.fkVeiculo
+			where
+                v2.idVeiculo = 1 AND s2.localSensor = 'Porta'
+            LIMIT 1
+			) +
+            (
+            select
+				d2.temperatura
+			from
+				TBL_DADO d2 join TBL_SENSOR s2
+					on s2.idSensor = d2.fkSensor
+                join TBL_VEICULO v2
+					on v2.idVeiculo = s2.fkVeiculo
+			where
+                v2.idVeiculo = 1 AND s2.localSensor = 'Centro'
+            LIMIT 1
+            ) +
+            (
+            select
+				d2.temperatura
+			from
+				TBL_DADO d2 join TBL_SENSOR s2
+					on s2.idSensor = d2.fkSensor
+                join TBL_VEICULO v2
+					on v2.idVeiculo = s2.fkVeiculo
+			where
+                v2.idVeiculo = 1 AND s2.localSensor = 'Fundo'
+            LIMIT 1
+            )) / 3
+         as media
+	FROM 
+		TBL_USUARIO u JOIN TBL_EMPRESA e
+			ON e.idEmpresa = u.fkEmpresa
+		JOIN TBL_VEICULO v
+			ON e.idEmpresa = v.fkEmpresa
+		JOIN TBL_HISTORICO h
+			ON v.idVeiculo = h.fkVeiculo;
+		
+SELECT * FROM vw_alertas WHERE idVeiculo = 1 LIMIT 1;
 
 
 SELECT usuario.nome AS 'Nome do Integrante', 
