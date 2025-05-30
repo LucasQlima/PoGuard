@@ -436,6 +436,3 @@ SELECT veiculo.placa AS 'Placa do Veículo',
        JOIN TBL_SENSOR AS sensor 
        ON sensor.id
 
-
-
-
