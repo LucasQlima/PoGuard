@@ -67,7 +67,7 @@
         mensagem = 'A confirmação de senha deve ser igual à senha.';
         alert('A confirmação de senha deve ser igual à senha.');
       } else {
-        fetch("http://localhost:8080/usuarioRoute/cadastrar", {
+        fetch("/usuarioRoute/cadastrar", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
