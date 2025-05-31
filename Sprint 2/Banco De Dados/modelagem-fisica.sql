@@ -221,8 +221,6 @@ SELECT * FROM TBL_USUARIO;
 
 SELECT * FROM TBL_VEICULO; 
 
-SELECT * FROM TBL_CARGA;
-
 SELECT * FROM TBL_SENSOR;
 
 SELECT * FROM TBL_DADO;
@@ -475,8 +473,52 @@ SELECT veiculo.placa AS 'Placa do Veículo',
        JOIN TBL_CARGA AS carga
        ON veiculo.idVeiculo = carga.fkVeiculo
        JOIN TBL_SENSOR AS sensor 
-       ON sensor.id
+       ON sensor.id;
 
-
-
-
+SELECT 
+    s.localSensor AS sensor,
+    ROUND(d.temperatura, 2) AS temperatura,
+    DATE_FORMAT(d.dataHora, '%H:%i') AS horario_leitura,
+    d.idDado AS idDado
+FROM 
+    TBL_DADO d
+JOIN 
+    TBL_SENSOR s ON d.fkSensor = s.idSensor
+WHERE 
+    s.fkVeiculo = 1  -- ID do caminhão desejado
+    AND d.idDado IN (
+        SELECT MAX(d2.idDado)
+        FROM TBL_DADO d2
+        JOIN TBL_SENSOR s2 ON d2.fkSensor = s2.idSensor
+        WHERE s2.fkVeiculo = 1  -- Mesmo ID do caminhão
+        GROUP BY s2.localSensor
+    )
+ORDER BY 
+    CASE s.localSensor
+        WHEN 'Porta' THEN 1
+        WHEN 'Centro' THEN 2
+        WHEN 'Fundo' THEN 3
+    END;
+    
+SELECT 
+    s.localSensor AS sensor,
+    IFNULL(ROUND(d.temperatura, 2), 'N/A') AS temperatura,
+    IFNULL(DATE_FORMAT(d.dataHora, '%H:%i'), 'N/A') AS horario_leitura,
+    d.idDado AS idDado
+FROM 
+    (SELECT DISTINCT localSensor FROM TBL_SENSOR WHERE fkVeiculo = 1) s
+LEFT JOIN (
+    SELECT 
+        d.*,
+        s.localSensor,
+        ROW_NUMBER() OVER (PARTITION BY s.localSensor ORDER BY d.dataHora DESC) AS row_num
+    FROM 
+        TBL_DADO d
+    JOIN 
+        TBL_SENSOR s ON d.fkSensor = s.idSensor
+    WHERE 
+        s.fkVeiculo = 1
+) d ON s.localSensor = d.localSensor AND d.row_num <= 10
+ORDER BY 
+    s.localSensor,
+    d.dataHora ASC;
