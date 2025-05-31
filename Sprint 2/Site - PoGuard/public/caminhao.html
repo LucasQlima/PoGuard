@@ -334,9 +334,56 @@
                 }
                 chart.update()
             })
+            .catch(error => {
+                console.error('Erro ao obter dados:', error);
+                alert('Erro ao carregar dados. Por favor, recarregue a página.');
+            });
 
         setInterval(() => {
             atualizarGrafico()
         }, 2000);
+    }
+
+    function atualizarGrafico() {
+        fetch(`/caminhaoRoute/atualizarDados?fkCaminhao=${idCaminhao}`, {
+            method: "GET"
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro na rede: ' + response.status);
+                }
+                return response.json();
+            })
+            .then(dadosNovos => {
+                dadosAtualizados = []
+
+                dadosAtualizados = dadosNovos
+
+                if (chartOptions.data.labels.includes(dadosAtualizados.horario_leitura)) {
+                    console.log('Este dado já existe')
+                } else if (chartOptions.data.labels.length == 10) {
+                    chartOptions.data.labels.shift()
+                    chartOptions.data.labels.push(dadosAtualizados.horario_leitura)
+                    chartOptions.data.datasets[0].data.shift()
+                    chartOptions.data.datasets[0].data.push(dadosAtualizados.temperatura[0])
+                    chartOptions.data.datasets[1].data.shift()
+                    chartOptions.data.datasets[1].data.push(dadosAtualizados.temperatura[1])
+                    chartOptions.data.datasets[2].data.shift()
+                    chartOptions.data.datasets[2].data.push(dadosAtualizados.temperatura[2])
+
+                    chart.update()
+                }
+                else {
+                    chartOptions.data.labels.push(dadosAtualizados.horario_leitura)
+                    chartOptions.data.datasets[0].data.push(dadosAtualizados.temperatura[0])
+                    chartOptions.data.datasets[1].data.push(dadosAtualizados.temperatura[1])
+                    chartOptions.data.datasets[2].data.push(dadosAtualizados.temperatura[2])
+
+                    chart.update()
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao atualizar dados:', error);
+            });
     }
 </script>
