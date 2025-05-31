@@ -7,11 +7,10 @@
     <link rel="stylesheet" href="../styles/caminhao.css">
     <link rel="shortcut icon" href="../assets/icons/icon_polus.png" type="image/x-icon">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <title>Dashboard | Polus</title>
 </head>
 
-<body>
+<body onload="obterDados()">
     <!-- NAVBAR -->
     <div class="nav-bar-left">
         <div class="top">
@@ -250,36 +249,94 @@
 </html>
 
 <script>
-    const options = {
-        type: 'line',
-        data: {
-            labels: ["12:00 PM", "12:01 PM", "12:02 PM", "12:03 PM", "12:04 PM", "12:05 PM", "12:06 PM"],
-            datasets: [{
-                label: 'Sensor da Porta',
-                data: [-14, -15, -18, -17, -15, -18, -17, -15, -18, -17],
-                borderColor: '#FDECB0',
-                backgroundColor: '#FDECB0',
-            },
-            {
-                label: 'Sensor do Meio',
-                data: [-16, -14, -13, -15, -14, -13, -15, -14, -14, -15],
-                borderColor: '#9B8EFB',
-                backgroundColor: '#9B8EFB',
-            },
-            {
-                label: 'Sensor do Fundo',
-                data: [-14, -13, -14, -13, -11, -11, -13, -14, -13, -12],
-                borderColor: '#A9F4D0',
-                backgroundColor: '#A9F4D0',
-            }
-            ]
-        }
+    var idCaminhao = sessionStorage.ID_CAMINHAO
+    var dadosLeitura = []
+    var dadosAtualizados = []
+    var dadosAntigos
+    var chart
+    var chartOptions
+
+    function obterDados() {
+        fetch(`/caminhaoRoute/obterDados?fkCaminhao=${idCaminhao}`, {
+            method: "GET"
+        })
+            .then(response => response.json())
+            .then(dados => {
+                dadosLeitura = []
+                dadosAntigos = 0
+
+                dadosLeitura = dados
+
+                chartOptions = {
+                    type: 'line',
+                    data: {
+                        labels: [],
+                        datasets: [{
+                            label: 'Sensor da Porta',
+                            data: [],
+                            borderColor: '#FDECB0',
+                            backgroundColor: '#FDECB0',
+                        },
+                        {
+                            label: 'Sensor do Meio',
+                            data: [],
+                            borderColor: '#9B8EFB',
+                            backgroundColor: '#9B8EFB',
+                        },
+                        {
+                            label: 'Sensor do Fundo',
+                            data: [],
+                            borderColor: '#A9F4D0',
+                            backgroundColor: '#A9F4D0',
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: false,
+                                title: {
+                                    display: true,
+                                    text: 'Temperatura (°C)'
+                                }
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Horário'
+                                }
+                            }
+                        }
+                    }
+                };
+
+                if (chart) chart.destroy();
+                chart = new Chart(
+                    document.getElementById('canvas_chart_temperature'),
+                    chartOptions
+                );
+
+                for (var i = 0; i < dadosLeitura.length; i++) {
+                    var registro = dadosLeitura[i];
+
+                    if (!chartOptions.data.labels.includes(registro.horario_leitura)) {
+                        chartOptions.data.labels.push(registro.horario_leitura);
+                    }
+                    if (registro.sensor == 'Porta') {
+                        chartOptions.data.datasets[0].data.push(registro.temperatura);
+                    }
+                    if (registro.sensor == 'Centro') {
+                        chartOptions.data.datasets[1].data.push(registro.temperatura);
+                    }
+                    if (registro.sensor == 'Fundo') {
+                        chartOptions.data.datasets[2].data.push(registro.temperatura);
+                    }
+                }
+                chart.update()
+            })
+
+        setInterval(() => {
+            atualizarGrafico()
+        }, 2000);
     }
-
-    const chart = new Chart(
-        canvas_chart_temperature,
-        options
-    );
-
-
 </script>
