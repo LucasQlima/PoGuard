@@ -1,4 +1,5 @@
 CREATE DATABASE PoGuard;
+DROP DATABASE PoGuard;
 USE PoGuard;
 -- DROP DATABASE PoGuard;
 
@@ -305,7 +306,6 @@ SELECT
 -- ---------------------------------------------
 
 
-CREATE VIEW vw_alertas as 
 	SELECT
 		e.idEmpresa as idEmpresa,
 		v.idVeiculo as idVeiculo,
@@ -391,7 +391,6 @@ CREATE VIEW vw_alertas as
 			ON e.idEmpresa = v.fkEmpresa
 		JOIN TBL_HISTORICO h
 			ON v.idVeiculo = h.fkVeiculo;
-		
 DROP VIEW vw_alertas;
 SELECT * FROM vw_alertas WHERE idEmpresa = 1;
 
@@ -522,3 +521,105 @@ LEFT JOIN (
 ORDER BY 
     s.localSensor,
     d.dataHora ASC;
+       ON sensor.id;
+       
+       
+SELECT
+    veiculo.idVeiculo AS id_veiculo,
+    veiculo.placa,
+    alerta.dtAlerta, 
+    CONCAT('Há ', TIMESTAMPDIFF(MINUTE, alerta.dtAlerta, NOW()) , 'minutos Atrás') AS 'tempo',
+    (
+        SELECT dadoPorta.temperatura
+        FROM TBL_ALERTA AS alertaPorta
+        JOIN TBL_DADO AS dadoPorta ON alertaPorta.fkDado = dadoPorta.idDado
+        JOIN TBL_SENSOR AS sensorPorta ON dadoPorta.fkSensor = sensorPorta.idSensor
+        JOIN TBL_VEICULO AS veiculoPorta ON sensorPorta.fkVeiculo = veiculoPorta.idVeiculo
+        WHERE 
+            veiculoPorta.idVeiculo = veiculo.idVeiculo -- referindo-se ao veículo externo
+            AND sensorPorta.localSensor = 'Porta'
+            AND alertaPorta.dtAlerta = alerta.dtAlerta -- referindo-se à data externa
+    ) AS Porta,
+    (
+        SELECT dadoCentro.temperatura
+        FROM TBL_ALERTA AS alertaCentro
+        JOIN TBL_DADO AS dadoCentro ON alertaCentro.fkDado = dadoCentro.idDado
+        JOIN TBL_SENSOR AS sensorCentro ON dadoCentro.fkSensor = sensorCentro.idSensor
+        JOIN TBL_VEICULO AS veiculoCentro ON sensorCentro.fkVeiculo = veiculoCentro.idVeiculo
+        WHERE 
+            veiculoCentro.idVeiculo = veiculo.idVeiculo -- referindo-se ao veículo externo
+            AND sensorCentro.localSensor = 'Centro'
+            AND alertaCentro.dtAlerta = alerta.dtAlerta -- referindo-se à data externa
+    ) AS Centro,
+    (
+        SELECT dadoFundo.temperatura
+        FROM TBL_ALERTA AS alertaSub
+        JOIN TBL_DADO AS dadoFundo ON alertaSub.fkDado = dadoFundo.idDado
+        JOIN TBL_SENSOR AS sensorFundo ON dadoFundo.fkSensor = sensorFundo.idSensor
+        JOIN TBL_VEICULO AS veiculoFundo ON sensorFundo.fkVeiculo = veiculoFundo.idVeiculo
+        WHERE 
+            veiculoFundo.idVeiculo = veiculo.idVeiculo -- referindo-se ao veículo externo
+            AND sensorFundo.localSensor = 'Fundo'
+            AND alertaSub.dtAlerta = alerta.dtAlerta -- referindo-se à data externa
+    ) AS Fundo,
+    (
+        SELECT TRUNCATE(AVG(dadoFundo.temperatura),2)
+        FROM TBL_ALERTA AS alertaSub
+        JOIN TBL_DADO AS dadoFundo ON alertaSub.fkDado = dadoFundo.idDado
+        JOIN TBL_SENSOR AS sensorFundo ON dadoFundo.fkSensor = sensorFundo.idSensor
+        JOIN TBL_VEICULO AS veiculoFundo ON sensorFundo.fkVeiculo = veiculoFundo.idVeiculo
+        WHERE 
+            veiculoFundo.idVeiculo = veiculo.idVeiculo -- referindo-se ao veículo externo
+            AND alertaSub.dtAlerta = alerta.dtAlerta -- referindo-se à data externa
+    ) AS Media,
+    (
+        SELECT 
+      	CASE
+    				WHEN TRUNCATE(AVG(dadoFundo.temperatura), 2) > -12 THEN 'Vermelho'
+    				WHEN TRUNCATE(AVG(dadoFundo.temperatura), 2) > -18 AND TRUNCATE(AVG(dadoFundo.temperatura), 2) <= -12 THEN 'Amarelo'
+    			ELSE 'Verde'
+				END
+        FROM TBL_ALERTA AS alertaSub
+        JOIN TBL_DADO AS dadoFundo ON alertaSub.fkDado = dadoFundo.idDado
+        JOIN TBL_SENSOR AS sensorFundo ON dadoFundo.fkSensor = sensorFundo.idSensor
+        JOIN TBL_VEICULO AS veiculoFundo ON sensorFundo.fkVeiculo = veiculoFundo.idVeiculo
+        WHERE 
+            veiculoFundo.idVeiculo = veiculo.idVeiculo -- referindo-se ao veículo externo
+            AND alertaSub.dtAlerta = alerta.dtAlerta -- referindo-se à data externa
+    ) AS Status_alerta
+   
+FROM 
+    TBL_ALERTA AS alerta
+JOIN TBL_DADO AS dado ON dado.idDado = alerta.fkDado
+JOIN TBL_SENSOR AS sensor ON sensor.idSensor = dado.fkSensor
+JOIN TBL_VEICULO AS veiculo ON veiculo.idVeiculo = sensor.fkVeiculo
+GROUP BY veiculo.idVeiculo, alerta.dtAlerta
+ORDER BY alerta.dtAlerta DESC LIMIT 3;
+
+
+
+SELECT * FROM TBL_ALERTA;
+SELECT * FROM TBL_VEICULO;
+
+SELECT idVeiculo, TBL_DADO.temperatura,TBL_ALERTA.statusAlerta, TBL_ALERTA.dtAlerta, TBL_SENSOR.localSensor FROM TBL_ALERTA 
+	JOIN TBL_DADO  ON TBL_ALERTA.fkDado = TBL_DADO.idDado 
+  JOIN TBL_SENSOR ON TBL_DADO.fkSensor = TBL_SENSOR.idSensor
+  JOIN TBL_VEICULO ON TBL_SENSOR.fkVeiculo = TBL_VEICULO.idVeiculo
+  WHERE 
+  	TBL_VEICULO.idVeiculo = 1 AND TBL_SENSOR.localSensor = 'Fundo' AND TBL_ALERTA.dtAlerta = '2023-11-01 08:10:00';
+
+SELECT idVeiculo, TBL_DADO.temperatura,TBL_ALERTA.statusAlerta, TBL_ALERTA.dtAlerta, TBL_SENSOR.localSensor FROM TBL_ALERTA 
+	JOIN TBL_DADO  ON TBL_ALERTA.fkDado = TBL_DADO.idDado 
+  JOIN TBL_SENSOR ON TBL_DADO.fkSensor = TBL_SENSOR.idSensor
+  JOIN TBL_VEICULO ON TBL_SENSOR.fkVeiculo = TBL_VEICULO.idVeiculo
+  WHERE 
+  	TBL_VEICULO.idVeiculo = 1 AND TBL_SENSOR.localSensor = 'Centro' AND TBL_ALERTA.dtAlerta = '2023-11-01 08:10:00';
+    
+ SELECT idVeiculo, TBL_DADO.temperatura,TBL_ALERTA.statusAlerta, TBL_ALERTA.dtAlerta, TBL_SENSOR.localSensor FROM TBL_ALERTA 
+	JOIN TBL_DADO  ON TBL_ALERTA.fkDado = TBL_DADO.idDado 
+  JOIN TBL_SENSOR ON TBL_DADO.fkSensor = TBL_SENSOR.idSensor
+  JOIN TBL_VEICULO ON TBL_SENSOR.fkVeiculo = TBL_VEICULO.idVeiculo
+  WHERE 
+  	TBL_VEICULO.idVeiculo = 1 AND TBL_SENSOR.localSensor = 'Porta' AND TBL_ALERTA.dtAlerta = '2023-11-01 08:10:00';
+
+
