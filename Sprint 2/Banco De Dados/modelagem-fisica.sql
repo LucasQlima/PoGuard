@@ -621,5 +621,63 @@ SELECT idVeiculo, TBL_DADO.temperatura,TBL_ALERTA.statusAlerta, TBL_ALERTA.dtAle
   JOIN TBL_VEICULO ON TBL_SENSOR.fkVeiculo = TBL_VEICULO.idVeiculo
   WHERE 
   	TBL_VEICULO.idVeiculo = 1 AND TBL_SENSOR.localSensor = 'Porta' AND TBL_ALERTA.dtAlerta = '2023-11-01 08:10:00';
+    
 
+SELECT 
+    d1.dataHora AS  'horario_leitura',
+    ROUND(d1.temperatura, 2) AS Porta,
+    ROUND(d2.temperatura, 2) AS Centro,
+    ROUND(d3.temperatura, 2) AS Fundo,
+    ROUND((d1.temperatura + d2.temperatura + d3.temperatura) / 3, 2) AS 'Temperatura Média'
+FROM 
+    TBL_DADO d1
+    JOIN TBL_SENSOR s1 ON d1.fkSensor = s1.idSensor AND s1.localSensor = 'Porta',
+    
+    TBL_DADO d2
+    JOIN TBL_SENSOR s2 ON d2.fkSensor = s2.idSensor AND s2.localSensor = 'Centro',
+    
+    TBL_DADO d3
+    JOIN TBL_SENSOR s3 ON d3.fkSensor = s3.idSensor AND s3.localSensor = 'Fundo'
+WHERE
+    s1.fkVeiculo = 1 AND
+    s2.fkVeiculo = 1 AND
+    s3.fkVeiculo = 1
+ORDER BY 
+    d1.dataHora DESC
+LIMIT 1;
+
+SELECT 
+    s.localSensor AS sensor,
+    ROUND(d.temperatura, 2) AS temperatura,
+    DATE_FORMAT(d.dataHora, '%H:%i') AS horario_leitura,
+    d.idDado AS idDado,
+    (SELECT ROUND(AVG(d2.temperatura), 2)
+     FROM TBL_DADO d2
+     WHERE d2.idDado IN (
+         SELECT MAX(d3.idDado)
+         FROM TBL_DADO d3
+         JOIN TBL_SENSOR s3 ON d3.fkSensor = s3.idSensor
+         WHERE s3.fkVeiculo = 1
+         GROUP BY s3.localSensor
+     )) AS temperatura_media
+FROM
+    TBL_DADO d
+        JOIN
+    TBL_SENSOR s ON d.fkSensor = s.idSensor
+WHERE
+    s.fkVeiculo = 1
+        AND d.idDado IN (SELECT 
+            MAX(d2.idDado)
+        FROM
+            TBL_DADO d2
+                JOIN
+            TBL_SENSOR s2 ON d2.fkSensor = s2.idSensor
+        WHERE
+            s2.fkVeiculo = 1
+        GROUP BY s2.localSensor)
+ORDER BY CASE s.localSensor
+    WHEN 'Porta' THEN 1
+    WHEN 'Centro' THEN 2
+    WHEN 'Fundo' THEN 3
+END;
 

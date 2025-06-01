@@ -13,7 +13,7 @@ function obterDados(req, res) {
             function (erro) {
                 console.log(erro)
                 console.log(
-                    "\n Houve um erro ao buscar a questão! Erro: "
+                    "\n Houve um erro ao buscar a dadosSensor! Erro: "
                 );
                 res.status(500).json(erro.sqlMessage)
             }
@@ -33,7 +33,7 @@ function atualizarDados(req, res) {
             function (erro) {
                 console.log(erro)
                 console.log(
-                    "\n Houve um erro ao buscar a questão! Erro: "
+                    "\n Houve um erro ao buscar a dadosSensor! Erro: "
                 );
                 res.status(500).json(erro.sqlMessage)
             }
