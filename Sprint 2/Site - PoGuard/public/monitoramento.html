@@ -136,6 +136,9 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
+        noma_usuario.innerHTML = sessionStorage.NOME_USUARIO
+        nome_empresa.innerHTML = sessionStorage.EMPRESA
+
         new Chart(canvas_grafico, {
             type: 'line',
             data: {
