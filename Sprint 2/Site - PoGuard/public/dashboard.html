@@ -11,7 +11,7 @@
     <title>Dashboard | Polus</title>
 </head>
 
-<body>
+<body >
     <!-- NAVBAR -->
     <div class="nav-bar-left">
         <div class="top">
@@ -84,8 +84,8 @@
                 </h4>
 
                 <span>
-                    <h3>
-                        3/4
+                    <h3 id="card_frota_ativa">
+
                     </h3>
                     <span>
                         75%
@@ -397,8 +397,37 @@
 </html>
 
 <script>
+    var fkEmpresa = sessionStorage.FK_EMPRESA
+    var idUsuario = sessionStorage.ID_USUARIO
     noma_usuario.innerHTML = sessionStorage.NOME_USUARIO
     nome_empresa.innerHTML = sessionStorage.EMPRESA
+
+        console.log({
+            fkEmpresa, idUsuario
+        })
+
+        fetch("/dashboardRoute/frotaAtiva",{
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                fkEmpresa: fkEmpresa,
+                 idUsuario: idUsuario 
+            })
+        }).then((response) => {
+            response.json().then(resultado => {
+                console.log(resultado)
+                
+                resultado.frota;
+                resultado.ativo;
+
+                card_frota_ativa.innerHTML = `${resultado.ativo}/${resultado.frota}`
+            })
+        }).catch((err) => {
+            console.log(err)
+            console.log("deu ruim")
+        })
 
     const data = {
         labels: ["domingo", "segunda ", "terça ", "quarta ", "quinta ", "ontem", "hoje"],
