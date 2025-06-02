@@ -80,10 +80,11 @@
           })
         }).then((response) => {
           mensagem = 'Cadastro válido!';
-          alert('Cadastro válido!');
-          window.location.href = "login.html";
-          response.json().then(resultado => {
-            console.log(resultado)
+          setTimeout(() => {
+            window.location.href = "login.html";
+            response.json().then(resultado => {
+              console.log(resultado)
+            }, 1000);
           })
         })
 
