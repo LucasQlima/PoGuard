@@ -40,7 +40,15 @@ function atualizarDados(req, res) {
         )
 }
 
+function alertasRecentes(req, res) {
+
+    res.status(200).json({
+        alertas: []
+    })
+}
+
 module.exports = {
     obterDados,
-    atualizarDados
+    atualizarDados,
+    alertasRecentes
 }

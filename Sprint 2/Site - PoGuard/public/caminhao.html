@@ -385,7 +385,7 @@
                     var sensor2
                     var sensor3
 
-                    if (dadosAtualizados.temperatura[0] <= -15 && dadosAtualizados.temperatura[0] >= -21) {
+                    if (dadosAtualizados.temperatura[0] <= -16) {
                         sensor1 = 'sensor-green.png'
                         portaTemperatura.innerHTML = `
                         <div class="card-kpi card-green">
@@ -413,7 +413,7 @@
 
                             <img src="./assets/imgs/sensor-green.png" width="24" height="35" />
                         </div>`
-                    } else if (dadosAtualizados.temperatura[0] <= -12 && dadosAtualizados.temperatura[0] >= -24) {
+                    } else if (dadosAtualizados.temperatura[0] <= -14) {
                         sensor1 = 'sensor-yellow.png'
                         portaTemperatura.innerHTML = `
                         <div class="card-kpi card-yellow">
@@ -471,7 +471,7 @@
                         </div>`
                     }
 
-                    if (dadosAtualizados.temperatura[1] <= -15 && dadosAtualizados.temperatura[1] >= -21) {
+                    if (dadosAtualizados.temperatura[1] <= -16) {
                         sensor2 = 'sensor-green.png'
                         meioTemperatura.innerHTML = `
                         <div class="card-kpi card-green">
@@ -499,7 +499,7 @@
 
                             <img src="./assets/imgs/sensor-green.png" width="24" height="35" />
                         </div>`
-                    } else if (dadosAtualizados.temperatura[1] <= -12 && dadosAtualizados.temperatura[1] >= -24) {
+                    } else if (dadosAtualizados.temperatura[1] <= -14) {
                         sensor2 = 'sensor-yellow.png'
                         meioTemperatura.innerHTML = `
                         <div class="card-kpi card-yellow">
@@ -557,7 +557,7 @@
                         </div>`
                     }
 
-                    if (dadosAtualizados.temperatura[2] <= -15 && dadosAtualizados.temperatura[2] >= -21) {
+                    if (dadosAtualizados.temperatura[2] <= -16) {
                         sensor3 = 'sensor-green.png'
                         fundoTemperatura.innerHTML = `
                         <div class="card-kpi card-green">
@@ -585,7 +585,7 @@
                         
                             <img src="./assets/imgs/sensor-green.png" width="24" height="35" />
                         </div>`
-                    } else if (dadosAtualizados.temperatura[2] <= -12 && dadosAtualizados.temperatura[2] >= -24) {
+                    } else if (dadosAtualizados.temperatura[2] <= -14) {
                         sensor3 = 'sensor-yellow.png'
                         fundoTemperatura.innerHTML = `
                         <div class="card-kpi card-yellow">
@@ -646,9 +646,9 @@
                     var temperaturaMedia = (dadosAtualizados.temperatura[0] + dadosAtualizados.temperatura[1] + dadosAtualizados.temperatura[2]) / 3
                     var statusTempMedia
 
-                    if (temperaturaMedia >= -15 && temperaturaMedia <= -21) {
+                    if (temperaturaMedia <= -16) {
                         statusTempMedia = 'Ideal'
-                    } else if (temperaturaMedia >= -12 && temperaturaMedia <= -24) {
+                    } else if (temperaturaMedia <= -14) {
                         statusTempMedia = 'Alerta'
                     } else {
                         statusTempMedia = 'Crítico'
@@ -695,7 +695,7 @@
                     var sensor2
                     var sensor3
 
-                    if (dadosAtualizados.temperatura[0] <= -15 && dadosAtualizados.temperatura[0] >= -21) {
+                    if (dadosAtualizados.temperatura[0] <= -16) {
                         sensor1 = 'sensor-green.png'
                         portaTemperatura.innerHTML = `
                         <div class="card-kpi card-green">
@@ -723,7 +723,7 @@
 
                             <img src="./assets/imgs/sensor-green.png" width="24" height="35" />
                         </div>`
-                    } else if (dadosAtualizados.temperatura[0] <= -12 && dadosAtualizados.temperatura[0] >= -24) {
+                    } else if (dadosAtualizados.temperatura[0] <= -14) {
                         sensor1 = 'sensor-yellow.png'
                         portaTemperatura.innerHTML = `
                         <div class="card-kpi card-yellow">
@@ -781,7 +781,7 @@
                         </div>`
                     }
 
-                    if (dadosAtualizados.temperatura[1] <= -15 && dadosAtualizados.temperatura[1] >= -21) {
+                    if (dadosAtualizados.temperatura[1] <= -16) {
                         sensor2 = 'sensor-green.png'
                         portaTemperatura.innerHTML = `
                         <div class="card-kpi card-green">
@@ -809,7 +809,7 @@
 
                             <img src="./assets/imgs/sensor-green.png" width="24" height="35" />
                         </div>`
-                    } else if (dadosAtualizados.temperatura[1] <= -12 && dadosAtualizados.temperatura[1] >= -24) {
+                    } else if (dadosAtualizados.temperatura[1] <= -14) {
                         sensor2 = 'sensor-yellow.png'
                         portaTemperatura.innerHTML = `
                         <div class="card-kpi card-yellow">
@@ -867,7 +867,7 @@
                         </div>`
                     }
 
-                    if (dadosAtualizados.temperatura[2] <= -15 && dadosAtualizados.temperatura[2] >= -21) {
+                    if (dadosAtualizados.temperatura[2] <= -16) {
                         sensor3 = 'sensor-green.png'
                         fundoTemperatura.innerHTML = `
                         <div class="card-kpi card-green">
@@ -895,7 +895,7 @@
                         
                             <img src="./assets/imgs/sensor-green.png" width="24" height="35" />
                         </div>`
-                    } else if (dadosAtualizados.temperatura[2] <= -12 && dadosAtualizados.temperatura[2] >= -24) {
+                    } else if (dadosAtualizados.temperatura[2] <= -14) {
                         sensor3 = 'sensor-yellow.png'
                         fundoTemperatura.innerHTML = `
                         <div class="card-kpi card-yellow">
@@ -956,9 +956,9 @@
                     var temperaturaMedia = (dadosAtualizados.temperatura[0] + dadosAtualizados.temperatura[1] + dadosAtualizados.temperatura[2]) / 3
                     var statusTempMedia
 
-                    if (temperaturaMedia <= -15 && temperaturaMedia >= -21) {
+                    if (temperaturaMedia <= -16) {
                         statusTempMedia = 'Ideal'
-                    } else if (temperaturaMedia <= -12 && temperaturaMedia >= -24) {
+                    } else if (temperaturaMedia <= -14) {
                         statusTempMedia = 'Alerta'
                     } else {
                         statusTempMedia = 'Crítico'

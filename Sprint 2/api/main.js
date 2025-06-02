@@ -15,11 +15,11 @@ const serial = async (valoresSensorAnalogico) => {
   // conexão com o banco de dados MySQL
   let poolBancoDados = mysql
     .createPool({
-      host: "10.18.32.178",
-      user: "aluno",
-      password: "Sptech#2024",
+      host: "10.18.32.99",
+      user: "poguard",
+      password: "sptech#123",
       database: "PoGuard",
-      port: 3307,
+      port: 3306,
     })
     .promise();
 
@@ -49,16 +49,38 @@ const serial = async (valoresSensorAnalogico) => {
   arduino
     .pipe(new serialport.ReadlineParser({ delimiter: "\r\n" }))
     .on("data", async (data) => {
-      console.log(`Temperatura atual: ${data}`);
-      valoresSensorAnalogico.push(data);
+      const temperaturas = data.split(";")
 
+      const temperatura1 = temperaturas[0]
+      const temperatura2 = temperaturas[1]
+      const temperatura3 = temperaturas[2]
+
+      const temperaturaMedia = (Number(temperatura1) + Number(temperatura2) + Number(temperatura3)) / 3
+
+      console.log(`Temperatura Media ${temperaturaMedia}`)
+      if (temperaturaMedia >= -18) {
+        console.log(`ALERTA  ${temperaturaMedia}!!!`)
+      }
+
+      console.log(`Temperatura 1 ${temperatura1}, Temperatura 2 ${temperatura2} Temperatura 3 ${temperatura3}   `)
       // insere os dados no banco de dados (se habilitado)
       if (HABILITAR_OPERACAO_INSERIR) {
         // este insert irá inserir os dados na tabela "medida"
         poolBancoDados.execute(
           "INSERT INTO TBL_DADO (temperatura, fkSensor) VALUES (?, ?)",
-          [data, 1]
+          [temperatura1, 1]
         );
+
+        poolBancoDados.execute(
+          "INSERT INTO TBL_DADO (temperatura, fkSensor) VALUES (?, ?)",
+          [temperatura1, 2]
+        );
+
+        poolBancoDados.execute(
+          "INSERT INTO TBL_DADO (temperatura, fkSensor) VALUES (?, ?)",
+          [temperatura3, 3]
+        );
+
         console.log("valores inseridos no banco: ", data);
       }
     });
