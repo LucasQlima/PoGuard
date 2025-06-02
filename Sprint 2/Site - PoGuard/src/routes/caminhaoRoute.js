@@ -11,6 +11,4 @@ router.get("/atualizarDados", function (req, res) {
     caminhaoController.atualizarDados(req, res)
 })
 
-
-
 module.exports = router
