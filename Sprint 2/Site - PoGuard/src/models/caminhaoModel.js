@@ -10,7 +10,7 @@ function obterDados(fkCaminhao) {
             IFNULL(DATE_FORMAT(d.dataHora, '%H:%i'), 'N/A') AS horario_leitura,
             d.idDado AS idDado
         FROM 
-            (SELECT DISTINCT localSensor FROM TBL_SENSOR WHERE fkVeiculo = 1) s
+            (SELECT DISTINCT localSensor FROM TBL_SENSOR WHERE fkVeiculo = ${fkCaminhao}) s
         LEFT JOIN (
             SELECT 
                 d.*,

@@ -366,9 +366,10 @@
 
                 dadosAtualizados = dadosNovos
 
-                if (chartOptions.data.labels.includes(dadosAtualizados.horario_leitura)) {
-                    console.log('Este dado já existe')
-                } else if (chartOptions.data.labels.length == 10) {
+                // if (chartOptions.data.labels.includes(dadosAtualizados.horario_leitura)) {
+                //     console.log('Este dado já existe')
+                // } else 
+                if (chartOptions.data.labels.length == 10) {
                     chartOptions.data.labels.shift()
                     chartOptions.data.labels.push(dadosAtualizados.horario_leitura)
                     chartOptions.data.datasets[0].data.shift()
@@ -682,8 +683,7 @@
 
                 </div>`
 
-                }
-                else {
+                } else {
                     chartOptions.data.labels.push(dadosAtualizados.horario_leitura)
                     chartOptions.data.datasets[0].data.push(dadosAtualizados.temperatura[0])
                     chartOptions.data.datasets[1].data.push(dadosAtualizados.temperatura[1])

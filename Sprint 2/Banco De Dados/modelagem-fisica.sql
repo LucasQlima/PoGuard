@@ -1,5 +1,4 @@
 CREATE DATABASE PoGuard;
-DROP DATABASE PoGuard;
 USE PoGuard;
 -- DROP DATABASE PoGuard;
 
@@ -59,7 +58,7 @@ CONSTRAINT localSensor CHECK(localSensor IN ('Fundo', 'Centro', 'Porta'))
 CREATE TABLE TBL_DADO(
 idDado INT AUTO_INCREMENT,
 temperatura DECIMAL(4,2) NOT NULL,
-dataHora DATETIME,
+dataHora DATETIME DEFAULT CURRENT_TIMESTAMP,
 fkSensor INT,
 PRIMARY KEY(idDado, fkSensor),
 CONSTRAINT fkDadoSensor FOREIGN KEY  (fkSensor) REFERENCES TBL_SENSOR(idSensor)
@@ -681,3 +680,4 @@ ORDER BY CASE s.localSensor
     WHEN 'Fundo' THEN 3
 END;
 
+select * from TBL_DADO WHERE 
