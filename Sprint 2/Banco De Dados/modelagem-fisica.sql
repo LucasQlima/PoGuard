@@ -79,6 +79,35 @@ CONSTRAINT fkAlertaDadoCentro FOREIGN KEY (fkDadoCentro) REFERENCES TBL_DADO(idD
 CONSTRAINT fkAlertaDadoFundo FOREIGN KEY (fkDadoFundo) REFERENCES TBL_DADO(idDado)
 );
 
+CREATE TABLE TBL_HISTORICO (
+idHistorico INT AUTO_INCREMENT,
+dataInicio DATETIME NOT NULL,
+dataFim DATETIME,
+fkUsuario INT,
+fkEmpresa INT,
+fkVeiculo INT,
+CONSTRAINT pksHistorico PRIMARY KEY (idHistorico, fkUsuario, fkEmpresa, fkVeiculo),
+CONSTRAINT fkHistoricoUsuario FOREIGN KEY (fkUsuario)
+	REFERENCES TBL_USUARIO(idUsuario),
+CONSTRAINT fkHistoricoEmpresa FOREIGN KEY (fkEmpresa)
+	REFERENCES TBL_EMPRESA(idEmpresa),
+CONSTRAINT fkHistoricoVeiculo FOREIGN KEY (fkVeiculo)
+	REFERENCES TBL_VEICULO(idVeiculo)
+);
+
+INSERT INTO TBL_HISTORICO (dataInicio, dataFim, fkUsuario, fkEmpresa, fkVeiculo) VALUES
+-- Histórico do gerente João Silva com o veículo Volvo FH 540
+('2023-11-01 08:00:00', '2023-11-01 12:00:00', 1, 1, 1),
+
+-- Histórico da funcionária Maria Oliveira com o veículo Scania R500
+('2023-11-01 13:00:00', '2023-11-01 17:00:00', 2, 1, 2),
+
+-- Histórico do gerente Carlos Souza com o veículo Mercedes-Benz Actros
+('2023-11-01 07:30:00', '2023-11-01 15:30:00', 3, 2, 3),
+
+-- Histórico do gerente Pedro Costa com o veículo Ford Cargo 2429
+('2023-11-01 06:00:00', '2023-11-01 18:00:00', 5, 3, 5),
+('2023-11-01 06:00:00', null, 3, 2, 4);
 
 -- INSERÇÕES 
 INSERT INTO TBL_EMPRESA (nome, cnpj, email, telefone, codigoEmpresa) VALUES 
@@ -630,4 +659,29 @@ ORDER BY CASE s.localSensor
     WHEN 'Fundo' THEN 3
 END;
 
-select * from TBL_DADO WHERE 
+select * from TBL_DADO WHERE ;
+
+
+SELECT 
+		    COUNT(v.idVeiculo) as frota,
+            (
+			    select
+				    COUNT(hs.fkVeiculo)
+			    FROM
+				    TBL_EMPRESA es JOIN TBL_VEICULO vs
+					    ON es.idEmpresa = vs.fkEmpresa
+				    JOIN TBL_HISTORICO hs
+					    ON vs.idVeiculo = hs.fkVeiculo
+			    WHERE
+				    hs.dataFim is null AND
+                    hs.fkEmpresa = 1
+            ) as ativo
+	    FROM
+		    TBL_USUARIO u JOIN TBL_EMPRESA e
+			    ON e.idEmpresa = u.fkEmpresa
+		    JOIN TBL_VEICULO v
+			    ON e.idEmpresa = v.fkEmpresa
+		    LEFT JOIN TBL_HISTORICO h
+			    ON v.idVeiculo = h.fkVeiculo
+	    WHERE 
+		    v.fkEmpresa = 1 AND u.idUsuario = 1;

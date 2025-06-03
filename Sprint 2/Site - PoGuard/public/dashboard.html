@@ -11,7 +11,7 @@
     <title>Dashboard | Polus</title>
 </head>
 
-<body >
+<body>
     <!-- NAVBAR -->
     <div class="nav-bar-left">
         <div class="top">
@@ -313,37 +313,6 @@
 </html>
 
 <script>
-    var fkEmpresa = sessionStorage.FK_EMPRESA
-    var idUsuario = sessionStorage.ID_USUARIO
-    noma_usuario.innerHTML = sessionStorage.NOME_USUARIO
-    nome_empresa.innerHTML = sessionStorage.EMPRESA
-
-        console.log({
-            fkEmpresa, idUsuario
-        })
-
-        fetch("/dashboardRoute/frotaAtiva",{
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                fkEmpresa: fkEmpresa,
-                 idUsuario: idUsuario 
-            })
-        }).then((response) => {
-            response.json().then(resultado => {
-                console.log(resultado)
-                
-                resultado.frota;
-                resultado.ativo;
-
-                card_frota_ativa.innerHTML = `${resultado.ativo}/${resultado.frota}`
-            })
-        }).catch((err) => {
-            console.log(err)
-            console.log("deu ruim")
-        })
 
     const data = {
         labels: ["domingo", "segunda ", "terça ", "quarta ", "quinta ", "ontem", "hoje"],
@@ -391,6 +360,33 @@
 
 <script>
     var fkEmpresa = sessionStorage.FK_EMPRESA
+    var idUsuario = sessionStorage.ID_USUARIO
+    noma_usuario.innerHTML = sessionStorage.NOME_USUARIO
+    nome_empresa.innerHTML = sessionStorage.EMPRESA
+    var todos
+
+    fetch("/dashboardRoute/frotaAtiva", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            fkEmpresa: fkEmpresa,
+            idUsuario: idUsuario
+        })
+    }).then((response) => {
+        response.json().then(resultado => {
+            console.log(resultado)
+            todos = resultado
+            resultado.frota;
+            resultado.ativo;
+
+            card_frota_ativa.innerHTML = `${resultado.ativo}/${resultado.frota}`
+        })
+    }).catch((err) => {
+        console.log(err)
+        console.log("deu ruim")
+    })
 
     fetch(`/alertas/alertasRecentes/${fkEmpresa}`).then(response => response.json()).then(result => {
         var alertas = result.alertas
