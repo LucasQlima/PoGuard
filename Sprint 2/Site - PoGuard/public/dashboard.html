@@ -11,7 +11,7 @@
     <title>Dashboard | Polus</title>
 </head>
 
-<body >
+<body>
     <!-- NAVBAR -->
     <div class="nav-bar-left">
         <div class="top">
@@ -85,7 +85,7 @@
 
                 <span>
                     <h3 id="card_frota_ativa">
-
+                        0/8
                     </h3>
                     <span>
                         75%
@@ -101,21 +101,81 @@
                 <img src="./assets/imgs/truck-icon.png" alt="icon" width="48" height="48">
             </div>
 
-            <div class="grafico-frota card">
+            <div class="frota-ativa card frota-status">
                 <h4>
-                    Caminhões em estado crítico durante a semana
+                    Status dos caminhões(Atual)
                 </h4>
-                <div class="charts">
-                    <div class="chart-container">
-                        <canvas id="chart"></canvas>
+
+                <span>
+                    <h3 id="card_frota_ativa">
+                        4/6
+                    </h3>
+                    <span>
+                        66%
+                    </span>
+                </span>
+
+
+                <div class="list-status">
+                    <div class="status-trucks status-green">
+                        <p class="legenda-status">
+                            <span class="cicle"></span>
+                            Normal
+                        </p>
+
+                        <p id="green_quantidade">4</p>
                     </div>
-                    <div class="chart-container">
-                        <canvas id="chart2"></canvas>
+
+                    <div class="status-trucks status-yellow">
+                        <p class="legenda-status">
+                            <span class="cicle"></span>
+                            Alerta
+                        </p>
+
+                        <p id="yellow_quantidade">1</p>
+                    </div>
+
+                    <div class="status-trucks status-red">
+                        <p class="legenda-status">
+                            <span class="cicle"></span>
+                            Crítico
+                        </p>
+
+                        <p id="red_quantidade">1</p>
                     </div>
                 </div>
 
-                <img src="./assets/imgs/chart-icon.png" alt="icon" width="48" height="48">
+                <img src="./assets/imgs/truck-icon-green.png" alt="icon" width="48" height="48">
             </div>
+
+            <div class="frota-ativa card">
+                <h4>
+                    Status criticos das ultimas (24 horas)
+                </h4>
+
+                <span>
+                    <h3 id="card_frota_ativa">
+                        3/11
+                    </h3>
+                    <span>
+                        27%
+                    </span>
+                </span>
+
+                <div class="progresso red">
+                    <div class="progresso-barra red-progreess"></div>
+                </div>
+
+                <p>
+                    Caminões afetados: 1
+                    <br>
+                    Tempo Médio: 2 horas e meia
+
+                </p>
+                <img src="./assets/imgs/truck-icon-red.png" alt="icon" width="48" height="48">
+            </div>
+
+
         </div>
 
         <div class="alerts">
@@ -318,32 +378,32 @@
     noma_usuario.innerHTML = sessionStorage.NOME_USUARIO
     nome_empresa.innerHTML = sessionStorage.EMPRESA
 
-        console.log({
-            fkEmpresa, idUsuario
-        })
+    console.log({
+        fkEmpresa, idUsuario
+    })
 
-        fetch("/dashboardRoute/frotaAtiva",{
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                fkEmpresa: fkEmpresa,
-                 idUsuario: idUsuario 
-            })
-        }).then((response) => {
-            response.json().then(resultado => {
-                console.log(resultado)
-                
-                resultado.frota;
-                resultado.ativo;
-
-                card_frota_ativa.innerHTML = `${resultado.ativo}/${resultado.frota}`
-            })
-        }).catch((err) => {
-            console.log(err)
-            console.log("deu ruim")
+    fetch("/dashboardRoute/frotaAtiva", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            fkEmpresa: fkEmpresa,
+            idUsuario: idUsuario
         })
+    }).then((response) => {
+        response.json().then(resultado => {
+            console.log(resultado)
+
+            resultado.frota;
+            resultado.ativo;
+
+            card_frota_ativa.innerHTML = `${resultado.ativo}/${resultado.frota}`
+        })
+    }).catch((err) => {
+        console.log(err)
+        console.log("deu ruim")
+    })
 
     const data = {
         labels: ["domingo", "segunda ", "terça ", "quarta ", "quinta ", "ontem", "hoje"],
