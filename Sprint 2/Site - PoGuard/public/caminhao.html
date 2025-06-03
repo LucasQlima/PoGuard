@@ -371,13 +371,13 @@
                 // } else 
                 if (chartOptions.data.labels.length == 10) {
                     chartOptions.data.labels.shift()
-                    chartOptions.data.labels.push(dadosAtualizados.horario_leitura)
+                    chartOptions.data.labels.push(dadosAtualizados[0].horario_leitura)
                     chartOptions.data.datasets[0].data.shift()
-                    chartOptions.data.datasets[0].data.push(dadosAtualizados.temperatura[0])
+                    chartOptions.data.datasets[0].data.push(dadosAtualizados[0].temperatura)
                     chartOptions.data.datasets[1].data.shift()
-                    chartOptions.data.datasets[1].data.push(dadosAtualizados.temperatura[1])
+                    chartOptions.data.datasets[1].data.push(dadosAtualizados[1].temperatura)
                     chartOptions.data.datasets[2].data.shift()
-                    chartOptions.data.datasets[2].data.push(dadosAtualizados.temperatura[2])
+                    chartOptions.data.datasets[2].data.push(dadosAtualizados[2].temperatura)
 
                     chart.update()
 
@@ -385,7 +385,7 @@
                     var sensor2
                     var sensor3
 
-                    if (dadosAtualizados.temperatura[0] <= -16) {
+                    if (dadosAtualizados[0].temperatura <= -16) {
                         sensor1 = 'sensor-green.png'
                         portaTemperatura.innerHTML = `
                         <div class="card-kpi card-green">
@@ -406,14 +406,14 @@
                                 </div>
                             
                                 <div class="destaque">
-                                    <p>${dadosAtualizados.temperatura[0]}°C</p>
+                                    <p>${dadosAtualizados[0].temperatura}°C</p>
                                     <p>Ideal</p>
                                 </div>
                             </div>
 
                             <img src="./assets/imgs/sensor-green.png" width="24" height="35" />
                         </div>`
-                    } else if (dadosAtualizados.temperatura[0] <= -14) {
+                    } else if (dadosAtualizados[0].temperatura <= -14) {
                         sensor1 = 'sensor-yellow.png'
                         portaTemperatura.innerHTML = `
                         <div class="card-kpi card-yellow">
@@ -434,7 +434,7 @@
                                 </div>
                             
                                 <div class="destaque">
-                                    <p>${dadosAtualizados.temperatura[0]}°C</p>
+                                    <p>${dadosAtualizados[0].temperatura}°C</p>
                                     <p>Alerta</p>
                                 </div>
                             </div>
@@ -462,7 +462,7 @@
                                 </div>
                             
                                 <div class="destaque">
-                                    <p>${dadosAtualizados.temperatura[0]}°C</p>
+                                    <p>${dadosAtualizados[0].temperatura}°C</p>
                                     <p>Crítico</p>
                                 </div>
                             </div>
@@ -471,7 +471,7 @@
                         </div>`
                     }
 
-                    if (dadosAtualizados.temperatura[1] <= -16) {
+                    if (dadosAtualizados[1].temperatura <= -16) {
                         sensor2 = 'sensor-green.png'
                         meioTemperatura.innerHTML = `
                         <div class="card-kpi card-green">
@@ -492,14 +492,14 @@
                                 </div>
                             
                                 <div class="destaque">
-                                    <p>${dadosAtualizados.temperatura[1]}°C</p>
+                                    <p>${dadosAtualizados[1].temperatura}°C</p>
                                     <p>Ideal</p>
                                 </div>
                             </div>
 
                             <img src="./assets/imgs/sensor-green.png" width="24" height="35" />
                         </div>`
-                    } else if (dadosAtualizados.temperatura[1] <= -14) {
+                    } else if (dadosAtualizados[1].temperatura <= -14) {
                         sensor2 = 'sensor-yellow.png'
                         meioTemperatura.innerHTML = `
                         <div class="card-kpi card-yellow">
@@ -520,7 +520,7 @@
                                 </div>
                             
                                 <div class="destaque">
-                                    <p>${dadosAtualizados.temperatura[2]}°C</p>
+                                    <p>${dadosAtualizados[1].temperatura}°C</p>
                                     <p>Alerta</p>
                                 </div>
                             </div>
@@ -548,7 +548,7 @@
                                 </div>
                             
                                 <div class="destaque">
-                                    <p>${dadosAtualizados.temperatura[1]}°C</p>
+                                    <p>${dadosAtualizados[1].temperatura}°C</p>
                                     <p>Crítico</p>
                                 </div>
                             </div>
@@ -557,7 +557,7 @@
                         </div>`
                     }
 
-                    if (dadosAtualizados.temperatura[2] <= -16) {
+                    if (dadosAtualizados[2].temperatura <= -16) {
                         sensor3 = 'sensor-green.png'
                         fundoTemperatura.innerHTML = `
                         <div class="card-kpi card-green">
@@ -578,14 +578,14 @@
                                 </div>
                             
                                 <div class="destaque">
-                                    <p>${dadosAtualizados.temperatura[2]}°C</p>
+                                    <p>${dadosAtualizados[2].temperatura}°C</p>
                                     <p>Ideal</p>
                                 </div>
                             </div>
                         
                             <img src="./assets/imgs/sensor-green.png" width="24" height="35" />
                         </div>`
-                    } else if (dadosAtualizados.temperatura[2] <= -14) {
+                    } else if (dadosAtualizados[2].temperatura <= -14) {
                         sensor3 = 'sensor-yellow.png'
                         fundoTemperatura.innerHTML = `
                         <div class="card-kpi card-yellow">
@@ -606,7 +606,7 @@
                                 </div>
                             
                                 <div class="destaque">
-                                    <p>${dadosAtualizados.temperatura[2]}°C</p>
+                                    <p>${dadosAtualizados[2].temperatura}°C</p>
                                     <p>Alerta</p>
                                 </div>
                             </div>
@@ -634,7 +634,7 @@
                                 </div>
                             
                                 <div class="destaque">
-                                    <p>${dadosAtualizados.temperatura[2]}°C</p>
+                                    <p>${dadosAtualizados[2].temperatura}°C</p>
                                     <p>Crítico</p>
                                 </div>
                             </div>
@@ -643,7 +643,7 @@
                         </div>`
                     }
 
-                    var temperaturaMedia = (dadosAtualizados.temperatura[0] + dadosAtualizados.temperatura[1] + dadosAtualizados.temperatura[2]) / 3
+                    var temperaturaMedia = (dadosAtualizados[0].temperatura + dadosAtualizados[1].temperatura + dadosAtualizados[2].temperatura) / 3
                     var statusTempMedia
 
                     if (temperaturaMedia <= -16) {
@@ -695,7 +695,7 @@
                     var sensor2
                     var sensor3
 
-                    if (dadosAtualizados.temperatura[0] <= -16) {
+                    if (dadosAtualizados[1].temperatura <= -16) {
                         sensor1 = 'sensor-green.png'
                         portaTemperatura.innerHTML = `
                         <div class="card-kpi card-green">
@@ -716,14 +716,14 @@
                                 </div>
                             
                                 <div class="destaque">
-                                    <p>${dadosAtualizados.temperatura[0]}°C</p>
+                                    <p>${dadosAtualizados[0].temperatura}°C</p>
                                     <p>Ideal</p>
                                 </div>
                             </div>
 
                             <img src="./assets/imgs/sensor-green.png" width="24" height="35" />
                         </div>`
-                    } else if (dadosAtualizados.temperatura[0] <= -14) {
+                    } else if (dadosAtualizados[0].temperatura <= -14) {
                         sensor1 = 'sensor-yellow.png'
                         portaTemperatura.innerHTML = `
                         <div class="card-kpi card-yellow">
@@ -744,7 +744,7 @@
                                 </div>
                             
                                 <div class="destaque">
-                                    <p>${dadosAtualizados.temperatura[0]}°C</p>
+                                    <p>${dadosAtualizados[0].temperatura}°C</p>
                                     <p>Alerta</p>
                                 </div>
                             </div>
@@ -772,7 +772,7 @@
                                 </div>
                             
                                 <div class="destaque">
-                                    <p>${dadosAtualizados.temperatura[0]}°C</p>
+                                    <p>${dadosAtualizados[0].temperatura}°C</p>
                                     <p>Crítico</p>
                                 </div>
                             </div>
@@ -781,7 +781,7 @@
                         </div>`
                     }
 
-                    if (dadosAtualizados.temperatura[1] <= -16) {
+                    if (dadosAtualizados[1].temperatura <= -16) {
                         sensor2 = 'sensor-green.png'
                         portaTemperatura.innerHTML = `
                         <div class="card-kpi card-green">
@@ -802,14 +802,14 @@
                                 </div>
                             
                                 <div class="destaque">
-                                    <p>${dadosAtualizados.temperatura[1]}°C</p>
+                                    <p>${dadosAtualizados[1].temperatura}°C</p>
                                     <p>Ideal</p>
                                 </div>
                             </div>
 
                             <img src="./assets/imgs/sensor-green.png" width="24" height="35" />
                         </div>`
-                    } else if (dadosAtualizados.temperatura[1] <= -14) {
+                    } else if (dadosAtualizados[1].temperatura <= -14) {
                         sensor2 = 'sensor-yellow.png'
                         portaTemperatura.innerHTML = `
                         <div class="card-kpi card-yellow">
@@ -830,7 +830,7 @@
                                 </div>
                             
                                 <div class="destaque">
-                                    <p>${dadosAtualizados.temperatura[2]}°C</p>
+                                    <p>${dadosAtualizados[1].temperatura}°C</p>
                                     <p>Alerta</p>
                                 </div>
                             </div>
@@ -858,7 +858,7 @@
                                 </div>
                             
                                 <div class="destaque">
-                                    <p>${dadosAtualizados.temperatura[1]}°C</p>
+                                    <p>${dadosAtualizados[1].temperatura}°C</p>
                                     <p>Crítico</p>
                                 </div>
                             </div>
@@ -867,7 +867,7 @@
                         </div>`
                     }
 
-                    if (dadosAtualizados.temperatura[2] <= -16) {
+                    if (dadosAtualizados[2].temperatura <= -16) {
                         sensor3 = 'sensor-green.png'
                         fundoTemperatura.innerHTML = `
                         <div class="card-kpi card-green">
@@ -888,14 +888,14 @@
                                 </div>
                             
                                 <div class="destaque">
-                                    <p>${dadosAtualizados.temperatura[2]}°C</p>
+                                    <p>${dadosAtualizados[2].temperatura}°C</p>
                                     <p>Ideal</p>
                                 </div>
                             </div>
                         
                             <img src="./assets/imgs/sensor-green.png" width="24" height="35" />
                         </div>`
-                    } else if (dadosAtualizados.temperatura[2] <= -14) {
+                    } else if (dadosAtualizados[2].temperatura <= -14) {
                         sensor3 = 'sensor-yellow.png'
                         fundoTemperatura.innerHTML = `
                         <div class="card-kpi card-yellow">
@@ -916,7 +916,7 @@
                                 </div>
                             
                                 <div class="destaque">
-                                    <p>${dadosAtualizados.temperatura[2]}°C</p>
+                                    <p>${dadosAtualizados[2].temperatura}°C</p>
                                     <p>Alerta</p>
                                 </div>
                             </div>
@@ -944,7 +944,7 @@
                                 </div>
                             
                                 <div class="destaque">
-                                    <p>${dadosAtualizados.temperatura[2]}°C</p>
+                                    <p>${dadosAtualizados[2].temperatura}°C</p>
                                     <p>Crítico</p>
                                 </div>
                             </div>
@@ -953,7 +953,7 @@
                         </div>`
                     }
 
-                    var temperaturaMedia = (dadosAtualizados.temperatura[0] + dadosAtualizados.temperatura[1] + dadosAtualizados.temperatura[2]) / 3
+                    var temperaturaMedia = (dadosAtualizados[0].temperatura + dadosAtualizados[1].temperatura + dadosAtualizados[2].temperatura) / 3
                     var statusTempMedia
 
                     if (temperaturaMedia <= -16) {

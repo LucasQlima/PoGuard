@@ -44,7 +44,7 @@ function atualizarDados(fkCaminhao) {
         JOIN 
             TBL_SENSOR s ON d.fkSensor = s.idSensor
         WHERE 
-            s.fkVeiculo = 1  -- ID do caminhão desejado
+            s.fkVeiculo = ${fkCaminhao}
             AND d.idDado IN (
                 SELECT MAX(d2.idDado)
                 FROM TBL_DADO d2
