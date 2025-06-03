@@ -499,7 +499,7 @@ ORDER BY
        ON sensor.id;
        
        
-SELECT
+ SELECT
         veiculo.idVeiculo AS id_veiculo,
         veiculo.placa,
         alerta.dtAlerta,
@@ -517,7 +517,7 @@ SELECT
                 dadoPorta.temperatura +
                 dadoCentro.temperatura +
                 dadoFundo.temperatura
-            ) / 3, 2) > -12 THEN 'Crítico'
+            ) / 3, 2) > -14  THEN 'Crítico'
 
             WHEN TRUNCATE((
                 dadoPorta.temperatura +
@@ -527,7 +527,7 @@ SELECT
                 dadoPorta.temperatura +
                 dadoCentro.temperatura +
                 dadoFundo.temperatura
-            ) / 3, 2) <= -12 THEN 'Alerta'
+            ) / 3, 2) > -16 THEN 'Alerta'
             ELSE 'Ideal'
         END AS Status_alerta
         FROM
@@ -547,6 +547,7 @@ SELECT
         ORDER BY
         alerta.dtAlerta DESC;
 
+        
 SELECT * FROM TBL_ALERTA;
 SELECT * FROM TBL_VEICULO;
 
