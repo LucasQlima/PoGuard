@@ -263,7 +263,6 @@
     noma_usuario.innerHTML = sessionStorage.NOME_USUARIO
     nome_empresa.innerHTML = sessionStorage.EMPRESA
     var idCaminhao = sessionStorage.ID_CAMINHAO
-    idCaminhao = 1
     var dadosLeitura = []
     var dadosAtualizados = []
     var chart
@@ -300,6 +299,13 @@
                             data: [],
                             borderColor: '#A9F4D0',
                             backgroundColor: '#A9F4D0',
+                        }
+                            ,
+                        {
+                            label: 'Ideal',
+                            data: [-16, -16, -16, -16, -16, -16, -16, -16, -16, -16],
+                            borderColor: '#A9F4D0',
+                            backgroundColor: '#A9F4D0',
                         }]
                     },
                     options: {
@@ -331,9 +337,10 @@
                 for (var i = 0; i < dadosLeitura.length; i++) {
                     var registro = dadosLeitura[i];
 
-                    if (!chartOptions.data.labels.includes(registro.horario_leitura)) {
+                    if (i <= 9) {
                         chartOptions.data.labels.push(registro.horario_leitura);
                     }
+
                     if (registro.sensor == 'Porta') {
                         chartOptions.data.datasets[0].data.push(registro.temperatura);
                     }
@@ -643,7 +650,7 @@
                         </div>`
                     }
 
-                    var temperaturaMedia = (dadosAtualizados[0].temperatura + dadosAtualizados[1].temperatura + dadosAtualizados[2].temperatura) / 3
+                    var temperaturaMedia = ((Number(dadosAtualizados[0].temperatura) + Number(dadosAtualizados[1].temperatura) + Number(dadosAtualizados[2].temperatura)) / 3).toFixed(1)
                     var statusTempMedia
 
                     if (temperaturaMedia <= -16) {
@@ -953,7 +960,7 @@
                         </div>`
                     }
 
-                    var temperaturaMedia = (dadosAtualizados[0].temperatura + dadosAtualizados[1].temperatura + dadosAtualizados[2].temperatura) / 3
+                    var temperaturaMedia = (Number(dadosAtualizados[0].temperatura) + Number(dadosAtualizados[1].temperatura) + Number(dadosAtualizados[2].temperatura)) / 3
                     var statusTempMedia
 
                     if (temperaturaMedia <= -16) {
