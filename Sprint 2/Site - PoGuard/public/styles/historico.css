@@ -46,7 +46,9 @@ svg {
   gap: 12px;
   align-items: center;
   cursor: pointer;
+  border-radius: 4px;
   transition: 0.2s all;
+  margin-top: 2px;
 }
 
 .top .links ul li:hover {

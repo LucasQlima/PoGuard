@@ -46,15 +46,24 @@ svg {
   gap: 12px;
   align-items: center;
   cursor: pointer;
+  border-radius: 4px;
   transition: 0.2s all;
+  margin-top: 2px;
+}
+
+#a_notificacao {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .top .links ul li:hover {
   background-color: #2563eb;
   color: #ffffff;
 }
-.top .links ul li:hover a,
-.top .links ul li:hover svg {
+
+.top .links ul li:hover a p,
+.top .links ul li:hover a svg {
   color: #ffffff;
 }
 
@@ -67,6 +76,7 @@ svg {
   background-color: #2563eb;
   border-radius: 4px;
 }
+
 #active svg {
   color: #ffffff;
 }
@@ -160,6 +170,7 @@ svg {
   position: relative;
   box-shadow: 0px 4px 6px hsla(0, 0%, 0%, 0.2);
 }
+
 .card h2 {
   font-size: 18px;
   font-weight: 600;
@@ -206,6 +217,7 @@ svg {
   z-index: -10;
   background-color: #16a34a;
 }
+
 .card-yellow::before {
   content: " ";
   position: absolute;
@@ -219,6 +231,7 @@ svg {
   z-index: -10;
   background-color: #ca8a04;
 }
+
 .card-red::before {
   content: " ";
   position: absolute;
@@ -384,6 +397,7 @@ svg {
 .legend .cards .card-kpi {
   gap: 30px;
 }
+
 .legend .cards .card-kpi p {
   text-align: center;
   padding-bottom: 10px;
