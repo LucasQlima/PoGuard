@@ -11,7 +11,7 @@
     <title>Dashboard | Polus</title>
 </head>
 
-<body>
+<body onload="getDayAndMonth()">
     <!-- NAVBAR -->
     <div class="nav-bar-left">
         <div class="top">
@@ -377,6 +377,22 @@
     var idUsuario = sessionStorage.ID_USUARIO
     noma_usuario.innerHTML = sessionStorage.NOME_USUARIO
     nome_empresa.innerHTML = sessionStorage.EMPRESA
+
+    function getDayAndMonth() {
+        var today = new Date();
+        var day = today.getDate();
+        var month = today.getMonth() + 1;
+        if(month<=9){
+            month=`0${month}`
+        }
+
+        if(day<=9){
+            day=`0${day}`
+        }
+        var agora = `${day}/${month}`
+        span_data.innerHTML = agora
+    }
+
 
     console.log({
         fkEmpresa, idUsuario
