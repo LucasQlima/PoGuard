@@ -12,7 +12,6 @@ const HABILITAR_OPERACAO_INSERIR = true;
 
 // função para comunicação serial
 const serial = async (valoresSensorAnalogico) => {
-  // conexão com o banco de dados MySQL
   let poolBancoDados = mysql
     .createPool({
       host: "10.18.32.152",
@@ -65,31 +64,48 @@ const serial = async (valoresSensorAnalogico) => {
       const temperatura2 = temperaturas[1]
       const temperatura3 = temperaturas[2]
 
-      const temperaturaMedia = (Number(temperatura1) + Number(temperatura2) + Number(temperatura3)) / 3
 
-      console.log(`Temperatura Media ${temperaturaMedia}`)
-      if (temperaturaMedia >= -18) {
-        console.log(`ALERTA  ${temperaturaMedia}!!!`)
-      }
 
       console.log(`Temperatura 1 ${temperatura1}, Temperatura 2 ${temperatura2} Temperatura 3 ${temperatura3}   `)
       // insere os dados no banco de dados (se habilitado)
       if (HABILITAR_OPERACAO_INSERIR) {
         // este insert irá inserir os dados na tabela "medida"
-        poolBancoDados.execute(
+        var insercaoDoDado1 = await poolBancoDados.execute(
           "INSERT INTO TBL_DADO (temperatura, fkSensor) VALUES (?, ?)",
           [temperatura1, 1]
         );
 
-        poolBancoDados.execute(
+        var insercaoDoDado2 = await poolBancoDados.execute(
           "INSERT INTO TBL_DADO (temperatura, fkSensor) VALUES (?, ?)",
-          [temperatura1, 2]
+          [temperatura2, 2]
         );
 
-        poolBancoDados.execute(
+        var insercaoDoDado3 = await poolBancoDados.execute(
           "INSERT INTO TBL_DADO (temperatura, fkSensor) VALUES (?, ?)",
           [temperatura3, 3]
         );
+
+        const temperaturaMedia = (Number(temperatura1) + Number(temperatura2) + Number(temperatura3)) / 3
+
+
+        if (temperaturaMedia >= -18) {
+          var dadoIdPorta = Number(insercaoDoDado1[0].insertId)
+          var dadoIdCentro = Number(insercaoDoDado2[0].insertId)
+          var dadoIdFundo = Number(insercaoDoDado3[0].insertId)
+
+          console.log(dadoIdPorta)
+          console.log(dadoIdCentro)
+          console.log(dadoIdFundo)
+
+          poolBancoDados.execute(
+            "INSERT INTO TBL_ALERTA VALUES (DEFAULT, DEFAULT, NULL, ?, ?, ?)",
+            [dadoIdPorta, dadoIdCentro, dadoIdFundo]
+          );
+          console.log(`ALERTA  ${temperaturaMedia}!!!`)
+          //   // console.log(`Temperatura Media ${temperaturaMedia}`)
+
+
+        }
 
         console.log("valores inseridos no banco: ", data);
       }
