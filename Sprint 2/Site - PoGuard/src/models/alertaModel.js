@@ -22,18 +22,18 @@ function obterAlertasRecentes(fkEmpresa) {
             dadoPorta.temperatura +
             dadoCentro.temperatura +
             dadoFundo.temperatura
-        ) / 3, 2) > -12 THEN 'Vermelho'
+        ) / 3, 2) > -14 THEN 'Crítico'
 
         WHEN TRUNCATE((
             dadoPorta.temperatura +
             dadoCentro.temperatura +
             dadoFundo.temperatura
-        ) / 3, 2) > -18 AND TRUNCATE((
+        ) / 3, 2) > -16 AND TRUNCATE((
             dadoPorta.temperatura +
             dadoCentro.temperatura +
             dadoFundo.temperatura
-        ) / 3, 2) <= -12 THEN 'Amarelo'
-        ELSE 'Verde'
+        ) / 3, 2) <= -14 THEN 'Alerta'
+        ELSE 'Ideal'
     END AS Status_alerta
 FROM
     TBL_ALERTA AS alerta
@@ -80,18 +80,18 @@ function todosAlertas(fkEmpresa) {
                 dadoPorta.temperatura +
                 dadoCentro.temperatura +
                 dadoFundo.temperatura
-            ) / 3, 2) > -12 THEN 'Vermelho'
+            ) / 3, 2) > -14 THEN 'Crítico'
 
             WHEN TRUNCATE((
                 dadoPorta.temperatura +
                 dadoCentro.temperatura +
                 dadoFundo.temperatura
-            ) / 3, 2) > -18 AND TRUNCATE((
+            ) / 3, 2) > -16 AND TRUNCATE((
                 dadoPorta.temperatura +
                 dadoCentro.temperatura +
                 dadoFundo.temperatura
-            ) / 3, 2) <= -12 THEN 'Amarelo'
-            ELSE 'Verde'
+            ) / 3, 2) <= -14 THEN 'Alerta'
+            ELSE 'Ideal'
         END AS Status_alerta
         FROM
         TBL_ALERTA AS alerta
@@ -108,7 +108,7 @@ function todosAlertas(fkEmpresa) {
         veiculo.idVeiculo, veiculo.placa, alerta.dtAlerta,
         dadoPorta.temperatura, dadoCentro.temperatura, dadoFundo.temperatura
         ORDER BY
-        alerta.dtAlerta DESC;`
+        alerta.dtAlerta DESC LIMIT 100;`
 
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);

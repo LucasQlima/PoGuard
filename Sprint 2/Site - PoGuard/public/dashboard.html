@@ -490,9 +490,13 @@
 
             if (media > -14) {
                 status = "red"
-            } else if (media >= -16) {
+            } else if (media > -16) {
                 status = "yellow"
+            } else {
+                status = "green"
             }
+
+            console.log(media)
 
             var imagenAlertaPorta = "icon-green.png"
             var imagenAlertaCentro = "icon-green.png"
@@ -500,17 +504,17 @@
 
             if (Number(alerta.Porta) > -14) {
                 imagenAlertaPorta = "icon-red.png"
-            } else if (Number(alerta.Porta) >= -16) {
+            } else if (Number(alerta.Porta) > -16) {
                 imagenAlertaPorta = "icon-yellow.png"
             }
             if (Number(alerta.Centro) > -14) {
                 imagenAlertaCentro = "icon-red.png"
-            } else if (Number(alerta.Porta) >= -16) {
+            } else if (Number(alerta.Porta) > -16) {
                 imagenAlertaCentro = "icon-yellow.png"
             }
             if (Number(alerta.Fundo) > -14) {
                 imagenAlertaFundo = "icon-red.png"
-            } else if (Number(alerta.Porta) >= -16) {
+            } else if (Number(alerta.Porta) > -16) {
                 imagenAlertaFundo = "icon-yellow.png"
             }
 

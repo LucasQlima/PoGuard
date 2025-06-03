@@ -71,10 +71,10 @@
     </div>
 
     <!-- CONTENT -->
-    <div class="content-right">
+    <div class="content-right" id="placaCaminhao">
 
         <h1>
-            Dashboard - MXK-9661
+            Dashboard -
         </h1>
 
         <div class="card">
@@ -263,6 +263,8 @@
 <script>
     noma_usuario.innerHTML = sessionStorage.NOME_USUARIO
     nome_empresa.innerHTML = sessionStorage.EMPRESA
+    placaCaminhao.innerHTML = `
+    <h1>Dashboard - ${sessionStorage.PLACA_CAMINHAO}</h1>`
     var idCaminhao = sessionStorage.ID_CAMINHAO
     var dadosLeitura = []
     var dadosAtualizados = []
