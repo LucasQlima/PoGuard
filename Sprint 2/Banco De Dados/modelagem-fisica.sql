@@ -68,32 +68,17 @@ CONSTRAINT fkDadoSensor FOREIGN KEY  (fkSensor) REFERENCES TBL_SENSOR(idSensor)
 -- DROP TABLE TBL_ALERTA;
 CREATE TABLE TBL_ALERTA(
 idAlerta INT AUTO_INCREMENT,
-titulo VARCHAR(60) NOT NULL,
-statusAlerta VARCHAR(8) NOT NULL,
-mensagem VARCHAR(400) NOT NULL,
-dtAlerta DATETIME NOT NULL,
-dtLeitura DATETIME,
-fkDado INT,
-PRIMARY KEY(idAlerta, fkDado),
-CONSTRAINT chkStatusAlerta CHECK (statusAlerta IN ('verde', 'amarelo', 'vermelho')),
-CONSTRAINT fkAlertaDado FOREIGN KEY (fkDado) REFERENCES TBL_DADO(idDado)
+dtAlerta TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+dtLeitura TIMESTAMP,
+fkDadoPorta INT,
+fkDadoCentro INT,
+fkDadoFundo INT,
+PRIMARY KEY(idAlerta, fkDadoPorta, fkDadoCentro, fkDadoFundo),
+CONSTRAINT fkAlertaDadoPorta FOREIGN KEY (fkDadoPorta) REFERENCES TBL_DADO(idDado),
+CONSTRAINT fkAlertaDadoCentro FOREIGN KEY (fkDadoCentro) REFERENCES TBL_DADO(idDado),
+CONSTRAINT fkAlertaDadoFundo FOREIGN KEY (fkDadoFundo) REFERENCES TBL_DADO(idDado)
 );
 
-CREATE TABLE TBL_HISTORICO (
-idHistorico INT AUTO_INCREMENT,
-dataInicio DATETIME NOT NULL,
-dataFim DATETIME,
-fkUsuario INT,
-fkEmpresa INT,
-fkVeiculo INT,
-CONSTRAINT pksHistorico PRIMARY KEY (idHistorico, fkUsuario, fkEmpresa, fkVeiculo),
-CONSTRAINT fkHistoricoUsuario FOREIGN KEY (fkUsuario)
-	REFERENCES TBL_USUARIO(idUsuario),
-CONSTRAINT fkHistoricoEmpresa FOREIGN KEY (fkEmpresa)
-	REFERENCES TBL_EMPRESA(idEmpresa),
-CONSTRAINT fkHistoricoVeiculo FOREIGN KEY (fkVeiculo)
-	REFERENCES TBL_VEICULO(idVeiculo)
-);
 
 -- INSERÇÕES 
 INSERT INTO TBL_EMPRESA (nome, cnpj, email, telefone, codigoEmpresa) VALUES 
@@ -187,17 +172,8 @@ INSERT INTO TBL_DADO (temperatura, dataHora, fkSensor) VALUES
 (-15.27, '2023-11-01 08:00:00', 17),	(-13.68, '2023-11-01 08:05:00', 17),	(-14.46, '2023-11-01 08:10:00', 17),
 (-17.93, '2023-11-01 08:00:00', 18),	(-18.58, '2023-11-01 08:05:00', 18),	(-18.67, '2023-11-01 08:10:00', 18);
 
-INSERT INTO TBL_ALERTA (titulo, statusAlerta, mensagem, dtAlerta, dtLeitura, fkDado) VALUES 
-('Alerta Verde', 'verde', 'Temperatura registrada de -19.23°C em 2023-11-01 08:00:00.', '2023-11-01 08:00:00', '2023-11-01 08:00:00', 1),
-('Alerta Vermelho', 'vermelho', 'Temperatura registrada de -11.52°C em 2023-11-01 08:05:00.', '2023-11-01 08:05:00', '2023-11-01 08:05:00', 2),
-('Alerta Verde', 'verde', 'Temperatura registrada de -19.58°C em 2023-11-01 08:10:00.', '2023-11-01 08:10:00', '2023-11-01 08:10:00', 3),
-('Alerta Vermelho', 'vermelho', 'Temperatura registrada de -12.04°C em 2023-11-01 08:00:00.', '2023-11-01 08:00:00', '2023-11-01 08:00:00', 4),
-('Alerta Verde', 'verde', 'Temperatura registrada de -18.91°C em 2023-11-01 08:05:00.', '2023-11-01 08:05:00', '2023-11-01 08:05:00', 5),
-('Alerta Vermelho', 'vermelho', 'Temperatura registrada de -11.67°C em 2023-11-01 08:10:00.', '2023-11-01 08:10:00', '2023-11-01 08:10:00', 6),
-('Alerta Verde', 'verde', 'Temperatura registrada de -20.00°C em 2023-11-01 08:00:00.', '2023-11-01 08:00:00', '2023-11-01 08:00:00', 7),
-('Alerta Verde', 'verde', 'Temperatura registrada de -19.85°C em 2023-11-01 08:05:00.', '2023-11-01 08:05:00', '2023-11-01 08:05:00', 8),
-('Alerta Vermelho', 'vermelho', 'Temperatura registrada de -10.20°C em 2023-11-01 08:10:00.', '2023-11-01 08:10:00', '2023-11-01 08:10:00', 9),
-('Alerta Amarelo', 'amarelo', 'Temperatura registrada de -16.20°C em 2023-11-01 08:05:00.', '2023-11-01 08:05:00', '2023-11-01 08:05:00', 10);
+INSERT INTO TBL_ALERTA VALUES
+	(DEFAULT, DEFAULT,  NULL, 1, 2, 3);
 
 INSERT INTO TBL_HISTORICO (dataInicio, dataFim, fkUsuario, fkEmpresa, fkVeiculo) VALUES
 ('2025-05-01 08:00:00', NULL, 1, 1, 1),
@@ -524,78 +500,52 @@ ORDER BY
        
        
 SELECT
-    veiculo.idVeiculo AS id_veiculo,
-    veiculo.placa,
-    alerta.dtAlerta, 
-    CONCAT('Há ', TIMESTAMPDIFF(MINUTE, alerta.dtAlerta, NOW()) , 'minutos Atrás') AS 'tempo',
-    (
-        SELECT dadoPorta.temperatura
-        FROM TBL_ALERTA AS alertaPorta
-        JOIN TBL_DADO AS dadoPorta ON alertaPorta.fkDado = dadoPorta.idDado
-        JOIN TBL_SENSOR AS sensorPorta ON dadoPorta.fkSensor = sensorPorta.idSensor
-        JOIN TBL_VEICULO AS veiculoPorta ON sensorPorta.fkVeiculo = veiculoPorta.idVeiculo
-        WHERE 
-            veiculoPorta.idVeiculo = veiculo.idVeiculo -- referindo-se ao veículo externo
-            AND sensorPorta.localSensor = 'Porta'
-            AND alertaPorta.dtAlerta = alerta.dtAlerta -- referindo-se à data externa
-    ) AS Porta,
-    (
-        SELECT dadoCentro.temperatura
-        FROM TBL_ALERTA AS alertaCentro
-        JOIN TBL_DADO AS dadoCentro ON alertaCentro.fkDado = dadoCentro.idDado
-        JOIN TBL_SENSOR AS sensorCentro ON dadoCentro.fkSensor = sensorCentro.idSensor
-        JOIN TBL_VEICULO AS veiculoCentro ON sensorCentro.fkVeiculo = veiculoCentro.idVeiculo
-        WHERE 
-            veiculoCentro.idVeiculo = veiculo.idVeiculo -- referindo-se ao veículo externo
-            AND sensorCentro.localSensor = 'Centro'
-            AND alertaCentro.dtAlerta = alerta.dtAlerta -- referindo-se à data externa
-    ) AS Centro,
-    (
-        SELECT dadoFundo.temperatura
-        FROM TBL_ALERTA AS alertaSub
-        JOIN TBL_DADO AS dadoFundo ON alertaSub.fkDado = dadoFundo.idDado
-        JOIN TBL_SENSOR AS sensorFundo ON dadoFundo.fkSensor = sensorFundo.idSensor
-        JOIN TBL_VEICULO AS veiculoFundo ON sensorFundo.fkVeiculo = veiculoFundo.idVeiculo
-        WHERE 
-            veiculoFundo.idVeiculo = veiculo.idVeiculo -- referindo-se ao veículo externo
-            AND sensorFundo.localSensor = 'Fundo'
-            AND alertaSub.dtAlerta = alerta.dtAlerta -- referindo-se à data externa
-    ) AS Fundo,
-    (
-        SELECT TRUNCATE(AVG(dadoFundo.temperatura),2)
-        FROM TBL_ALERTA AS alertaSub
-        JOIN TBL_DADO AS dadoFundo ON alertaSub.fkDado = dadoFundo.idDado
-        JOIN TBL_SENSOR AS sensorFundo ON dadoFundo.fkSensor = sensorFundo.idSensor
-        JOIN TBL_VEICULO AS veiculoFundo ON sensorFundo.fkVeiculo = veiculoFundo.idVeiculo
-        WHERE 
-            veiculoFundo.idVeiculo = veiculo.idVeiculo -- referindo-se ao veículo externo
-            AND alertaSub.dtAlerta = alerta.dtAlerta -- referindo-se à data externa
-    ) AS Media,
-    (
-        SELECT 
-      	CASE
-    				WHEN TRUNCATE(AVG(dadoFundo.temperatura), 2) > -12 THEN 'Vermelho'
-    				WHEN TRUNCATE(AVG(dadoFundo.temperatura), 2) > -18 AND TRUNCATE(AVG(dadoFundo.temperatura), 2) <= -12 THEN 'Amarelo'
-    			ELSE 'Verde'
-				END
-        FROM TBL_ALERTA AS alertaSub
-        JOIN TBL_DADO AS dadoFundo ON alertaSub.fkDado = dadoFundo.idDado
-        JOIN TBL_SENSOR AS sensorFundo ON dadoFundo.fkSensor = sensorFundo.idSensor
-        JOIN TBL_VEICULO AS veiculoFundo ON sensorFundo.fkVeiculo = veiculoFundo.idVeiculo
-        WHERE 
-            veiculoFundo.idVeiculo = veiculo.idVeiculo -- referindo-se ao veículo externo
-            AND alertaSub.dtAlerta = alerta.dtAlerta -- referindo-se à data externa
-    ) AS Status_alerta
-   
-FROM 
-    TBL_ALERTA AS alerta
-JOIN TBL_DADO AS dado ON dado.idDado = alerta.fkDado
-JOIN TBL_SENSOR AS sensor ON sensor.idSensor = dado.fkSensor
-JOIN TBL_VEICULO AS veiculo ON veiculo.idVeiculo = sensor.fkVeiculo
-GROUP BY veiculo.idVeiculo, alerta.dtAlerta
-ORDER BY alerta.dtAlerta DESC LIMIT 3;
+        veiculo.idVeiculo AS id_veiculo,
+        veiculo.placa,
+        alerta.dtAlerta,
+        CONCAT('Há ', TIMESTAMPDIFF(MINUTE, alerta.dtAlerta, NOW()), ' minutos atrás') AS tempo,
+        dadoPorta.temperatura AS Porta,
+        dadoCentro.temperatura AS Centro,
+        dadoFundo.temperatura AS Fundo,
+        TRUNCATE((
+            dadoPorta.temperatura +
+            dadoCentro.temperatura +
+            dadoFundo.temperatura
+        ) / 3, 2) AS Media,
+        CASE
+            WHEN TRUNCATE((
+                dadoPorta.temperatura +
+                dadoCentro.temperatura +
+                dadoFundo.temperatura
+            ) / 3, 2) > -12 THEN 'Crítico'
 
-
+            WHEN TRUNCATE((
+                dadoPorta.temperatura +
+                dadoCentro.temperatura +
+                dadoFundo.temperatura
+            ) / 3, 2) > -18 AND TRUNCATE((
+                dadoPorta.temperatura +
+                dadoCentro.temperatura +
+                dadoFundo.temperatura
+            ) / 3, 2) <= -12 THEN 'Alerta'
+            ELSE 'Ideal'
+        END AS Status_alerta
+        FROM
+        TBL_ALERTA AS alerta
+        JOIN TBL_DADO AS dadoPorta ON dadoPorta.idDado = alerta.fkDadoPorta
+        JOIN TBL_SENSOR AS sensorPorta ON sensorPorta.idSensor = dadoPorta.fkSensor
+        JOIN TBL_DADO AS dadoCentro ON dadoCentro.idDado = alerta.fkDadoCentro
+        JOIN TBL_SENSOR AS sensorCentro ON sensorCentro.idSensor = dadoCentro.fkSensor
+        JOIN TBL_DADO AS dadoFundo ON dadoFundo.idDado = alerta.fkDadoFundo
+        JOIN TBL_SENSOR AS sensorFundo ON sensorFundo.idSensor = dadoFundo.fkSensor
+        JOIN TBL_VEICULO AS veiculo ON veiculo.idVeiculo = sensorPorta.fkVeiculo
+        WHERE
+        veiculo.fkEmpresa = 1
+        GROUP BY
+        veiculo.idVeiculo, veiculo.placa, alerta.dtAlerta,
+        dadoPorta.temperatura, dadoCentro.temperatura, dadoFundo.temperatura
+        ORDER BY
+        alerta.dtAlerta DESC;
 
 SELECT * FROM TBL_ALERTA;
 SELECT * FROM TBL_VEICULO;
