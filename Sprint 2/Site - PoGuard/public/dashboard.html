@@ -382,12 +382,12 @@
         var today = new Date();
         var day = today.getDate();
         var month = today.getMonth() + 1;
-        if(month<=9){
-            month=`0${month}`
+        if (month <= 9) {
+            month = `0${month}`
         }
 
-        if(day<=9){
-            day=`0${day}`
+        if (day <= 9) {
+            day = `0${day}`
         }
         var agora = `${day}/${month}`
         span_data.innerHTML = agora
@@ -421,48 +421,6 @@
         console.log("deu ruim")
     })
 
-    const data = {
-        labels: ["domingo", "segunda ", "terça ", "quarta ", "quinta ", "ontem", "hoje"],
-        datasets: [{
-            label: 'Semana',
-            data: [3, 4, 5, 6, 3, 4, 5, 3, 4],
-            backgroundColor: [
-                '#2563EB',
-                '#2563EB',
-                '#2563EB',
-                '#2563EB',
-                '#2563EB',
-                '#2563EB',
-                '#2563EB'
-            ],
-            borderColor: [
-                '#2563EB',
-                '#2563EB',
-                '#2563EB',
-                '#2563EB',
-                '#2563EB',
-                '#2563EB',
-                '#2563EB'
-            ],
-            borderWidth: 1
-        }]
-    };
-
-    const config = {
-        type: 'bar',
-        data: data,
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            },
-            responsive: true
-        },
-    };
-
-    const chart = new Chart('chart', config)
-    const chart2 = new Chart('chart2', config)
 </script>
 
 <script>
@@ -508,11 +466,9 @@
                 status = "red"
             } else if (media > -16) {
                 status = "yellow"
-            } else {
-                status = "green"
             }
 
-            console.log(media)
+            console.log(media, alerta.Porta, alerta.Centro, alerta.Fundo)
 
             var imagenAlertaPorta = "icon-green.png"
             var imagenAlertaCentro = "icon-green.png"
@@ -523,14 +479,16 @@
             } else if (Number(alerta.Porta) > -16) {
                 imagenAlertaPorta = "icon-yellow.png"
             }
+
             if (Number(alerta.Centro) > -14) {
                 imagenAlertaCentro = "icon-red.png"
-            } else if (Number(alerta.Porta) > -16) {
+            } else if (Number(alerta.Centro) > -16) {
                 imagenAlertaCentro = "icon-yellow.png"
             }
+
             if (Number(alerta.Fundo) > -14) {
                 imagenAlertaFundo = "icon-red.png"
-            } else if (Number(alerta.Porta) > -16) {
+            } else if (Number(alerta.Fundo) > -16) {
                 imagenAlertaFundo = "icon-yellow.png"
             }
 

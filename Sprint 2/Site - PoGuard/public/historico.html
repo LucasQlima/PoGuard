@@ -17,8 +17,7 @@
     <div class="nav-bar-left">
         <div class="top">
             <div class="image">
-                <a href="./dashboard.html"><img src="assets/imgs/logo-dash.png" alt="logo poguard"
-                        width="173"></a>
+                <a href="./dashboard.html"><img src="assets/imgs/logo-dash.png" alt="logo poguard" width="173"></a>
             </div>
             <div class="links">
                 <ul>
@@ -126,9 +125,12 @@
 
                 if (media > -14) {
                     status = "red"
-                } else if (media >= -16) {
+                } else if (media > -16) {
                     status = "yellow"
                 }
+
+                console.log(media, alerta.Porta, alerta.Centro, alerta.Fundo)
+
 
                 var imagenAlertaPorta = "icon-green.png"
                 var imagenAlertaCentro = "icon-green.png"
@@ -136,17 +138,19 @@
 
                 if (Number(alerta.Porta) > -14) {
                     imagenAlertaPorta = "icon-red.png"
-                } else if (Number(alerta.Porta) >= -16) {
+                } else if (Number(alerta.Porta) > -16) {
                     imagenAlertaPorta = "icon-yellow.png"
                 }
+
                 if (Number(alerta.Centro) > -14) {
                     imagenAlertaCentro = "icon-red.png"
-                } else if (Number(alerta.Porta) >= -16) {
+                } else if (Number(alerta.Centro) > -16) {
                     imagenAlertaCentro = "icon-yellow.png"
                 }
+
                 if (Number(alerta.Fundo) > -14) {
                     imagenAlertaFundo = "icon-red.png"
-                } else if (Number(alerta.Porta) >= -16) {
+                } else if (Number(alerta.Fundo) > -16) {
                     imagenAlertaFundo = "icon-yellow.png"
                 }
 
