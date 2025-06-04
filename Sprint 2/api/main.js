@@ -14,7 +14,7 @@ const HABILITAR_OPERACAO_INSERIR = true;
 const serial = async (valoresSensorAnalogico) => {
   let poolBancoDados = mysql
     .createPool({
-      host: "10.18.32.152",
+      host: "10.18.32.122",
       user: "poguard",
       password: "sptech#123",
       database: "PoGuard",
@@ -85,28 +85,90 @@ const serial = async (valoresSensorAnalogico) => {
           [temperatura3, 3]
         );
 
+
+
         const temperaturaMedia = (Number(temperatura1) + Number(temperatura2) + Number(temperatura3)) / 3
-
-
         if (temperaturaMedia >= -18) {
           var dadoIdPorta = Number(insercaoDoDado1[0].insertId)
           var dadoIdCentro = Number(insercaoDoDado2[0].insertId)
           var dadoIdFundo = Number(insercaoDoDado3[0].insertId)
 
-          console.log(dadoIdPorta)
-          console.log(dadoIdCentro)
-          console.log(dadoIdFundo)
+          var consultaDoUltimoAlert = `
+            SELECT
+            dadoPorta.temperatura AS Porta,
+            dadoCentro.temperatura AS Centro,
+            dadoFundo.temperatura AS Fundo,
+            TRUNCATE((
+                dadoPorta.temperatura +
+                dadoCentro.temperatura +
+                dadoFundo.temperatura
+            ) / 3, 2) AS Media,
+            CASE
+                WHEN TRUNCATE((
+                    dadoPorta.temperatura +
+                    dadoCentro.temperatura +
+                    dadoFundo.temperatura
+                ) / 3, 2) > -14 THEN 'Crítico'
 
-          poolBancoDados.execute(
-            "INSERT INTO TBL_ALERTA VALUES (DEFAULT, DEFAULT, NULL, ?, ?, ?)",
-            [dadoIdPorta, dadoIdCentro, dadoIdFundo]
-          );
-          console.log(`ALERTA  ${temperaturaMedia}!!!`)
-          //   // console.log(`Temperatura Media ${temperaturaMedia}`)
+                WHEN TRUNCATE((
+                    dadoPorta.temperatura +
+                    dadoCentro.temperatura +
+                    dadoFundo.temperatura
+                ) / 3, 2) > -16 AND TRUNCATE((
+                    dadoPorta.temperatura +
+                    dadoCentro.temperatura +
+                    dadoFundo.temperatura
+                ) / 3, 2) <= -14 THEN 'Alerta'
+                ELSE 'Ideal'
+            END AS Status_alerta
+        FROM
+            TBL_ALERTA AS alerta
+        JOIN TBL_DADO AS dadoPorta ON dadoPorta.idDado = alerta.fkDadoPorta
+        JOIN TBL_SENSOR AS sensorPorta ON sensorPorta.idSensor = dadoPorta.fkSensor
+        JOIN TBL_DADO AS dadoCentro ON dadoCentro.idDado = alerta.fkDadoCentro
+        JOIN TBL_SENSOR AS sensorCentro ON sensorCentro.idSensor = dadoCentro.fkSensor
+        JOIN TBL_DADO AS dadoFundo ON dadoFundo.idDado = alerta.fkDadoFundo
+        JOIN TBL_SENSOR AS sensorFundo ON sensorFundo.idSensor = dadoFundo.fkSensor
+        JOIN TBL_VEICULO AS veiculo ON veiculo.idVeiculo = sensorPorta.fkVeiculo
+        WHERE
+            veiculo.fkEmpresa = 1 AND
+            sensorPorta.idSensor = 1 AND
+            sensorCentro.idSensor = 2 AND
+            sensorFundo.idSensor = 3
+        GROUP BY
+            veiculo.idVeiculo, veiculo.placa, alerta.dtAlerta,
+            dadoPorta.temperatura, dadoCentro.temperatura, dadoFundo.temperatura
+        ORDER BY
+            alerta.dtAlerta DESC
+            LIMIT 1;
+          `
+          var alerta = await poolBancoDados.execute(consultaDoUltimoAlert);
+          var alertaDoStatus = alerta[0].Status_alerta
+          var status = "Ideal"
+
+          if (temperaturaMedia > -14) {
+            status = "Crítico"
+          } else if (temperaturaMedia > -16) {
+            status = "Alerta"
+          }
+
+          console.log({
+            alertaDoStatus,
+            status
+          })
+
+          if (status != alertaDoStatus) {
+            poolBancoDados.execute(
+              "INSERT INTO TBL_ALERTA VALUES (DEFAULT, DEFAULT, NULL, ?, ?, ?)",
+              [dadoIdPorta, dadoIdCentro, dadoIdFundo]
+            );
+
+            console.log(`ALERTA  ${temperaturaMedia}!!!`)
+            console.log(`Temperatura Media ${temperaturaMedia}`)
+          }
 
 
         }
-
         console.log("valores inseridos no banco: ", data);
       }
     });
