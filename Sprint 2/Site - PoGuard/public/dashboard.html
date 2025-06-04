@@ -376,9 +376,6 @@
     nome_empresa.innerHTML = sessionStorage.EMPRESA
     var todos
     var alertasAtuais = []
-    var dayFinal
-    var monthFinal
-    var dadosStatus
 
     function getDayAndMonth() {
         var today = new Date();
@@ -388,11 +385,11 @@
         year = today.getFullYear();
 
         if (month <= 9) {
-            monthFinal = `0${month}`
+            month = `0${month}`
         }
 
         if (day <= 9) {
-            dayFinal = `0${day}`
+            day = `0${day}`
         }
         var agora = `${day}/${month}`
         span_data.innerHTML = agora
