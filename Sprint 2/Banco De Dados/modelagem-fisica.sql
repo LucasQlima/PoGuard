@@ -685,3 +685,28 @@ SELECT
 			    ON v.idVeiculo = h.fkVeiculo
 	    WHERE 
 		    v.fkEmpresa = 1 AND u.idUsuario = 1;
+            
+SELECT 
+    a.idAlerta,
+    a.dtAlerta,
+    d_porta.temperatura AS temperatura_porta,
+    d_centro.temperatura AS temperatura_centro,
+    d_fundo.temperatura AS temperatura_fundo,
+    ROUND((d_porta.temperatura + d_centro.temperatura + d_fundo.temperatura)/3, 2) AS temperatura_media,
+    CASE
+        WHEN ROUND((d_porta.temperatura + d_centro.temperatura + d_fundo.temperatura)/3, 2) > -14 THEN 'Crítico'
+        WHEN ROUND((d_porta.temperatura + d_centro.temperatura + d_fundo.temperatura)/3, 2) > -16 THEN 'Alerta'
+        ELSE 'Normal'
+    END AS status
+FROM 
+    TBL_ALERTA a
+LEFT JOIN 
+    TBL_DADO d_porta ON a.fkDadoPorta = d_porta.idDado
+LEFT JOIN 
+    TBL_DADO d_centro ON a.fkDadoCentro = d_centro.idDado
+LEFT JOIN 
+    TBL_DADO d_fundo ON a.fkDadoFundo = d_fundo.idDado
+ORDER BY 
+    a.dtAlerta DESC LIMIT 1;
+
+select * from TBL_ALERTA;
