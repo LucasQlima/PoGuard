@@ -62,6 +62,8 @@ svg {
   color: #ffffff;
 }
 
+.top .links ul li:hover svg,
+.top .links ul li:hover a,
 .top .links ul li:hover a p,
 .top .links ul li:hover a svg {
   color: #ffffff;
