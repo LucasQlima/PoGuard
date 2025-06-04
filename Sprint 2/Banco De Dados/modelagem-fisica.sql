@@ -525,9 +525,8 @@ LEFT JOIN (
 ORDER BY 
     s.localSensor,
     d.dataHora ASC;
-       ON sensor.id;
-       
-       
+
+
 SELECT
         veiculo.idVeiculo AS id_veiculo,
         veiculo.placa,
@@ -826,3 +825,72 @@ INSERT INTO TBL_ALERTA (fkDadoPorta, fkDadoCentro, fkDadoFundo) VALUES
 (31, 32, 33),  -- Vermelho (Veículo 5)
 (34, 35, 36);  -- Vermelho (Veículo 6)
 
+
+
+SELECT
+    Status_alerta,
+    COUNT(*) AS quantidade
+FROM (
+    SELECT
+        veiculo.idVeiculo,
+        TRUNCATE((
+            dadoPorta.temperatura +
+            dadoCentro.temperatura +
+            dadoFundo.temperatura
+        ) / 3, 2) AS Media,
+        CASE
+            WHEN TRUNCATE((
+                dadoPorta.temperatura +
+                dadoCentro.temperatura +
+                dadoFundo.temperatura
+            ) / 3, 2) > -12 THEN 'Vermelho'
+        END AS Status_alerta
+    FROM
+        TBL_ALERTA AS alerta
+        JOIN TBL_DADO AS dadoPorta ON dadoPorta.idDado = alerta.fkDadoPorta
+        JOIN TBL_SENSOR AS sensorPorta ON sensorPorta.idSensor = dadoPorta.fkSensor
+        JOIN TBL_DADO AS dadoCentro ON dadoCentro.idDado = alerta.fkDadoCentro
+        JOIN TBL_SENSOR AS sensorCentro ON sensorCentro.idSensor = dadoCentro.fkSensor
+        JOIN TBL_DADO AS dadoFundo ON dadoFundo.idDado = alerta.fkDadoFundo
+        JOIN TBL_SENSOR AS sensorFundo ON sensorFundo.idSensor = dadoFundo.fkSensor
+        JOIN TBL_VEICULO AS veiculo ON veiculo.idVeiculo = sensorPorta.fkVeiculo
+    WHERE
+        veiculo.fkEmpresa = 1
+	ORDER BY
+		dadoPorta.idDado DESC
+) AS subquery
+GROUP BY Status_alerta;
+
+
+
+
+SELECT 
+    E.nome AS nome_empresa,
+    COUNT(A.idAlerta) AS total_alertas,
+    SUM(
+        CASE
+            -- Se qualquer uma das temperaturas for > -15, é vermelho
+            WHEN (DP.temperatura > -15 OR DC.temperatura > -15 OR DF.temperatura > -15) THEN 1
+            ELSE 0
+        END
+    ) AS total_vermelhos
+FROM 
+    TBL_ALERTA A
+JOIN TBL_DADO DP ON A.fkDadoPorta = DP.idDado
+JOIN TBL_SENSOR SP ON DP.fkSensor = SP.idSensor
+JOIN TBL_VEICULO VP ON SP.fkVeiculo = VP.idVeiculo
+
+JOIN TBL_DADO DC ON A.fkDadoCentro = DC.idDado
+JOIN TBL_SENSOR SC ON DC.fkSensor = SC.idSensor
+JOIN TBL_VEICULO VC ON SC.fkVeiculo = VC.idVeiculo
+
+JOIN TBL_DADO DF ON A.fkDadoFundo = DF.idDado
+JOIN TBL_SENSOR SF ON DF.fkSensor = SF.idSensor
+JOIN TBL_VEICULO VF ON SF.fkVeiculo = VF.idVeiculo
+
+JOIN TBL_EMPRESA E ON VP.fkEmpresa = E.idEmpresa
+-- aqui considera-se que todos os sensores de um alerta são do mesmo veículo e empresa
+WHERE E.idEmpresa = 1  AND A.dtAlerta = 'dia de hoje'
+GROUP BY E.nome;
+
+	
