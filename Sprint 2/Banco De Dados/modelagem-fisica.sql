@@ -710,3 +710,119 @@ ORDER BY
     a.dtAlerta DESC LIMIT 1;
 
 select * from TBL_ALERTA;
+
+-- -------------------------------------------
+SELECT
+    Status_alerta,
+    COUNT(*) AS quantidade
+FROM (
+    SELECT
+        veiculo.idVeiculo,
+        TRUNCATE((
+            dadoPorta.temperatura +
+            dadoCentro.temperatura +
+            dadoFundo.temperatura
+        ) / 3, 2) AS Media,
+        CASE
+            WHEN TRUNCATE((
+                dadoPorta.temperatura +
+                dadoCentro.temperatura +
+                dadoFundo.temperatura
+            ) / 3, 2) > -12 THEN 'Vermelho'
+            WHEN TRUNCATE((
+                dadoPorta.temperatura +
+                dadoCentro.temperatura +
+                dadoFundo.temperatura
+            ) / 3, 2) > -18 THEN 'Amarelo'
+            ELSE 'Verde'
+        END AS Status_alerta
+    FROM
+        TBL_ALERTA AS alerta
+        JOIN TBL_DADO AS dadoPorta ON dadoPorta.idDado = alerta.fkDadoPorta
+        JOIN TBL_SENSOR AS sensorPorta ON sensorPorta.idSensor = dadoPorta.fkSensor
+        JOIN TBL_DADO AS dadoCentro ON dadoCentro.idDado = alerta.fkDadoCentro
+        JOIN TBL_SENSOR AS sensorCentro ON sensorCentro.idSensor = dadoCentro.fkSensor
+        JOIN TBL_DADO AS dadoFundo ON dadoFundo.idDado = alerta.fkDadoFundo
+        JOIN TBL_SENSOR AS sensorFundo ON sensorFundo.idSensor = dadoFundo.fkSensor
+        JOIN TBL_VEICULO AS veiculo ON veiculo.idVeiculo = sensorPorta.fkVeiculo
+    WHERE
+        veiculo.fkEmpresa = 1
+	ORDER BY
+		dadoPorta.idDado DESC
+	LIMIT 6
+) AS subquery
+GROUP BY Status_alerta;
+
+-- TESTE 1
+-- 3 sensores por veículo (6 veículos * 3 = 18 sensores)
+INSERT INTO TBL_SENSOR (numSerie, modeloSensor, statusSensor, localSensor, fkVeiculo) VALUES
+-- Veículo 1
+(101, 'Modelo A', 'ativo', 'Porta', 1),
+(102, 'Modelo A', 'ativo', 'Centro', 1),
+(103, 'Modelo A', 'ativo', 'Fundo', 1),
+-- Veículo 2
+(104, 'Modelo A', 'ativo', 'Porta', 2),
+(105, 'Modelo A', 'ativo', 'Centro', 2),
+(106, 'Modelo A', 'ativo', 'Fundo', 2),
+-- Veículo 3
+(107, 'Modelo A', 'ativo', 'Porta', 3),
+(108, 'Modelo A', 'ativo', 'Centro', 3),
+(109, 'Modelo A', 'ativo', 'Fundo', 3),
+-- Veículo 4
+(110, 'Modelo A', 'ativo', 'Porta', 4),
+(111, 'Modelo A', 'ativo', 'Centro', 4),
+(112, 'Modelo A', 'ativo', 'Fundo', 4),
+-- Veículo 5
+(113, 'Modelo A', 'ativo', 'Porta', 5),
+(114, 'Modelo A', 'ativo', 'Centro', 5),
+(115, 'Modelo A', 'ativo', 'Fundo', 5),
+-- Veículo 6
+(116, 'Modelo A', 'ativo', 'Porta', 6),
+(117, 'Modelo A', 'ativo', 'Centro', 6),
+(118, 'Modelo A', 'ativo', 'Fundo', 6);
+
+INSERT INTO TBL_DADO (temperatura, fkSensor) VALUES
+-- Veículo 1 - Verde (-18.5)
+(-18.0, 1), (-18.5, 2), (-19.0, 3),
+-- Veículo 2 - Verde (-18.3)
+(-18.2, 4), (-18.3, 5), (-18.4, 6),
+-- Veículo 3 - Verde (-18.7)
+(-18.9, 7), (-18.6, 8), (-18.6, 9),
+-- Veículo 4 - Verde (-18.2)
+(-18.3, 10), (-18.1, 11), (-18.2, 12),
+-- Veículo 5 - Amarelo (-16.0)
+(-15.0, 13), (-16.0, 14), (-17.0, 15),
+-- Veículo 6 - Vermelho (-10.2)
+(-10.0, 16), (-11.0, 17), (-9.6, 18);
+
+INSERT INTO TBL_ALERTA (fkDadoPorta, fkDadoCentro, fkDadoFundo) VALUES
+(1, 2, 3),     -- Verde
+(4, 5, 6),     -- Verde
+(7, 8, 9),     -- Verde
+(10, 11, 12),  -- Verde
+(13, 14, 15),  -- Amarelo
+(16, 17, 18);  -- Vermelho
+
+
+-- TESTE 2
+-- Verde (≤ -18°C)
+INSERT INTO TBL_DADO (temperatura, fkSensor) VALUES
+(-18.5, 1), (-18.6, 2), (-18.7, 3),  -- Veículo 1
+(-18.1, 4), (-18.3, 5), (-18.2, 6),  -- Veículo 2
+
+-- Amarelo (-17°C a -12.01°C)
+(-15.5, 7), (-16.0, 8), (-15.0, 9),  -- Veículo 3
+(-12.5, 10), (-13.0, 11), (-12.9, 12), -- Veículo 4
+
+-- Vermelho (> -12°C)
+(-11.0, 13), (-10.5, 14), (-10.0, 15),  -- Veículo 5
+(-9.0, 16), (-10.0, 17), (-8.0, 18);    -- Veículo 6
+
+INSERT INTO TBL_ALERTA (fkDadoPorta, fkDadoCentro, fkDadoFundo) VALUES
+(19, 20, 21),  -- Verde (Veículo 1)
+(22, 23, 24),  -- Verde (Veículo 2)
+(25, 26, 27),  -- Amarelo (Veículo 3)
+(28, 29, 30),  -- Amarelo (Veículo 4)
+(31, 32, 33),  -- Vermelho (Veículo 5)
+(34, 35, 36);  -- Vermelho (Veículo 6)
+
