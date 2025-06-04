@@ -55,6 +55,7 @@ svg {
   background-color: #2563eb;
   color: #ffffff;
 }
+
 .top .links ul li:hover a,
 .top .links ul li:hover svg {
   color: #ffffff;
@@ -69,6 +70,7 @@ svg {
   background-color: #2563eb;
   border-radius: 4px;
 }
+
 #active svg {
   color: #ffffff;
 }
@@ -223,7 +225,7 @@ svg {
   border-radius: 4px;
 }
 
-.progresso-barra {
+#progresso_barra {
   position: absolute;
   left: 0;
   top: 0;
@@ -234,6 +236,7 @@ svg {
   display: block;
   background-color: #2563eb;
 }
+
 .div_kpis .frota-ativa p {
   position: absolute;
   bottom: 24px;
@@ -429,7 +432,8 @@ td {
 }
 
 .input-pesquisa input:focus {
-  outline: none; /* Remove o contorno padrão */
+  outline: none;
+  /* Remove o contorno padrão */
 }
 
 .cards-caminhoes {
@@ -473,6 +477,7 @@ td {
   z-index: -10;
   background-color: #16a34a;
 }
+
 .card-yellow::before {
   content: " ";
   position: absolute;
@@ -486,6 +491,7 @@ td {
   z-index: -10;
   background-color: #ca8a04;
 }
+
 .card-red::before {
   content: " ";
   position: absolute;
@@ -585,6 +591,7 @@ td {
 .card-green .destaque {
   color: #16a34a;
 }
+
 .card-green span {
   background-color: #16a34a;
 }
@@ -592,6 +599,7 @@ td {
 .card-yellow .destaque {
   color: #ca8a04;
 }
+
 .card-yellow span {
   background-color: #ca8a04;
 }
@@ -599,6 +607,7 @@ td {
 .card-red .destaque {
   color: #ef4444;
 }
+
 .card-red span {
   background-color: #ef4444;
 }
@@ -606,6 +615,7 @@ td {
 .card-green .destaque {
   color: #16a34a;
 }
+
 .card-green span {
   background-color: #16a34a;
 }
@@ -613,6 +623,7 @@ td {
 .card-zinc .destaque {
   color: #6b7280;
 }
+
 .card-zinc span {
   background-color: #6b7280;
 }
@@ -627,8 +638,11 @@ td {
   right: 24px;
 }
 
-.red_progreess {
-  width: 25%;
+#red_progreess {
+  border-radius: 4px;
+  width: 75%;
+  height: 8px;
+  display: block;
   background-color: #dc2626;
 }
 
@@ -643,6 +657,7 @@ td {
 .frota-status .list-status p {
   position: relative;
 }
+
 .list-status .cicle {
   width: 12px;
   height: 12px;

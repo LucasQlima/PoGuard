@@ -83,31 +83,31 @@
                     Frota Ativa
                 </h4>
 
-                <span>
-                    <h3 id="card_frota_ativa">
-                        0/8
+                <span id="card_ativa">
+                    <h3>
+
                     </h3>
                     <span>
-                        75%
+
                     </span>
                 </span>
 
                 <div class="progresso">
-                    <div class="progresso-barra"></div>
+                    <div id="progresso_barra"></div>
                 </div>
 
-                <p>1 veículo inativo</p>
+                <p id="veiculoInativo">1 veículo inativo</p>
 
                 <img src="./assets/imgs/truck-icon.png" alt="icon" width="48" height="48">
             </div>
 
             <div class="frota-ativa card frota-status">
                 <h4>
-                    Status dos caminhões(Atual)
+                    Status dos caminhões(Ativos)
                 </h4>
 
                 <span>
-                    <h3 id="card_frota_ativa">
+                    <h3 id="card_frota">
                         4/6
                     </h3>
                     <span>
@@ -163,7 +163,7 @@
                 </span>
 
                 <div class="progresso red">
-                    <div class="progresso-barra red_progreess" id="red_progreess"></div>
+                    <div id="red_progreess"></div>
                 </div>
 
                 <p>
@@ -376,61 +376,33 @@
     nome_empresa.innerHTML = sessionStorage.EMPRESA
     var todos
     var alertasAtuais = []
+    var dayFinal
+    var monthFinal
 
     function getDayAndMonth() {
         var today = new Date();
+
         var day = today.getDate();
         var month = today.getMonth() + 1;
+        year = today.getFullYear();
+
         if (month <= 9) {
-            month = `0${month}`
+            monthFinal = `0${month}`
         }
 
         if (day <= 9) {
-            day = `0${day}`
+            dayFinal = `0${day}`
         }
         var agora = `${day}/${month}`
         span_data.innerHTML = agora
     }
 
 
-    console.log({
-        fkEmpresa, idUsuario
-    })
-
-    fetch("/dashboardRoute/frotaAtiva", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            fkEmpresa: fkEmpresa,
-            idUsuario: idUsuario
-        })
-    }).then((response) => {
-        response.json().then(resultado => {
-            console.log(resultado)
-
-            resultado.frota;
-            resultado.ativo;
-
-            card_frota_ativa.innerHTML = `${resultado.ativo}/${resultado.frota}`
-        })
-    }).catch((err) => {
-        console.log(err)
-        console.log("deu ruim")
-    })
-
-    var fkEmpresa = sessionStorage.FK_EMPRESA
-    var idUsuario = sessionStorage.ID_USUARIO
-    noma_usuario.innerHTML = sessionStorage.NOME_USUARIO
-    nome_empresa.innerHTML = sessionStorage.EMPRESA
-    var todos
-    var alertasAtuais = []
-
     fetch(`/alertas/alertasCriticosAtuais/${fkEmpresa}`, {
         method: "GET"
     })
-        .then(response => response.json()).then(result => {
+        .then(response => response.json())
+        .then(result => {
             alertasAtuais = result.alertas
 
             var totalCriticos = Number(alertasAtuais[0].total_vermelhos)
@@ -441,29 +413,37 @@
 
             red_progreess.style.width = ((totalCriticos / totalAlertas) * 100).toFixed(0) + '%'
         })
-,
-    fetch("/dashboardRoute/frotaAtiva", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            fkEmpresa: fkEmpresa,
-            idUsuario: idUsuario
-        })
-    }).then((response) => {
-        response.json().then(resultado => {
-            console.log(resultado)
-            todos = resultado
-            resultado.frota;
-            resultado.ativo;
 
-            card_frota_ativa.innerHTML = `${resultado.ativo}/${resultado.frota}`
-        })
-    }).catch((err) => {
-        console.log(err)
-        console.log("deu ruim")
+    fetch(`/dashboardRoute/frotaAtiva/${fkEmpresa}`, {
+        method: "GET"
     })
+        .then(response => response.json())
+        .then(result => {
+            var dados = result.alertas
+            console.log(dados)
+
+            var ativo = 0
+            var todosVeiculos = 0
+
+            for (var i = 0; i < dados.length; i++) {
+                todosVeiculos += 1
+                if (dados[i].status == "Ativo") {
+                    ativo += 1
+                }
+
+            }
+
+            card_ativa.innerHTML = `
+                    <h3>
+                    ${ativo}/${todosVeiculos}
+                    </h3>
+                    <span>
+                    ${(ativo / todosVeiculos) * 100}%
+                    </span>`
+
+            progresso_barra.style.width = ((ativo / todosVeiculos) * 100).toFixed(0) + '%'
+            veiculoInativo.innerHTML = `${todosVeiculos - ativo} Inativos`
+        })
 
     fetch(`/alertas/alertasRecentes/${fkEmpresa}`).then(response => response.json()).then(result => {
         var alertas = result.alertas
