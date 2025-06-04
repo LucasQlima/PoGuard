@@ -85,9 +85,9 @@ const serial = async (valoresSensorAnalogico) => {
           [temperatura3, 3]
         );
 
+
+
         const temperaturaMedia = (Number(temperatura1) + Number(temperatura2) + Number(temperatura3)) / 3
-
-
         if (temperaturaMedia >= -18) {
           var dadoIdPorta = Number(insercaoDoDado1[0].insertId)
           var dadoIdCentro = Number(insercaoDoDado2[0].insertId)
@@ -142,28 +142,33 @@ const serial = async (valoresSensorAnalogico) => {
             alerta.dtAlerta DESC
             LIMIT 1;
           `
-          console.log(dadoIdPorta)
-          console.log(dadoIdCentro)
-          console.log(dadoIdFundo)
+          var alerta = await poolBancoDados.execute(consultaDoUltimoAlert);
+          var alertaDoStatus = alerta[0].Status_alerta
+          var status = "Ideal"
 
-          // var ultimoAlerta ="...."
-          // if (ultimoAlerta == "red" || ultimoAlerta == "yellow"){
-          //   poolBancoDados.execute(
-          //     "INSERT INTO TBL_ALERTA VALUES (DEFAULT, DEFAULT, NULL, ?, ?, ?)",
-          //     [dadoIdPorta, dadoIdCentro, dadoIdFundo]
-          //   );
-          // }
+          if (temperaturaMedia > -14) {
+            status = "Crítico"
+          } else if (temperaturaMedia > -16) {
+            status = "Alerta"
+          }
 
-          poolBancoDados.execute(
-            "INSERT INTO TBL_ALERTA VALUES (DEFAULT, DEFAULT, NULL, ?, ?, ?)",
-            [dadoIdPorta, dadoIdCentro, dadoIdFundo]
-          );
-          console.log(`ALERTA  ${temperaturaMedia}!!!`)
-          //   // console.log(`Temperatura Media ${temperaturaMedia}`)
+          console.log({
+            alertaDoStatus,
+            status
+          })
+
+          if (status != alertaDoStatus) {
+            poolBancoDados.execute(
+              "INSERT INTO TBL_ALERTA VALUES (DEFAULT, DEFAULT, NULL, ?, ?, ?)",
+              [dadoIdPorta, dadoIdCentro, dadoIdFundo]
+            );
+
+            console.log(`ALERTA  ${temperaturaMedia}!!!`)
+            console.log(`Temperatura Media ${temperaturaMedia}`)
+          }
 
 
         }
-
         console.log("valores inseridos no banco: ", data);
       }
     });
