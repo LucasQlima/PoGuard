@@ -12,4 +12,8 @@ router.get("/todosAlertas/:fkEmpresa", function (req, res) {
     alertaController.todosAlertas(req, res)
 })
 
+router.get("/alertasCriticosAtuais/:fkEmpresa", function (req, res) {
+    alertaController.alertasCriticosAtuais(req, res)
+})
+
 module.exports = router

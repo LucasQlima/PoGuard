@@ -695,7 +695,7 @@ SELECT
     CASE
         WHEN ROUND((d_porta.temperatura + d_centro.temperatura + d_fundo.temperatura)/3, 2) > -14 THEN 'Crítico'
         WHEN ROUND((d_porta.temperatura + d_centro.temperatura + d_fundo.temperatura)/3, 2) > -16 THEN 'Alerta'
-        ELSE 'Normal'
+        ELSE 'Ideal'
     END AS status
 FROM 
     TBL_ALERTA a
@@ -861,36 +861,25 @@ FROM (
 ) AS subquery
 GROUP BY Status_alerta;
 
-
-
-
 SELECT 
     E.nome AS nome_empresa,
     COUNT(A.idAlerta) AS total_alertas,
     SUM(
         CASE
-            -- Se qualquer uma das temperaturas for > -15, é vermelho
-            WHEN (DP.temperatura > -15 OR DC.temperatura > -15 OR DF.temperatura > -15) THEN 1
+            WHEN ((DP.temperatura + DC.temperatura + DF.temperatura) / 3) > -14 THEN 1
             ELSE 0
         END
     ) AS total_vermelhos
 FROM 
     TBL_ALERTA A
 JOIN TBL_DADO DP ON A.fkDadoPorta = DP.idDado
-JOIN TBL_SENSOR SP ON DP.fkSensor = SP.idSensor
-JOIN TBL_VEICULO VP ON SP.fkVeiculo = VP.idVeiculo
-
 JOIN TBL_DADO DC ON A.fkDadoCentro = DC.idDado
-JOIN TBL_SENSOR SC ON DC.fkSensor = SC.idSensor
-JOIN TBL_VEICULO VC ON SC.fkVeiculo = VC.idVeiculo
-
 JOIN TBL_DADO DF ON A.fkDadoFundo = DF.idDado
-JOIN TBL_SENSOR SF ON DF.fkSensor = SF.idSensor
-JOIN TBL_VEICULO VF ON SF.fkVeiculo = VF.idVeiculo
-
-JOIN TBL_EMPRESA E ON VP.fkEmpresa = E.idEmpresa
--- aqui considera-se que todos os sensores de um alerta são do mesmo veículo e empresa
-WHERE E.idEmpresa = 1  AND A.dtAlerta = 'dia de hoje'
-GROUP BY E.nome;
-
-	
+JOIN TBL_SENSOR SP ON DP.fkSensor = SP.idSensor
+JOIN TBL_VEICULO V ON SP.fkVeiculo = V.idVeiculo
+JOIN TBL_EMPRESA E ON V.fkEmpresa = E.idEmpresa
+WHERE 
+    E.idEmpresa = 1  
+    AND DATE(A.dtAlerta) = DATE(NOW())
+GROUP BY 
+    E.nome;

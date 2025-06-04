@@ -120,7 +120,7 @@
                     <div class="status-trucks status-green">
                         <p class="legenda-status">
                             <span class="cicle"></span>
-                            Normal
+                            Ideal
                         </p>
 
                         <p id="green_quantidade">4</p>
@@ -154,23 +154,20 @@
                 </h4>
 
                 <span>
-                    <h3 id="card_frota_ativa">
+                    <h3 id="card_alertas">
                         3/11
                     </h3>
-                    <span>
+                    <span id="porcentagem">
                         27%
                     </span>
                 </span>
 
                 <div class="progresso red">
-                    <div class="progresso-barra red-progreess"></div>
+                    <div class="progresso-barra red_progreess" id="red_progreess"></div>
                 </div>
 
                 <p>
                     Caminões afetados: 1
-                    <br>
-                    Tempo Médio: 2 horas e meia
-
                 </p>
                 <img src="./assets/imgs/truck-icon-red.png" alt="icon" width="48" height="48">
             </div>
@@ -377,6 +374,8 @@
     var idUsuario = sessionStorage.ID_USUARIO
     noma_usuario.innerHTML = sessionStorage.NOME_USUARIO
     nome_empresa.innerHTML = sessionStorage.EMPRESA
+    var todos
+    var alertasAtuais = []
 
     function getDayAndMonth() {
         var today = new Date();
@@ -421,15 +420,28 @@
         console.log("deu ruim")
     })
 
-</script>
-
-<script>
     var fkEmpresa = sessionStorage.FK_EMPRESA
     var idUsuario = sessionStorage.ID_USUARIO
     noma_usuario.innerHTML = sessionStorage.NOME_USUARIO
     nome_empresa.innerHTML = sessionStorage.EMPRESA
     var todos
+    var alertasAtuais = []
 
+    fetch(`/alertas/alertasCriticosAtuais/${fkEmpresa}`, {
+        method: "GET"
+    })
+        .then(response => response.json()).then(result => {
+            alertasAtuais = result.alertas
+
+            var totalCriticos = Number(alertasAtuais[0].total_vermelhos)
+            var totalAlertas = Number(alertasAtuais[0].total_alertas)
+
+            card_alertas.innerHTML = `${totalCriticos}/${totalAlertas}`
+            porcentagem.innerHTML = ((totalCriticos / totalAlertas) * 100).toFixed(0) + '%';
+
+            red_progreess.style.width = ((totalCriticos / totalAlertas) * 100).toFixed(0) + '%'
+        })
+,
     fetch("/dashboardRoute/frotaAtiva", {
         method: "POST",
         headers: {

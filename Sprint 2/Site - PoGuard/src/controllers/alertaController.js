@@ -28,7 +28,22 @@ function todosAlertas(req, res) {
 
 }
 
+function alertasCriticosAtuais(req, res) {
+
+    var fkEmpresa = req.params.fkEmpresa
+
+    alertaModel.alertasCriticosAtuais(fkEmpresa)
+        .then((alertas) => {
+
+            res.status(200).json({
+                alertas: alertas
+            })
+        })
+
+}
+
 module.exports = {
     alertasRecentes,
-    todosAlertas
+    todosAlertas,
+    alertasCriticosAtuais
 }
