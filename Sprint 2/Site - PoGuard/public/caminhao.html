@@ -265,7 +265,9 @@
     nome_empresa.innerHTML = sessionStorage.EMPRESA
     // placaCaminhao.innerHTML = `
     // <h1>Dashboard - ${sessionStorage.PLACA_CAMINHAO}</h1>`
-    var idCaminhao = sessionStorage.ID_CAMINHAO
+    var url = new URL(window.location.href)
+    var idCaminhao = url.searchParams.get('caminhaoId')
+
     var dadosLeitura = []
     var dadosAtualizados = []
     var chart

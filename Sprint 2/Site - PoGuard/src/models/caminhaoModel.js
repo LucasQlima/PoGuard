@@ -26,6 +26,7 @@ function obterDados(fkCaminhao) {
         ORDER BY 
             s.localSensor,
             d.dataHora ASC;`;
+
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
@@ -62,7 +63,78 @@ function atualizarDados(fkCaminhao) {
     return database.executar(instrucaoSql);
 }
 
+function listarCaminhao(fkEmpresa) {
+    var instrucaoSql = `
+    SELECT
+        v.idVeiculo AS id_veiculo,
+        v.placa,
+        TRUNCATE((
+            dp.temperatura +
+            dc.temperatura +
+            df.temperatura
+        ) / 3, 2) AS media,
+        CASE
+            WHEN TRUNCATE((
+            dp.temperatura +
+            dc.temperatura +
+            df.temperatura
+        ) / 3, 2) > -14 THEN 'Crítico'
+            WHEN TRUNCATE((
+            dp.temperatura +
+            dc.temperatura +
+            df.temperatura
+        ) / 3, 2) <= -14 AND TRUNCATE((
+            dp.temperatura +
+            dc.temperatura +
+            df.temperatura
+        ) / 3, 2) > -16 THEN 'Alerta'
+        ELSE 'Ideal'
+        END AS status_alerta,
+        dp.dataHora AS dtTemperatura
+    FROM
+        TBL_VEICULO AS v
+    JOIN TBL_SENSOR AS sp ON v.idVeiculo = sp.fkVeiculo AND sp.localSensor = 'porta'
+    JOIN TBL_SENSOR AS sc ON v.idVeiculo = sc.fkVeiculo AND sc.localSensor = 'centro'
+    JOIN TBL_SENSOR AS sf ON v.idVeiculo = sf.fkVeiculo AND sf.localSensor = 'fundo'
+    JOIN (
+        SELECT d.*
+        FROM TBL_DADO d
+        JOIN (
+            SELECT fkSensor, MAX(dataHora) AS maxData
+            FROM TBL_DADO
+            GROUP BY fkSensor
+        ) ult ON d.fkSensor = ult.fkSensor AND d.dataHora = ult.maxData
+    ) AS dp ON sp.idSensor = dp.fkSensor
+    JOIN (
+        SELECT d.*
+        FROM TBL_DADO d
+        JOIN (
+            SELECT fkSensor, MAX(dataHora) AS maxData
+            FROM TBL_DADO
+            GROUP BY fkSensor
+        ) ult ON d.fkSensor = ult.fkSensor AND d.dataHora = ult.maxData
+    ) AS dc ON sc.idSensor = dc.fkSensor
+    JOIN (
+        SELECT d.*
+        FROM TBL_DADO d
+        JOIN (
+            SELECT fkSensor, MAX(dataHora) AS maxData
+            FROM TBL_DADO
+            GROUP BY fkSensor
+        ) ult ON d.fkSensor = ult.fkSensor AND d.dataHora = ult.maxData
+    ) AS df ON sf.idSensor = df.fkSensor
+    WHERE
+        v.fkEmpresa = ${fkEmpresa}
+    ORDER BY
+        dtTemperatura DESC;
+    `
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql)
+}
+
 module.exports = {
     obterDados,
-    atualizarDados
+    atualizarDados,
+    listarCaminhao
 }

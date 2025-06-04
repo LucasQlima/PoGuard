@@ -575,6 +575,7 @@ td {
 }
 
 .baixo {
+  margin-top: 48px;
   display: flex;
   flex-direction: column;
   gap: 2px;

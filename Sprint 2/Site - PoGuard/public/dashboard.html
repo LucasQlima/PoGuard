@@ -11,7 +11,7 @@
     <title>Dashboard | Polus</title>
 </head>
 
-<body onload="getDayAndMonth()">
+<body onload="getDayAndMonth(), fetchTrucks()">
     <!-- NAVBAR -->
     <div class="nav-bar-left">
         <div class="top">
@@ -201,23 +201,19 @@
 
             <div class="pesquisa">
                 <div class="filtros">
-                    <select name="" id="">
-                        <option value="" selected>
+                    <select name="" id="select_veiculos" onchange="atualizarCaminhoesPorPlaca()">
+                        <option value="todos" selected>
                             Todos os veículos
                         </option>
                     </select>
 
-                    <select name="" id="">
-                        <option value="" selected>
+                    <select name="" id="select_status" onchange="atualizarCaminhoePorStatus()">
+                        <option value="todos" selected>
                             Todos os status
                         </option>
                     </select>
 
-                    <select name="" id="">
-                        <option value="" selected>
-                            Últimas 24 horas
-                        </option>
-                    </select>
+
                 </div>
 
                 <label for="input_pesquisa" class="input-pesquisa">
@@ -227,138 +223,15 @@
                         <path d="m21 21-4.34-4.34" />
                         <circle cx="11" cy="11" r="8" />
                     </svg>
-                    <input type="text" name="" id="input_pesquisa">
+                    <input type="text" name="" id="input_pesquisa" oninput="atualizarCaminhoePorPesquisa()">
                 </label>
             </div>
 
-            <div class="cards-caminhoes">
-                <a href="./caminhao.html" class="card-caminhao card-green">
-                    <div class="topo">
-                        <h3>
-                            Caminhão MXK-9661
-                        </h3>
-                        <p>
-                            Congelado
-                        </p>
-                    </div>
+            <div class="cards-caminhoes" id="div_caminhoes">
 
-                    <div class="visao">
-                        <img src="./assets/icons/olho.png" width="20" height="20" alt="olho">
-                        <p>Carlos Silva</p>
-                    </div>
-
-                    <div class="baixo">
-                        <div class="legenda">
-                            <p>Temperatura</p>
-                            <p>Status</p>
-                        </div>
-
-                        <div class="destaque">
-                            <p>-18°C</p>
-                            <p>Normal</p>
-                        </div>
-                    </div>
-
-                    <span>
-
-                    </span>
-                </a>
-                <a href="./caminhao.html" class="card-caminhao card-yellow">
-                    <div class="topo">
-                        <h3>
-                            Caminhão MXK-9661
-                        </h3>
-                        <p>
-                            Congelado
-                        </p>
-                    </div>
-
-                    <div class="visao">
-                        <img src="./assets/icons/olho.png" width="20" height="20" alt="olho">
-                        <p>Carlos Silva</p>
-                    </div>
-
-                    <div class="baixo">
-                        <div class="legenda">
-                            <p>Temperatura</p>
-                            <p>Status</p>
-                        </div>
-
-                        <div class="destaque">
-                            <p>-18°C</p>
-                            <p>Normal</p>
-                        </div>
-                    </div>
-
-                    <span>
-
-                    </span>
-                </a>
-                <a href="./caminhao.html" class="card-caminhao card-red">
-                    <div class="topo">
-                        <h3>
-                            Caminhão MXK-9661
-                        </h3>
-                        <p>
-                            Congelado
-                        </p>
-                    </div>
-
-                    <div class="visao">
-                        <img src="./assets/icons/olho.png" width="20" height="20" alt="olho">
-                        <p>Carlos Silva</p>
-                    </div>
-
-                    <div class="baixo">
-                        <div class="legenda">
-                            <p>Temperatura</p>
-                            <p>Status</p>
-                        </div>
-
-                        <div class="destaque">
-                            <p>-18°C</p>
-                            <p>Normal</p>
-                        </div>
-                    </div>
-
-                    <span>
-
-                    </span>
-                </a>
-                <a href="./caminhao.html" class="card-caminhao card-zinc">
-                    <div class="topo">
-                        <h3>
-                            Caminhão MXK-9661
-                        </h3>
-                        <p>
-                            Congelado
-                        </p>
-                    </div>
-
-                    <div class="visao">
-                        <img src="./assets/icons/olho-fechado.png" width="20" height="20" alt="olho">
-                        <p>Carlos Silva</p>
-                    </div>
-
-                    <div class="baixo">
-                        <div class="legenda">
-                            <p>Temperatura</p>
-                            <p>Status</p>
-                        </div>
-
-                        <div class="destaque">
-                            <p>-18°C</p>
-                            <p>Inativo</p>
-                        </div>
-                    </div>
-
-                    <span>
-
-                    </span>
-                </a>
             </div>
 
-            <p class="expandir">
+            <p class="expandir" onclick="verMaisCaminhoes()" id="button">
                 Ver todos os veículos
             </p>
         </div>
@@ -418,8 +291,7 @@
         .then(response => response.json())
         .then(result => {
             var dados = result.alertas
-
-
+            console.log(dados)
 
             var ativo = 0
             var todosVeiculos = 0
@@ -433,70 +305,15 @@
             }
 
             card_ativa.innerHTML = `
-                    <h3>
-                    ${ativo}/${todosVeiculos}
-                    </h3>
-                    <span>
-                    ${(ativo / todosVeiculos) * 100}%
-                    </span>`
+               <h3>
+               ${ativo}/${todosVeiculos}
+               </h3>
+               <span>
+               ${(ativo / todosVeiculos) * 100}%
+               </span>`
 
             progresso_barra.style.width = ((ativo / todosVeiculos) * 100).toFixed(0) + '%'
             veiculoInativo.innerHTML = `${todosVeiculos - ativo} Inativos`
-        })
-
-    fetch(`/dashboardRoute/ativaStatus/${fkEmpresa}`, {
-        method: "GET"
-    })
-        .then(response => response.json())
-        .then(result => {
-            dadosStatus = result.alertas
-
-            var idealAtivo = 0
-            var alertaAtivo = 0
-            var criticoAtivo = 0
-            var totalAtivo = 0
-            var porcentagemAtiva
-
-            for (var i = 0; i < dadosStatus.length; i++) {
-                var media = (Number(dadosStatus[i].temperatura_porta) + Number(dadosStatus[i].temperatura_centro) + Number(dadosStatus[i].temperatura_fundo)) / 3
-
-                totalAtivo += 1
-                if (media > -14) {
-                    criticoAtivo += 1
-                } else if (media > -16) {
-                    alertaAtivo += 1
-                } else {
-                    idealAtivo += 1
-                }
-                console.log(media)
-                console.log(idealAtivo, alertaAtivo, criticoAtivo)
-            }
-            porcentagemAtiva = ((idealAtivo / totalAtivo) * 100).toFixed(0)
-
-            if (porcentagemAtiva != 'NaN') {
-                card_ativo.innerHTML = `
-                    <h3>
-                    ${idealAtivo}/${totalAtivo}
-                    </h3>
-                    <span>
-                    ${porcentagemAtiva}%
-                    </span>`
-            }else {
-                card_ativo.innerHTML = `
-                    <h3>
-                    ${idealAtivo}/${totalAtivo}
-                    </h3>
-                    <span>
-                    0%
-                    </span>`
-            }
-
-
-
-            green_quantidade.innerHTML = idealAtivo
-            yellow_quantidade.innerHTML = alertaAtivo
-            red_quantidade.innerHTML = criticoAtivo
-
         })
 
     fetch(`/alertas/alertasRecentes/${fkEmpresa}`).then(response => response.json()).then(result => {
@@ -504,8 +321,7 @@
 
         for (var contador = 0; contador < alertas.length; contador++) {
             var alerta = alertas[contador]
-
-
+            console.log(alerta)
             var media = (Number(alerta.Porta) + Number(alerta.Centro) + Number(alerta.Fundo)) / 3
             var status = "green"
 
@@ -515,8 +331,7 @@
                 status = "yellow"
             }
 
-
-
+            console.log(media, alerta.Porta, alerta.Centro, alerta.Fundo)
 
             var imagenAlertaPorta = "icon-green.png"
             var imagenAlertaCentro = "icon-green.png"
@@ -541,35 +356,259 @@
             }
 
             table_alerts.innerHTML += `
-            <tr class="row-${status}">
-                <td class="truck">
-                    <img src="./assets/icons/trunck-${status}.png" alt="truck red" width="40" height="40">
-                    <span>
-                        <h3>Caminhão ${alerta.placa}</h3>
-                        <p>${alerta.tempo}</p>
-                    </span>
-                </td>
-                <td>
-                    <img src="./assets/icons/${imagenAlertaPorta}" alt="truck red" width="48" height="48">
-                </td>
-                <td>
-                    <img src="./assets/icons/${imagenAlertaCentro}" alt="truck red" width="48" height="48">
-                </td>
-                <td>
-                    <img src="./assets/icons/${imagenAlertaFundo}" alt="truck red" width="48" height="48">
-                </td>
-                <td class="">
-                    <span class="status ${status}">${alerta.Status_alerta}</span>
-                </td>
-                <td class="temperature">
-                    <h3 class="title-${status}">
-                        ${media.toFixed(1)}°C
-                    </h3>
-                    <p>Ideal: -18°C</p>
-                </td>
-            </tr>
-            `
+       <tr class="row-${status}">
+           <td class="truck">
+               <img src="./assets/icons/trunck-${status}.png" alt="truck red" width="40" height="40">
+               <span>
+                   <h3>Caminhão ${alerta.placa}</h3>
+                   <p>${alerta.tempo}</p>
+               </span>
+           </td>
+           <td>
+               <img src="./assets/icons/${imagenAlertaPorta}" alt="truck red" width="48" height="48">
+           </td>
+           <td>
+               <img src="./assets/icons/${imagenAlertaCentro}" alt="truck red" width="48" height="48">
+           </td>
+           <td>
+               <img src="./assets/icons/${imagenAlertaFundo}" alt="truck red" width="48" height="48">
+           </td>
+           <td class="">
+               <span class="status ${status}">${alerta.Status_alerta}</span>
+           </td>
+           <td class="temperature">
+               <h3 class="title-${status}">
+                   ${media.toFixed(1)}°C
+               </h3>
+               <p>Ideal: -18°C</p>
+           </td>
+       </tr>
+       `
         }
     })
+    var lista_caminhoes = []
+
+
+    function verMaisCaminhoes() {
+
+        button.innerHTML = ``
+        div_caminhoes.innerHTML = ''
+
+        for (let contador = 0; contador < lista_caminhoes.length; contador++) {
+            let caminhao = lista_caminhoes[contador]
+
+
+            let status = "card-green"
+
+            if (caminhao.status_alerta == "Crítico") {
+                status = "card-red"
+            } else if (caminhao.status_alerta == "Alerta") {
+                status = "card-yellow"
+            }
+
+            div_caminhoes.innerHTML += `
+                    <a href="./caminhao.html?caminhaId=${caminhao.id_veiculo}" class="card-caminhao ${status}">
+                    <div class="topo">
+                        <h3>
+                            Caminhão ${caminhao.placa}
+                        </h3>
+                        <p>
+                            Congelado
+                        </p>
+                    </div>
+
+                    <div class="baixo">
+                        <div class="legenda">
+                            <p>Temperatura</p>
+                            <p>Status</p>
+                        </div>
+
+                        <div class="destaque">
+                            <p>${caminhao.media}°C</p>
+                            <p>${caminhao.status_alerta}</p>
+                        </div>
+                    </div>
+
+                    <span>
+                    ${(ativo / todosVeiculos) * 100}%
+                    </span>`
+
+            progresso_barra.style.width = ((ativo / todosVeiculos) * 100).toFixed(0) + '%'
+            veiculoInativo.innerHTML = `${todosVeiculos - ativo} Inativos`
+        }
+
+        fetch(`/alertas/alertasRecentes/${fkEmpresa}`).then(response => response.json()).then(result => {
+            var alertas = result.alertas
+
+            for (var contador = 0; contador < alertas.length; contador++) {
+                var alerta = alertas[contador]
+                console.log(alerta)
+                var media = (Number(alerta.Porta) + Number(alerta.Centro) + Number(alerta.Fundo)) / 3
+                var status = "green"
+
+                if (caminhao.status_alerta == "Crítico") {
+                    status = "card-red"
+                } else if (caminhao.status_alerta == "Alerta") {
+                    status = "card-yellow"
+                }
+
+                console.log(media, alerta.Porta, alerta.Centro, alerta.Fundo)
+
+                var imagenAlertaPorta = "icon-green.png"
+                var imagenAlertaCentro = "icon-green.png"
+                var imagenAlertaFundo = "icon-green.png"
+
+                if (Number(alerta.Porta) > -14) {
+                    imagenAlertaPorta = "icon-red.png"
+                } else if (Number(alerta.Porta) > -16) {
+                    imagenAlertaPorta = "icon-yellow.png"
+                }
+
+                div_caminhoes.innerHTML += `
+            <a href="./caminhao.html?caminhaId=${caminhao.id_veiculo}" class="card-caminhao ${status}">
+            <div class="topo">
+                <h3>
+                    Caminhão ${caminhao.placa}
+                </h3>
+                <p>
+                    Congelado
+                </p>
+            </div>
+            <div class="baixo">
+                <div class="legenda">
+                    <p>Temperatura</p>
+                    <p>Status</p>
+                </div>
+                <div class="destaque">
+                    <p>${caminhao.media}°C</p>
+                    <p>${caminhao.status_alerta}</p>
+                </div>
+            </div>
+            <span>
+            </span>
+        </a>
+        `
+
+            }
+        })
+    }
+
+    function atualizarCaminhoesPorPlaca() {
+        var placa = select_veiculos.value
+        button.innerHTML = ''
+
+        if (placa == "todos") {
+            verMaisCaminhoes()
+            return;
+        }
+
+        let caminhao_procura = {}
+        for (let index = 0; index < lista_caminhoes.length; index++) {
+            const caminhao = lista_caminhoes[index]
+            if (caminhao.placa == placa) {
+                caminhao_procura = { ...caminhao }
+            }
+        }
+
+
+        let status = "card-green"
+
+        if (caminhao_procura.status_alerta == "Crítico") {
+            status = "card-red"
+        } else if (caminhao_procura.status_alerta == "Alerta") {
+            status = "card-yellow"
+        }
+
+        div_caminhoes.innerHTML = ''
+
+        div_caminhoes.innerHTML += `
+                    <a href="./caminhao.html?caminhaId=${caminhao_procura.id_veiculo}" class="card-caminhao ${status}">
+                    <div class="topo">
+                        <h3>
+                            Caminhão ${caminhao_procura.placa}
+                        </h3>
+                        <p>
+                            Congelado
+                        </p>
+                    </div>
+
+                    <div class="baixo">
+                        <div class="legenda">
+                            <p>Temperatura</p>
+                            <p>Status</p>
+                        </div>
+
+                        <div class="destaque">
+                            <p>${caminhao_procura.media}°C</p>
+                            <p>${caminhao_procura.status_alerta}</p>
+                        </div>
+                    </div>
+
+                    <span>
+
+                    </span>
+                </a>
+                `
+    }
+
+
+
+    function atualizarCaminhoePorPesquisa() {
+        var search = input_pesquisa.value
+
+        button.innerHTML = ''
+        div_caminhoes.innerHTML = ''
+
+        let caminhao_procura = []
+
+        for (let index = 0; index < lista_caminhoes.length; index++) {
+            const caminhao = lista_caminhoes[index]
+            if (caminhao.placa.includes(search.toUpperCase())) {
+                caminhao_procura.push(caminhao)
+            }
+        }
+
+
+        for (let contador = 0; contador < caminhao_procura.length; contador++) {
+
+            const caminhao = caminhao_procura[contador]
+
+            let status = "card-green"
+
+            if (caminhao.status_alerta == "Crítico") {
+                status = "card-red"
+            } else if (caminhao.status_alerta == "Alerta") {
+                status = "card-yellow"
+            }
+
+            div_caminhoes.innerHTML += `
+            <a href="./caminhao.html?caminhaId=${caminhao.id_veiculo}" class="card-caminhao ${status}">
+            <div class="topo">
+                <h3>
+                    Caminhão ${caminhao.placa}
+                </h3>
+                <p>
+                    Congelado
+                </p>
+            </div>
+            <div class="baixo">
+                <div class="legenda">
+                    <p>Temperatura</p>
+                    <p>Status</p>
+                </div>
+                <div class="destaque">
+                    <p>${caminhao.media}°C</p>
+                    <p>${caminhao.status_alerta}</p>
+                </div>
+            </div>
+            <span>
+            </span>
+            </a>
+            `
+
+        }
+
+    }
+
 
 </script>

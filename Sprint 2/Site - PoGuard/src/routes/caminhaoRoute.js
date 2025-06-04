@@ -11,4 +11,8 @@ router.get("/atualizarDados", function (req, res) {
     caminhaoController.atualizarDados(req, res)
 })
 
+router.get("/listar", function (req, res) {
+    caminhaoController.listarCaminhoes(req, res)
+})
+
 module.exports = router
