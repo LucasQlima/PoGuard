@@ -7,4 +7,8 @@ router.get("/frotaAtiva/:fkEmpresa", function (req, res) {
     dashboardController.frotaAtiva(req, res)
 })
 
+router.get("/ativaStatus/:fkEmpresa", function (req, res) {
+    dashboardController.ativaStatus(req, res)
+})
+
 module.exports = router

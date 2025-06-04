@@ -106,8 +106,8 @@
                     Status dos caminhões(Ativos)
                 </h4>
 
-                <span>
-                    <h3 id="card_frota">
+                <span id="card_ativo">
+                    <h3>
                         4/6
                     </h3>
                     <span>
@@ -378,6 +378,7 @@
     var alertasAtuais = []
     var dayFinal
     var monthFinal
+    var dadosStatus
 
     function getDayAndMonth() {
         var today = new Date();
@@ -420,7 +421,8 @@
         .then(response => response.json())
         .then(result => {
             var dados = result.alertas
-            console.log(dados)
+
+
 
             var ativo = 0
             var todosVeiculos = 0
@@ -445,12 +447,68 @@
             veiculoInativo.innerHTML = `${todosVeiculos - ativo} Inativos`
         })
 
+    fetch(`/dashboardRoute/ativaStatus/${fkEmpresa}`, {
+        method: "GET"
+    })
+        .then(response => response.json())
+        .then(result => {
+            dadosStatus = result.alertas
+
+            var idealAtivo = 0
+            var alertaAtivo = 0
+            var criticoAtivo = 0
+            var totalAtivo = 0
+            var porcentagemAtiva
+
+            for (var i = 0; i < dadosStatus.length; i++) {
+                var media = (Number(dadosStatus[i].temperatura_porta) + Number(dadosStatus[i].temperatura_centro) + Number(dadosStatus[i].temperatura_fundo)) / 3
+
+                totalAtivo += 1
+                if (media > -14) {
+                    criticoAtivo += 1
+                } else if (media > -16) {
+                    alertaAtivo += 1
+                } else {
+                    idealAtivo += 1
+                }
+                console.log(media)
+                console.log(idealAtivo, alertaAtivo, criticoAtivo)
+            }
+            porcentagemAtiva = ((idealAtivo / totalAtivo) * 100).toFixed(0)
+
+            if (porcentagemAtiva != 'NaN') {
+                card_ativo.innerHTML = `
+                    <h3>
+                    ${idealAtivo}/${totalAtivo}
+                    </h3>
+                    <span>
+                    ${porcentagemAtiva}%
+                    </span>`
+            }else {
+                card_ativo.innerHTML = `
+                    <h3>
+                    ${idealAtivo}/${totalAtivo}
+                    </h3>
+                    <span>
+                    0%
+                    </span>`
+            }
+
+
+
+            green_quantidade.innerHTML = idealAtivo
+            yellow_quantidade.innerHTML = alertaAtivo
+            red_quantidade.innerHTML = criticoAtivo
+
+        })
+
     fetch(`/alertas/alertasRecentes/${fkEmpresa}`).then(response => response.json()).then(result => {
         var alertas = result.alertas
 
         for (var contador = 0; contador < alertas.length; contador++) {
             var alerta = alertas[contador]
-            console.log(alerta)
+
+
             var media = (Number(alerta.Porta) + Number(alerta.Centro) + Number(alerta.Fundo)) / 3
             var status = "green"
 
@@ -460,7 +518,8 @@
                 status = "yellow"
             }
 
-            console.log(media, alerta.Porta, alerta.Centro, alerta.Fundo)
+
+
 
             var imagenAlertaPorta = "icon-green.png"
             var imagenAlertaCentro = "icon-green.png"

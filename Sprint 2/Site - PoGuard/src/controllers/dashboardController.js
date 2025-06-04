@@ -14,6 +14,21 @@ function frotaAtiva(req, res) {
 
 }
 
+function ativaStatus(req, res) {
+
+    var fkEmpresa = req.params.fkEmpresa
+
+    dashboardModel.ativaStatus(fkEmpresa)
+        .then((alertas) => {
+
+            res.status(200).json({
+                alertas: alertas
+            })
+        })
+
+}
+
 module.exports = {
-    frotaAtiva
+    frotaAtiva,
+    ativaStatus
 }
