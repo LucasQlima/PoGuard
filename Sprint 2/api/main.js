@@ -11,7 +11,7 @@ const SERVIDOR_PORTA = 3300;
 const HABILITAR_OPERACAO_INSERIR = true;
 
 // função para comunicação serial
-const serial = async (valoresSensorAnalogico) => {
+const serial = async () => {
   let poolBancoDados = mysql
     .createPool({
       host: "10.18.32.79",
@@ -60,136 +60,72 @@ const serial = async (valoresSensorAnalogico) => {
     .on("data", async (data) => {
       const temperaturas = data.split(";")
 
-      // caminhão 1
-      const temperatura1 = temperaturas[0]
-      const temperatura2 = temperaturas[1]
-      const temperatura3 = temperaturas[2]
+      const temperaturasValidas = []
 
-      // caminhão 2
-      const temperatura4 = temperaturas[3]
-      const temperatura5 = temperaturas[4]
-      const temperatura6 = temperaturas[5]
-
-
-      // caminhão 3
-      const temperatura7 = temperaturas[6]
-      const temperatura8 = temperaturas[7]
-      const temperatura9 = temperaturas[8]
-
-
-      var sensor = {
-        idSensorPorta: 1,
-        idSensorCentro: 2,
-        idSensorFundo: 3
+      for (let contador = 0; contador < temperaturas.length; contador++) {
+        const temperatura = temperaturas[contador]
+        temperaturasValidas.push(parseFloat(temperatura).toFixed(2))
       }
 
+      var todosNumeros = true
+
+      for (let contador = 0; contador < temperaturasValidas.length; contador++) {
+        var numero = temperaturasValidas[contador]
+
+        if (numero == undefined || numero == null) {
+          todosNumeros = false
+          break
+        }
+      }
+      if (HABILITAR_OPERACAO_INSERIR && todosNumeros) {
+
+        for (let contador = 1; contador < temperaturasValidas.length; contador += 3) {
+          const temperaturaPorta = temperaturasValidas[contador - 1]
+          const temperaturaCentro = temperaturasValidas[contador]
+          const temperaturaFundo = temperaturasValidas[contador + 1]
+
+          const temperaturaMedia = parseFloat((Number(temperaturaPorta) + Number(temperaturaCentro) + Number(temperaturaFundo)) / 3).toFixed(2)
+          // SENSOR PORTA
+          const idSensorPorta = contador
+          var insercaoDoDadoPorta = await poolBancoDados.execute(
+            "INSERT INTO TBL_DADO (temperatura, fkSensor) VALUES (?, ?)",
+            [temperaturaPorta, idSensorPorta]
+          );
+
+          // SENSOR CENTRO
+          const idSensorCentro = contador + 1
+          var insercaoDoDadoCentro = await poolBancoDados.execute(
+            "INSERT INTO TBL_DADO (temperatura, fkSensor) VALUES (?, ?)",
+            [temperaturaCentro, idSensorCentro]
+          );
+
+          // SENSOR FUNDO
+          const idSensorFundo = contador + 2
+          var insercaoDoDadoFundo = await poolBancoDados.execute(
+            "INSERT INTO TBL_DADO (temperatura, fkSensor) VALUES (?, ?)",
+            [temperaturaFundo, idSensorFundo]
+          );
 
 
-      console.log(`Temperatura 1 ${temperatura1}, Temperatura 2 ${temperatura2} Temperatura 3 ${temperatura3}   `)
-      // insere os dados no banco de dados (se habilitado)
-      if (HABILITAR_OPERACAO_INSERIR && temperatura1 && temperatura2 && temperatura3 && temperatura4 && temperatura5 && temperatura6 && temperatura7 && temperatura8 && temperatura9) {
-        // este insert irá inserir os dados na tabela "medida"
-        // CAMINÃO 1
-        var insercaoDoDado1 = await poolBancoDados.execute(
-          "INSERT INTO TBL_DADO (temperatura, fkSensor) VALUES (?, ?)",
-          [temperatura1, sensor.idSensorPorta]
-        );
+          if (temperaturaMedia >= -999999) {
+            const sensores = {
+              idSensorPorta,
+              idSensorCentro,
+              idSensorFundo
+            }
 
-        var insercaoDoDado2 = await poolBancoDados.execute(
-          "INSERT INTO TBL_DADO (temperatura, fkSensor) VALUES (?, ?)",
-          [temperatura2, sensor.idSensorCentro]
-        );
+            const dados = {
+              dadoIdPorta: parseFloat(insercaoDoDadoPorta[0].insertId),
+              dadoIdCentro: parseFloat(insercaoDoDadoCentro[0].insertId),
+              dadoIdFundo: parseFloat(insercaoDoDadoFundo[0].insertId)
+            }
 
-        var insercaoDoDado3 = await poolBancoDados.execute(
-          "INSERT INTO TBL_DADO (temperatura, fkSensor) VALUES (?, ?)",
-          [temperatura3, sensor.idSensorFundo]
-        );
-
-        var temperaturaMedia = (parseFloat(temperatura1) + parseFloat(temperatura2) + parseFloat(temperatura3)) / 3
-        if (temperaturaMedia >= -999999) {
-
-          var dado = {
-            dadoIdPorta: parseFloat(insercaoDoDado1[0].insertId), dadoIdCentro: parseFloat(insercaoDoDado2[0].insertId), dadoIdFundo: parseFloat(insercaoDoDado3[0].insertId)
+            await inserirAlerta(sensores, dados, temperaturaMedia)
           }
-
-          await inserirAlerta(sensor, dado, temperaturaMedia)
-
         }
-
-
-        sensor = {
-          idSensorPorta: 4,
-          idSensorCentro: 5,
-          idSensorFundo: 6
-        }
-
-
-        // CAMINÃO 2
-        insercaoDoDado1 = await poolBancoDados.execute(
-          "INSERT INTO TBL_DADO (temperatura, fkSensor) VALUES (?, ?)",
-          [temperatura4, sensor.idSensorPorta]
-        );
-
-        insercaoDoDado2 = await poolBancoDados.execute(
-          "INSERT INTO TBL_DADO (temperatura, fkSensor) VALUES (?, ?)",
-          [temperatura5, sensor.idSensorCentro]
-        );
-
-        insercaoDoDado3 = await poolBancoDados.execute(
-          "INSERT INTO TBL_DADO (temperatura, fkSensor) VALUES (?, ?)",
-          [temperatura6, sensor.idSensorFundo]
-        );
-
-        temperaturaMedia = (parseFloat(temperatura4) + parseFloat(temperatura5) + parseFloat(temperatura6)) / 3
-        if (temperaturaMedia >= -999999) {
-
-          var dado = {
-            dadoIdPorta: parseFloat(insercaoDoDado1[0].insertId), dadoIdCentro: parseFloat(insercaoDoDado2[0].insertId), dadoIdFundo: parseFloat(insercaoDoDado3[0].insertId)
-          }
-
-          await inserirAlerta(sensor, dado, temperaturaMedia)
-        }
-
-
-
-        sensor = {
-          idSensorPorta: 7,
-          idSensorCentro: 8,
-          idSensorFundo: 9
-        }
-
-
-        // CAMINÃO 2
-        insercaoDoDado1 = await poolBancoDados.execute(
-          "INSERT INTO TBL_DADO (temperatura, fkSensor) VALUES (?, ?)",
-          [temperatura7, sensor.idSensorPorta]
-        );
-
-        insercaoDoDado2 = await poolBancoDados.execute(
-          "INSERT INTO TBL_DADO (temperatura, fkSensor) VALUES (?, ?)",
-          [temperatura8, sensor.idSensorCentro]
-        );
-
-        insercaoDoDado3 = await poolBancoDados.execute(
-          "INSERT INTO TBL_DADO (temperatura, fkSensor) VALUES (?, ?)",
-          [temperatura9, sensor.idSensorFundo]
-        );
-
-        temperaturaMedia = (parseFloat(temperatura7) + parseFloat(temperatura8) + parseFloat(temperatura9)) / 3
-        if (temperaturaMedia >= -999999) {
-
-          var dado = {
-            dadoIdPorta: parseFloat(insercaoDoDado1[0].insertId), dadoIdCentro: parseFloat(insercaoDoDado2[0].insertId), dadoIdFundo: parseFloat(insercaoDoDado3[0].insertId)
-          }
-
-          await inserirAlerta(sensor, dado, temperaturaMedia)
-        }
-
-
       }
     });
 
-  // evento para lidar com erros na comunicação serial
   arduino.on("error", (mensagem) => {
     console.error(`Erro no arduino (Mensagem: ${mensagem}`);
   });
@@ -313,7 +249,7 @@ async function inserirAlerta(sensor, dado, temperaturaMedia) {
 
   if (status !== alertaDoStatus) {
     await poolBancoDados.execute(
-      "INSERT INTO TBL_ALERTA VALUES (DEFAULT, DEFAULT, NULL, ?, ?, ?)",
+      "INSERT INTO TBL_ALERTA VALUES (DEFAULT, DEFAULT, ?, ?, ?)",
       [dado.dadoIdPorta, dado.dadoIdCentro, dado.dadoIdFundo]
     );
     console.log(`🚨 ALERTA GERADO - Status: ${status}, Média: ${temperaturaMedia}`);
