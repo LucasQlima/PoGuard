@@ -59,26 +59,30 @@
                         senhaServer: senha
                     })
                 }).then((response) => {
-                    response.json().then(resultado => {
-                        sessionStorage.EMAIL_USUARIO = resultado.email;
-                        sessionStorage.NOME_USUARIO = resultado.nome;
-                        sessionStorage.ID_USUARIO = resultado.idUsuario;
-                        sessionStorage.EMPRESA = resultado.empresa
-                        sessionStorage.FK_EMPRESA = resultado.fkEmpresa
+                    if (response.ok) {
+                        response.json().then(resultado => {
+                            sessionStorage.EMAIL_USUARIO = resultado.email;
+                            sessionStorage.NOME_USUARIO = resultado.nome;
+                            sessionStorage.ID_USUARIO = resultado.idUsuario;
+                            sessionStorage.EMPRESA = resultado.empresa
+                            sessionStorage.FK_EMPRESA = resultado.fkEmpresa
 
-                        mensagem = 'Login válido!';
+                            div_mensagem.innerHTML = '<span style="color:#21b821">Login válido!</span>';
 
-                        setTimeout(() => {
-                            window.location.href = "dashboard.html";
-                        }, 1000);
-                    })
+                            setTimeout(() => {
+                                window.location.href = "dashboard.html";
+                            }, 1000);
+                        })
+                    } else {
+                        div_mensagem.innerHTML = "credenciais invalidas"
+                    }
+
                 }).catch(() => {
                     console.log("deu ruim")
                 })
 
 
             }
-            div_mensagem.innerHTML = mensagem;
         }
     </script>
 </body>
