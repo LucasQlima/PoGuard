@@ -67,6 +67,7 @@
         mensagem = 'A confirmação de senha deve ser igual à senha.';
         alert('A confirmação de senha deve ser igual à senha.');
       } else {
+        console.log("entrando no else")
         fetch("/usuarioRoute/cadastrar", {
           method: "POST",
           headers: {
@@ -79,18 +80,30 @@
             codigoEmpresaServer: codigoEmpresa
           })
         }).then((response) => {
-          mensagem = 'Cadastro válido!';
-          setTimeout(() => {
-            window.location.href = "login.html";
-            response.json().then(resultado => {
-              console.log(resultado)
-            }, 1000);
-          })
+          if (response.status == 400) {
+            div_mensagem.innerHTML = "Código invalido da empresa"
+          } else if (response.status == 401) {
+            div_mensagem.innerHTML = "email já existente"
+          } else {
+            response.json().then(result => {
+              console.log(result)
+              div_mensagem.innerHTML = '<span style="color:#21b821">Cadastro válido!</span>';
+              setTimeout(() => {
+                window.location.href = "login.html";
+                response.json().then(resultado => {
+                  console.log(resultado)
+                }, 1000);
+              })
+            })
+          }
+
+        }).catch((err) => {
+          console.log(err)
+          console.log("deu ruim")
         })
 
       }
 
-      div_mensagem.innerHTML = mensagem;
     }
   </script>
 </body>

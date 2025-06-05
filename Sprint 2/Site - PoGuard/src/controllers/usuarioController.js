@@ -8,33 +8,34 @@ function cadastrar(req, res) {
     var senha = req.body.senhaServer
     var codigoEmpresa = req.body.codigoEmpresaServer
     var cargo = 'funcionario'
-  
+
     empresaModel.encontrarEmpresaPeloCodigo(codigoEmpresa)
         .then(
-            function(resultadoEmpresa) {
+            function (resultadoEmpresa) {
                 console.log(resultadoEmpresa)
-                if(resultadoEmpresa.length == 0) {
-                    res.status(400) 
+                if (resultadoEmpresa.length == 0) {
+                    return res.status(400).json()
                 }
-        usuarioModel.cadastrar(nome, email, senha, cargo, resultadoEmpresa[0].idEmpresa)
-        .then(
-            function (resultado) {
-                res.json(resultado)
-            }
-        ).catch(
-            function (erro) {
-                console.log(erro)
-                console.log(
-                    "\n Houve um erro ao realizar o cadastro! Erro: "
-                );
-                res.status(500).json(erro.sqlMessage)
+
+                usuarioModel.cadastrar(nome, email, senha, cargo, resultadoEmpresa[0].idEmpresa)
+                    .then(
+                        function (resultado) {
+                            return res.json(resultado)
+                        }
+                    ).catch(
+                        function (erro) {
+                            console.log(erro)
+                            console.log(
+                                "\n Houve um erro ao realizar o cadastro! Erro: "
+                            );
+                            return res.status(401).json()
+                        }
+                    )
             }
         )
-    }
-)
 
     // TO-DO: verificar código de ativação da empresa se for valido
-    
+
 }
 
 //Autenticar
