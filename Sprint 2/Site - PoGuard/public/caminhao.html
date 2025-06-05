@@ -71,9 +71,9 @@
     </div>
 
     <!-- CONTENT -->
-    <div class="content-right" id="placaCaminhao">
+    <div class="content-right">
 
-        <h1>
+        <h1 id="placaCaminhao">
             Dashboard -
         </h1>
 
@@ -263,8 +263,10 @@
 <script>
     noma_usuario.innerHTML = sessionStorage.NOME_USUARIO
     nome_empresa.innerHTML = sessionStorage.EMPRESA
-    // placaCaminhao.innerHTML = `
-    // <h1>Dashboard - ${sessionStorage.PLACA_CAMINHAO}</h1>`
+    var placa = url.searchParams.get('placa')
+    placaCaminhao.innerHTML = `
+    <h1>Dashboard - ${placa}</h1>`
+
     var url = new URL(window.location.href)
     var idCaminhao = url.searchParams.get('caminhaoId')
     console.log(idCaminhao)
