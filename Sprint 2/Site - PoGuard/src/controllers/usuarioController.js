@@ -7,7 +7,6 @@ function cadastrar(req, res) {
     var email = req.body.emailServer
     var senha = req.body.senhaServer
     var codigoEmpresa = req.body.codigoEmpresaServer
-    var cargo = 'funcionario'
 
     empresaModel.encontrarEmpresaPeloCodigo(codigoEmpresa)
         .then(
@@ -17,7 +16,7 @@ function cadastrar(req, res) {
                     return res.status(400).json()
                 }
 
-                usuarioModel.cadastrar(nome, email, senha, cargo, resultadoEmpresa[0].idEmpresa)
+                usuarioModel.cadastrar(nome, email, senha, resultadoEmpresa[0].idEmpresa)
                     .then(
                         function (resultado) {
                             return res.json(resultado)
@@ -33,9 +32,6 @@ function cadastrar(req, res) {
                     )
             }
         )
-
-    // TO-DO: verificar código de ativação da empresa se for valido
-
 }
 
 //Autenticar
