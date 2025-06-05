@@ -12,7 +12,7 @@
     <title>Dashboard | Polus</title>
 </head>
 
-<body>
+<body onload="fetchAlerts()">
     <!-- NAVBAR -->
     <div class="nav-bar-left">
         <div class="top">
@@ -110,52 +110,53 @@
     noma_usuario.innerHTML = sessionStorage.NOME_USUARIO
     nome_empresa.innerHTML = sessionStorage.EMPRESA
 
-    var fkEmpresa = sessionStorage.FK_EMPRESA
 
-    fetch(`/alertas/todosAlertas/${fkEmpresa}`)
-        .then(response => response.json())
-        .then(result => {
-            var alertas = result.alertas
+    function fetchAlerts() {
+        var fkEmpresa = sessionStorage.FK_EMPRESA
+        fetch(`/alertas/todosAlertas/${fkEmpresa}`)
+            .then(response => response.json())
+            .then(result => {
+                var alertas = result.alertas
 
-            for (var contador = 0; contador < alertas.length; contador++) {
-                var alerta = alertas[contador]
-                console.log(alerta)
-                var media = (Number(alerta.Porta) + Number(alerta.Centro) + Number(alerta.Fundo)) / 3
-                var status = "green"
+                for (var contador = 0; contador < alertas.length; contador++) {
+                    var alerta = alertas[contador]
+                    console.log(alerta)
+                    var media = (Number(alerta.Porta) + Number(alerta.Centro) + Number(alerta.Fundo)) / 3
+                    var status = "green"
 
-                if (media > -14) {
-                    status = "red"
-                } else if (media > -16) {
-                    status = "yellow"
-                }
+                    if (media > -14) {
+                        status = "red"
+                    } else if (media > -16) {
+                        status = "yellow"
+                    }
 
-                console.log(media, alerta.Porta, alerta.Centro, alerta.Fundo)
+                    console.log(media, alerta.Porta, alerta.Centro, alerta.Fundo)
 
 
-                var imagenAlertaPorta = "icon-green.png"
-                var imagenAlertaCentro = "icon-green.png"
-                var imagenAlertaFundo = "icon-green.png"
+                    var imagenAlertaPorta = "icon-green.png"
+                    var imagenAlertaCentro = "icon-green.png"
+                    var imagenAlertaFundo = "icon-green.png"
 
-                if (Number(alerta.Porta) > -14) {
-                    imagenAlertaPorta = "icon-red.png"
-                } else if (Number(alerta.Porta) > -16) {
-                    imagenAlertaPorta = "icon-yellow.png"
-                }
+                    if (Number(alerta.Porta) > -14) {
+                        imagenAlertaPorta = "icon-red.png"
+                    } else if (Number(alerta.Porta) > -16) {
+                        imagenAlertaPorta = "icon-yellow.png"
+                    }
 
-                if (Number(alerta.Centro) > -14) {
-                    imagenAlertaCentro = "icon-red.png"
-                } else if (Number(alerta.Centro) > -16) {
-                    imagenAlertaCentro = "icon-yellow.png"
-                }
+                    if (Number(alerta.Centro) > -14) {
+                        imagenAlertaCentro = "icon-red.png"
+                    } else if (Number(alerta.Centro) > -16) {
+                        imagenAlertaCentro = "icon-yellow.png"
+                    }
 
-                if (Number(alerta.Fundo) > -14) {
-                    imagenAlertaFundo = "icon-red.png"
-                } else if (Number(alerta.Fundo) > -16) {
-                    imagenAlertaFundo = "icon-yellow.png"
-                }
+                    if (Number(alerta.Fundo) > -14) {
+                        imagenAlertaFundo = "icon-red.png"
+                    } else if (Number(alerta.Fundo) > -16) {
+                        imagenAlertaFundo = "icon-yellow.png"
+                    }
 
-                table_alerts.innerHTML += `
-            <tr class="row-${status}">
+                    table_alerts.innerHTML += `
+            <tr class="row-${status} row" onclick="redirectPage(${alerta.id_veiculo})">
                 <td class="truck">
                     <img src="./assets/icons/trunck-${status}.png" alt="truck red" width="40" height="40">
                     <span>
@@ -183,7 +184,16 @@
                 </td>
             </tr>
             `
-            }
-        })
+                }
 
+                setTimeout(fetchAlerts, 1000)
+            })
+
+
+
+    }
+
+    function redirectPage(idCaminhao) {
+        window.location.href = `./caminhao.html?caminhaoId=${idCaminhao}`
+    }
 </script>

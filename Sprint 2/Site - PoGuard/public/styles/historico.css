@@ -154,3 +154,7 @@ svg {
   margin-bottom: 18px;
   transform: translateX(-20px);
 }
+
+.row {
+  cursor: pointer;
+}
