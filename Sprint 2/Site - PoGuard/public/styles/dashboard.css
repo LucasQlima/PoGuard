@@ -692,3 +692,7 @@ td {
 .status-trucks p {
   color: black !important;
 }
+
+.row {
+  cursor: pointer;
+}

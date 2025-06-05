@@ -378,8 +378,6 @@
             table_alerts.innerHTML = ''
             for (var contador = 0; contador < alertas.length; contador++) {
                 var alerta = alertas[contador]
-
-
                 var media = (Number(alerta.Porta) + Number(alerta.Centro) + Number(alerta.Fundo)) / 3
                 var status = "green"
 
@@ -388,9 +386,6 @@
                 } else if (media > -16) {
                     status = "yellow"
                 }
-
-
-
 
                 var imagenAlertaPorta = "icon-green.png"
                 var imagenAlertaCentro = "icon-green.png"
@@ -415,7 +410,7 @@
                 }
 
                 table_alerts.innerHTML += `
-            <tr class="row-${status}">
+            <tr class="row-${status} row" onclick="redirectPage(${alerta.id_veiculo})">
                 <td class="truck">
                     <img src="./assets/icons/trunck-${status}.png" alt="truck red" width="40" height="40">
                     <span>
@@ -665,7 +660,7 @@
                 }
 
                 div_caminhoes.innerHTML += `
-                <a href="./caminhao.html?caminhaId=${caminhao.id_veiculo}" class="card-caminhao ${status}">
+                <a href="./caminhao.html?caminhaoId=${caminhao.id_veiculo}" class="card-caminhao ${status}">
                 <div class="topo">
                     <h3>
                         Caminhão ${caminhao.placa}
@@ -756,4 +751,8 @@
 
     }
 
+
+    function redirectPage(idCaminhao) {
+        window.location.href = `./caminhao.html?caminhaoId=${idCaminhao}`
+    }
 </script>
