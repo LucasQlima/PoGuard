@@ -11,10 +11,10 @@ const SERVIDOR_PORTA = 3300;
 const HABILITAR_OPERACAO_INSERIR = true;
 
 // função para comunicação serial
-const serial = async (valoresSensorAnalogico) => {
+const serial = async () => {
   let poolBancoDados = mysql
     .createPool({
-      host: "10.18.32.152",
+      host: "10.18.32.79",
       user: "poguard",
       password: "sptech#123",
       database: "PoGuard",
@@ -60,58 +60,72 @@ const serial = async (valoresSensorAnalogico) => {
     .on("data", async (data) => {
       const temperaturas = data.split(";")
 
-      const temperatura1 = temperaturas[0]
-      const temperatura2 = temperaturas[1]
-      const temperatura3 = temperaturas[2]
+      const temperaturasValidas = []
 
+      for (let contador = 0; contador < temperaturas.length; contador++) {
+        const temperatura = temperaturas[contador]
+        temperaturasValidas.push(parseFloat(temperatura).toFixed(2))
+      }
 
+      var todosNumeros = true
 
-      console.log(`Temperatura 1 ${temperatura1}, Temperatura 2 ${temperatura2} Temperatura 3 ${temperatura3}   `)
-      // insere os dados no banco de dados (se habilitado)
-      if (HABILITAR_OPERACAO_INSERIR) {
-        // este insert irá inserir os dados na tabela "medida"
-        var insercaoDoDado1 = await poolBancoDados.execute(
-          "INSERT INTO TBL_DADO (temperatura, fkSensor) VALUES (?, ?)",
-          [temperatura1, 1]
-        );
+      for (let contador = 0; contador < temperaturasValidas.length; contador++) {
+        var numero = temperaturasValidas[contador]
 
-        var insercaoDoDado2 = await poolBancoDados.execute(
-          "INSERT INTO TBL_DADO (temperatura, fkSensor) VALUES (?, ?)",
-          [temperatura2, 2]
-        );
-
-        var insercaoDoDado3 = await poolBancoDados.execute(
-          "INSERT INTO TBL_DADO (temperatura, fkSensor) VALUES (?, ?)",
-          [temperatura3, 3]
-        );
-
-        const temperaturaMedia = (Number(temperatura1) + Number(temperatura2) + Number(temperatura3)) / 3
-
-
-        if (temperaturaMedia >= -18) {
-          var dadoIdPorta = Number(insercaoDoDado1[0].insertId)
-          var dadoIdCentro = Number(insercaoDoDado2[0].insertId)
-          var dadoIdFundo = Number(insercaoDoDado3[0].insertId)
-
-          console.log(dadoIdPorta)
-          console.log(dadoIdCentro)
-          console.log(dadoIdFundo)
-
-          poolBancoDados.execute(
-            "INSERT INTO TBL_ALERTA VALUES (DEFAULT, DEFAULT, NULL, ?, ?, ?)",
-            [dadoIdPorta, dadoIdCentro, dadoIdFundo]
-          );
-          console.log(`ALERTA  ${temperaturaMedia}!!!`)
-          //   // console.log(`Temperatura Media ${temperaturaMedia}`)
-
-
+        if (numero == undefined || numero == null) {
+          todosNumeros = false
+          break
         }
+      }
+      if (HABILITAR_OPERACAO_INSERIR && todosNumeros) {
 
-        console.log("valores inseridos no banco: ", data);
+        for (let contador = 1; contador < temperaturasValidas.length; contador += 3) {
+          const temperaturaPorta = temperaturasValidas[contador - 1]
+          const temperaturaCentro = temperaturasValidas[contador]
+          const temperaturaFundo = temperaturasValidas[contador + 1]
+
+          const temperaturaMedia = parseFloat((Number(temperaturaPorta) + Number(temperaturaCentro) + Number(temperaturaFundo)) / 3).toFixed(2)
+          // SENSOR PORTA
+          const idSensorPorta = contador
+          var insercaoDoDadoPorta = await poolBancoDados.execute(
+            "INSERT INTO TBL_DADO (temperatura, fkSensor) VALUES (?, ?)",
+            [temperaturaPorta, idSensorPorta]
+          );
+
+          // SENSOR CENTRO
+          const idSensorCentro = contador + 1
+          var insercaoDoDadoCentro = await poolBancoDados.execute(
+            "INSERT INTO TBL_DADO (temperatura, fkSensor) VALUES (?, ?)",
+            [temperaturaCentro, idSensorCentro]
+          );
+
+          // SENSOR FUNDO
+          const idSensorFundo = contador + 2
+          var insercaoDoDadoFundo = await poolBancoDados.execute(
+            "INSERT INTO TBL_DADO (temperatura, fkSensor) VALUES (?, ?)",
+            [temperaturaFundo, idSensorFundo]
+          );
+
+
+          if (temperaturaMedia >= -999999) {
+            const sensores = {
+              idSensorPorta,
+              idSensorCentro,
+              idSensorFundo
+            }
+
+            const dados = {
+              dadoIdPorta: parseFloat(insercaoDoDadoPorta[0].insertId),
+              dadoIdCentro: parseFloat(insercaoDoDadoCentro[0].insertId),
+              dadoIdFundo: parseFloat(insercaoDoDadoFundo[0].insertId)
+            }
+
+            await inserirAlerta(sensores, dados, temperaturaMedia)
+          }
+        }
       }
     });
 
-  // evento para lidar com erros na comunicação serial
   arduino.on("error", (mensagem) => {
     console.error(`Erro no arduino (Mensagem: ${mensagem}`);
   });
@@ -153,3 +167,94 @@ const servidor = (valoresSensorAnalogico) => {
   // inicia o servidor web
   servidor(valoresSensorAnalogico);
 })();
+
+
+
+// perfeito estado -> não gera alertas
+// com problema na porta ->  somente portas negativo
+// com medía está horrivel -> alertas constantes 
+
+
+async function inserirAlerta(sensor, dado, temperaturaMedia) {
+
+  let poolBancoDados = mysql
+    .createPool({
+      host: "10.18.32.79",
+      user: "poguard",
+      password: "sptech#123",
+      database: "PoGuard",
+      port: 3306,
+    })
+    .promise();
+
+  var consultaDoUltimoAlert = `
+            SELECT
+            dadoPorta.temperatura AS Porta,
+            dadoCentro.temperatura AS Centro,
+            dadoFundo.temperatura AS Fundo,
+            TRUNCATE((
+                dadoPorta.temperatura +
+                dadoCentro.temperatura +
+                dadoFundo.temperatura
+            ) / 3, 2) AS Media,
+            CASE
+                WHEN TRUNCATE((
+                    dadoPorta.temperatura +
+                    dadoCentro.temperatura +
+                    dadoFundo.temperatura
+                ) / 3, 2) > -14 THEN 'Crítico'
+
+                WHEN TRUNCATE((
+                    dadoPorta.temperatura +
+                    dadoCentro.temperatura +
+                    dadoFundo.temperatura
+                ) / 3, 2) > -16 AND TRUNCATE((
+                    dadoPorta.temperatura +
+                    dadoCentro.temperatura +
+                    dadoFundo.temperatura
+                ) / 3, 2) <= -14 THEN 'Alerta'
+                ELSE 'Ideal'
+            END AS Status_alerta
+        FROM
+            TBL_ALERTA AS alerta
+        JOIN TBL_DADO AS dadoPorta ON dadoPorta.idDado = alerta.fkDadoPorta
+        JOIN TBL_SENSOR AS sensorPorta ON sensorPorta.idSensor = dadoPorta.fkSensor
+        JOIN TBL_DADO AS dadoCentro ON dadoCentro.idDado = alerta.fkDadoCentro
+        JOIN TBL_SENSOR AS sensorCentro ON sensorCentro.idSensor = dadoCentro.fkSensor
+        JOIN TBL_DADO AS dadoFundo ON dadoFundo.idDado = alerta.fkDadoFundo
+        JOIN TBL_SENSOR AS sensorFundo ON sensorFundo.idSensor = dadoFundo.fkSensor
+        JOIN TBL_VEICULO AS veiculo ON veiculo.idVeiculo = sensorPorta.fkVeiculo
+        WHERE
+            veiculo.fkEmpresa = 1 AND
+            sensorPorta.idSensor = ${sensor.idSensorPorta} AND
+            sensorCentro.idSensor = ${sensor.idSensorCentro} AND
+            sensorFundo.idSensor = ${sensor.idSensorFundo}
+        GROUP BY
+            veiculo.idVeiculo, veiculo.placa, alerta.dtAlerta,
+            dadoPorta.temperatura, dadoCentro.temperatura, dadoFundo.temperatura
+        ORDER BY
+            alerta.dtAlerta DESC
+            LIMIT 1;
+          `
+  var alerta = await poolBancoDados.execute(consultaDoUltimoAlert);
+  var ultimoAlerta = alerta[0][0]; // Pega o primeiro resultado, se existir
+
+  var alertaDoStatus = ultimoAlerta ? ultimoAlerta.Status_alerta : null;
+  var status = "Ideal"
+  if (temperaturaMedia > -14) {
+    status = "Crítico"
+  } else if (temperaturaMedia > -16) {
+    status = "Alerta"
+  }
+
+  if (status !== alertaDoStatus) {
+    await poolBancoDados.execute(
+      "INSERT INTO TBL_ALERTA VALUES (DEFAULT, DEFAULT, ?, ?, ?)",
+      [dado.dadoIdPorta, dado.dadoIdCentro, dado.dadoIdFundo]
+    );
+    console.log(`🚨 ALERTA GERADO - Status: ${status}, Média: ${temperaturaMedia}`);
+  } else {
+    console.log(`🔍 Status mantido em ${status} - Sem novo alerta`);
+  }
+  await poolBancoDados.end()
+}

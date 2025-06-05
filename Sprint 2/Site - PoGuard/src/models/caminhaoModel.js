@@ -13,19 +13,32 @@ function obterDados(fkCaminhao) {
             (SELECT DISTINCT localSensor FROM TBL_SENSOR WHERE fkVeiculo = ${fkCaminhao}) s
         LEFT JOIN (
             SELECT 
-                d.*,
-                s.localSensor,
-                ROW_NUMBER() OVER (PARTITION BY s.localSensor ORDER BY d.dataHora DESC) AS row_num
+                d1.*
             FROM 
-                TBL_DADO d
+                TBL_DADO d1
             JOIN 
-                TBL_SENSOR s ON d.fkSensor = s.idSensor
+                TBL_SENSOR s1 ON d1.fkSensor = s1.idSensor
             WHERE 
-                s.fkVeiculo = ${fkCaminhao}
-        ) d ON s.localSensor = d.localSensor AND d.row_num <= 10
+                s1.fkVeiculo = ${fkCaminhao}
+                AND (
+                    SELECT COUNT(*) 
+                    FROM TBL_DADO d2
+                    JOIN TBL_SENSOR s2 ON d2.fkSensor = s2.idSensor
+                    WHERE 
+                        s2.localSensor = s1.localSensor 
+                        AND s2.fkVeiculo = ${fkCaminhao}
+                        AND d2.dataHora > d1.dataHora
+                ) < 10
+        ) d ON s.localSensor = (
+            SELECT localSensor 
+            FROM TBL_SENSOR 
+            WHERE idSensor = d.fkSensor 
+            LIMIT 1
+        )
         ORDER BY 
             s.localSensor,
             d.dataHora ASC;`;
+
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
@@ -62,7 +75,78 @@ function atualizarDados(fkCaminhao) {
     return database.executar(instrucaoSql);
 }
 
+function listarCaminhao(fkEmpresa) {
+    var instrucaoSql = `
+    SELECT
+        v.idVeiculo AS id_veiculo,
+        v.placa,
+        TRUNCATE((
+            dp.temperatura +
+            dc.temperatura +
+            df.temperatura
+        ) / 3, 2) AS media,
+        CASE
+            WHEN TRUNCATE((
+            dp.temperatura +
+            dc.temperatura +
+            df.temperatura
+        ) / 3, 2) > -14 THEN 'Crítico'
+            WHEN TRUNCATE((
+            dp.temperatura +
+            dc.temperatura +
+            df.temperatura
+        ) / 3, 2) <= -14 AND TRUNCATE((
+            dp.temperatura +
+            dc.temperatura +
+            df.temperatura
+        ) / 3, 2) > -16 THEN 'Alerta'
+        ELSE 'Ideal'
+        END AS status_alerta,
+        dp.dataHora AS dtTemperatura
+    FROM
+        TBL_VEICULO AS v
+    JOIN TBL_SENSOR AS sp ON v.idVeiculo = sp.fkVeiculo AND sp.localSensor = 'porta'
+    JOIN TBL_SENSOR AS sc ON v.idVeiculo = sc.fkVeiculo AND sc.localSensor = 'centro'
+    JOIN TBL_SENSOR AS sf ON v.idVeiculo = sf.fkVeiculo AND sf.localSensor = 'fundo'
+    JOIN (
+        SELECT d.*
+        FROM TBL_DADO d
+        JOIN (
+            SELECT fkSensor, MAX(dataHora) AS maxData
+            FROM TBL_DADO
+            GROUP BY fkSensor
+        ) ult ON d.fkSensor = ult.fkSensor AND d.dataHora = ult.maxData
+    ) AS dp ON sp.idSensor = dp.fkSensor
+    JOIN (
+        SELECT d.*
+        FROM TBL_DADO d
+        JOIN (
+            SELECT fkSensor, MAX(dataHora) AS maxData
+            FROM TBL_DADO
+            GROUP BY fkSensor
+        ) ult ON d.fkSensor = ult.fkSensor AND d.dataHora = ult.maxData
+    ) AS dc ON sc.idSensor = dc.fkSensor
+    JOIN (
+        SELECT d.*
+        FROM TBL_DADO d
+        JOIN (
+            SELECT fkSensor, MAX(dataHora) AS maxData
+            FROM TBL_DADO
+            GROUP BY fkSensor
+        ) ult ON d.fkSensor = ult.fkSensor AND d.dataHora = ult.maxData
+    ) AS df ON sf.idSensor = df.fkSensor
+    WHERE
+        v.fkEmpresa = ${fkEmpresa}
+    ORDER BY
+        dtTemperatura DESC;
+    `
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql)
+}
+
 module.exports = {
     obterDados,
-    atualizarDados
+    atualizarDados,
+    listarCaminhao
 }

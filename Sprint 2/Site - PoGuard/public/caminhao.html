@@ -19,7 +19,7 @@
             </div>
             <div class="links">
                 <ul>
-                    <li id="active">
+                    <li>
                         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="36" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                             class="lucide lucide-chart-pie-icon lucide-chart-pie">
@@ -29,15 +29,16 @@
                         </svg>
                         <a href="./dashboard.html">Dashboard</a>
                     </li>
-                    <li>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="36" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="lucide lucide-bell-icon lucide-bell">
-                            <path d="M10.268 21a2 2 0 0 0 3.464 0" />
-                            <path
-                                d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326" />
-                        </svg>
-                        <a href="./historico.html">Notificação</a>
+                    <li><a href="./historico.html" id="a_notificacao">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="36" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-bell-icon lucide-bell">
+                                <path d="M10.268 21a2 2 0 0 0 3.464 0" />
+                                <path
+                                    d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326" />
+                            </svg>
+                            <p>Notificação</p>
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -72,8 +73,8 @@
     <!-- CONTENT -->
     <div class="content-right">
 
-        <h1>
-            Dashboard - MXK-9661
+        <h1 id="placaCaminhao">
+            Dashboard -
         </h1>
 
         <div class="card">
@@ -215,7 +216,7 @@
 
 
                         <p>
-                            Temperatura fora do padrão , acima de -18°.
+                            Temperatura abaixo de -16°.
                         </p>
                         <img src="./assets/imgs/sensor-green.png" width="24" height="35" />
                     </div>
@@ -229,7 +230,7 @@
 
 
                         <p>
-                            Temperatura fora do padrão , abaixo de -14°.
+                            Temperatura acima de -15.9°.
                         </p>
                         <img src="./assets/imgs/sensor-yellow.png" width="24" height="35" />
                     </div>
@@ -243,7 +244,7 @@
 
 
                         <p>
-                            Temperatura fora do padrão , abaixo de -10°.
+                            Temperatura acima de -14°.
                         </p>
                         <img src="./assets/imgs/sensor-red.png" width="24" height="35" />
                     </div>
@@ -262,11 +263,18 @@
 <script>
     noma_usuario.innerHTML = sessionStorage.NOME_USUARIO
     nome_empresa.innerHTML = sessionStorage.EMPRESA
-    var idCaminhao = sessionStorage.ID_CAMINHAO
+    var placa = url.searchParams.get('placa')
+    placaCaminhao.innerHTML = `
+    <h1>Dashboard - ${placa}</h1>`
+
+    var url = new URL(window.location.href)
+    var idCaminhao = url.searchParams.get('caminhaoId')
+    console.log(idCaminhao)
     var dadosLeitura = []
     var dadosAtualizados = []
     var chart
     var chartOptions
+    var timeInterval = 1000
 
     function obterDados() {
         fetch(`/caminhaoRoute/obterDados?fkCaminhao=${idCaminhao}`, {
@@ -297,13 +305,6 @@
                         {
                             label: 'Sensor do Fundo',
                             data: [],
-                            borderColor: '#A9F4D0',
-                            backgroundColor: '#A9F4D0',
-                        }
-                            ,
-                        {
-                            label: 'Ideal',
-                            data: [-16, -16, -16, -16, -16, -16, -16, -16, -16, -16],
                             borderColor: '#A9F4D0',
                             backgroundColor: '#A9F4D0',
                         }]
@@ -352,15 +353,12 @@
                     }
                 }
                 chart.update()
+                atualizarGrafico()
             })
             .catch(error => {
                 console.error('Erro ao obter dados:', error);
                 alert('Erro ao carregar dados. Por favor, recarregue a página.');
             });
-
-        setInterval(() => {
-            atualizarGrafico()
-        }, 2000);
     }
 
     function atualizarGrafico() {
@@ -1004,5 +1002,9 @@
             .catch(error => {
                 console.error('Erro ao atualizar dados:', error);
             });
+
+        setTimeout(() => {
+            atualizarGrafico()
+        }, timeInterval);
     }
 </script>

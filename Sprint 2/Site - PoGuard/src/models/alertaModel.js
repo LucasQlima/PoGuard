@@ -22,18 +22,18 @@ function obterAlertasRecentes(fkEmpresa) {
             dadoPorta.temperatura +
             dadoCentro.temperatura +
             dadoFundo.temperatura
-        ) / 3, 2) > -12 THEN 'Vermelho'
+        ) / 3, 2) > -14 THEN 'Crítico'
 
         WHEN TRUNCATE((
             dadoPorta.temperatura +
             dadoCentro.temperatura +
             dadoFundo.temperatura
-        ) / 3, 2) > -18 AND TRUNCATE((
+        ) / 3, 2) > -16 AND TRUNCATE((
             dadoPorta.temperatura +
             dadoCentro.temperatura +
             dadoFundo.temperatura
-        ) / 3, 2) <= -12 THEN 'Amarelo'
-        ELSE 'Verde'
+        ) / 3, 2) <= -14 THEN 'Alerta'
+        ELSE 'Ideal'
     END AS Status_alerta
 FROM
     TBL_ALERTA AS alerta
@@ -80,18 +80,18 @@ function todosAlertas(fkEmpresa) {
                 dadoPorta.temperatura +
                 dadoCentro.temperatura +
                 dadoFundo.temperatura
-            ) / 3, 2) > -12 THEN 'Vermelho'
+            ) / 3, 2) > -14 THEN 'Crítico'
 
             WHEN TRUNCATE((
                 dadoPorta.temperatura +
                 dadoCentro.temperatura +
                 dadoFundo.temperatura
-            ) / 3, 2) > -18 AND TRUNCATE((
+            ) / 3, 2) > -16 AND TRUNCATE((
                 dadoPorta.temperatura +
                 dadoCentro.temperatura +
                 dadoFundo.temperatura
-            ) / 3, 2) <= -12 THEN 'Amarelo'
-            ELSE 'Verde'
+            ) / 3, 2) <= -14 THEN 'Alerta'
+            ELSE 'Ideal'
         END AS Status_alerta
         FROM
         TBL_ALERTA AS alerta
@@ -108,7 +108,38 @@ function todosAlertas(fkEmpresa) {
         veiculo.idVeiculo, veiculo.placa, alerta.dtAlerta,
         dadoPorta.temperatura, dadoCentro.temperatura, dadoFundo.temperatura
         ORDER BY
-        alerta.dtAlerta DESC;`
+        alerta.dtAlerta DESC LIMIT 100;`
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function alertasCriticosAtuais(fkEmpresa) {
+    console.log("ACESSEI O CAMINHAO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function encontrarEmpresaPeloCodigo(): ")
+
+    var instrucaoSql = `
+      SELECT 
+            E.nome AS nome_empresa,
+            COUNT(A.idAlerta) AS total_alertas,
+            SUM(
+                CASE
+                    WHEN ((DP.temperatura + DC.temperatura + DF.temperatura) / 3) > -14 THEN 1
+                    ELSE 0
+                END
+            ) AS total_vermelhos
+        FROM 
+            TBL_ALERTA A
+        JOIN TBL_DADO DP ON A.fkDadoPorta = DP.idDado
+        JOIN TBL_DADO DC ON A.fkDadoCentro = DC.idDado
+        JOIN TBL_DADO DF ON A.fkDadoFundo = DF.idDado
+        JOIN TBL_SENSOR SP ON DP.fkSensor = SP.idSensor
+        JOIN TBL_VEICULO V ON SP.fkVeiculo = V.idVeiculo
+        JOIN TBL_EMPRESA E ON V.fkEmpresa = E.idEmpresa
+        WHERE 
+            E.idEmpresa = ${fkEmpresa}  
+            AND DATE(A.dtAlerta) = DATE(NOW())
+        GROUP BY 
+            E.nome;`;
 
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
@@ -116,5 +147,6 @@ function todosAlertas(fkEmpresa) {
 
 module.exports = {
     obterAlertasRecentes,
-    todosAlertas
+    todosAlertas,
+    alertasCriticosAtuais
 }

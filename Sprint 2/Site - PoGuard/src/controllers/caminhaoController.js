@@ -40,15 +40,26 @@ function atualizarDados(req, res) {
         )
 }
 
-function alertasRecentes(req, res) {
+function listarCaminhoes(req, res) {
+    var fkEmpresa = req.query.fkEmpresa
 
-    res.status(200).json({
-        alertas: []
-    })
+    caminhaoModel.listarCaminhao(fkEmpresa).then(
+        function (resultado) {
+            res.json(resultado)
+        }
+    ).catch(
+        function (erro) {
+            console.log(erro)
+            console.log(
+                "\n Houve um erro ao buscar a dadosSensor! Erro: "
+            );
+            res.status(500).json(erro.sqlMessage)
+        }
+    )
 }
 
 module.exports = {
     obterDados,
     atualizarDados,
-    alertasRecentes
+    listarCaminhoes
 }

@@ -46,13 +46,16 @@ svg {
   gap: 12px;
   align-items: center;
   cursor: pointer;
+  border-radius: 4px;
   transition: 0.2s all;
+  margin-top: 2px;
 }
 
 .top .links ul li:hover {
   background-color: #2563eb;
   color: #ffffff;
 }
+
 .top .links ul li:hover a,
 .top .links ul li:hover svg {
   color: #ffffff;
@@ -67,6 +70,7 @@ svg {
   background-color: #2563eb;
   border-radius: 4px;
 }
+
 #active svg {
   color: #ffffff;
 }
@@ -176,8 +180,13 @@ svg {
   height: 100%;
 }
 
-.div_kpis .grafico-frota {
-  width: 66%;
+.div_kpis .status-frota {
+  width: 33%;
+  height: 100%;
+}
+
+.div_kpis .alertas-critico {
+  width: 33%;
   height: 100%;
 }
 
@@ -216,7 +225,7 @@ svg {
   border-radius: 4px;
 }
 
-.progresso-barra {
+#progresso_barra {
   position: absolute;
   left: 0;
   top: 0;
@@ -227,6 +236,7 @@ svg {
   display: block;
   background-color: #2563eb;
 }
+
 .div_kpis .frota-ativa p {
   position: absolute;
   bottom: 24px;
@@ -239,18 +249,6 @@ svg {
   position: absolute;
   top: 24px;
   right: 24px;
-}
-
-.charts {
-  display: flex;
-  height: 100%;
-  width: 100%;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.chart-container {
-  width: 44%;
 }
 
 .alerts {
@@ -434,7 +432,8 @@ td {
 }
 
 .input-pesquisa input:focus {
-  outline: none; /* Remove o contorno padrão */
+  outline: none;
+  /* Remove o contorno padrão */
 }
 
 .cards-caminhoes {
@@ -478,6 +477,7 @@ td {
   z-index: -10;
   background-color: #16a34a;
 }
+
 .card-yellow::before {
   content: " ";
   position: absolute;
@@ -491,6 +491,7 @@ td {
   z-index: -10;
   background-color: #ca8a04;
 }
+
 .card-red::before {
   content: " ";
   position: absolute;
@@ -574,6 +575,7 @@ td {
 }
 
 .baixo {
+  margin-top: 48px;
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -590,6 +592,7 @@ td {
 .card-green .destaque {
   color: #16a34a;
 }
+
 .card-green span {
   background-color: #16a34a;
 }
@@ -597,6 +600,7 @@ td {
 .card-yellow .destaque {
   color: #ca8a04;
 }
+
 .card-yellow span {
   background-color: #ca8a04;
 }
@@ -604,6 +608,7 @@ td {
 .card-red .destaque {
   color: #ef4444;
 }
+
 .card-red span {
   background-color: #ef4444;
 }
@@ -611,6 +616,7 @@ td {
 .card-green .destaque {
   color: #16a34a;
 }
+
 .card-green span {
   background-color: #16a34a;
 }
@@ -618,6 +624,7 @@ td {
 .card-zinc .destaque {
   color: #6b7280;
 }
+
 .card-zinc span {
   background-color: #6b7280;
 }
@@ -630,4 +637,62 @@ td {
   position: absolute;
   top: 24px;
   right: 24px;
+}
+
+#red_progreess {
+  border-radius: 4px;
+  width: 75%;
+  height: 8px;
+  display: block;
+  background-color: #dc2626;
+}
+
+.frota-status .list-status {
+  display: flex;
+  width: 90%;
+  justify-content: space-between;
+  position: absolute;
+  bottom: 0;
+}
+
+.frota-status .list-status p {
+  position: relative;
+}
+
+.list-status .cicle {
+  width: 12px;
+  height: 12px;
+  border-radius: 100%;
+}
+
+.status-green .cicle {
+  background-color: #10b981;
+}
+
+.status-yellow .cicle {
+  background-color: #f59e0b;
+}
+
+.status-red .cicle {
+  background-color: #ef4444;
+}
+
+.legenda-status {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.status-trucks {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.status-trucks p {
+  color: black !important;
+}
+
+.row {
+  cursor: pointer;
 }

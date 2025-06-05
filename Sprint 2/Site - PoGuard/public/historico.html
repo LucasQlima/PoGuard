@@ -12,13 +12,12 @@
     <title>Dashboard | Polus</title>
 </head>
 
-<body>
+<body onload="fetchAlerts()">
     <!-- NAVBAR -->
     <div class="nav-bar-left">
         <div class="top">
             <div class="image">
-                <a href="./dashboard.html"><img src="../public/assets/imgs/logo-dash.png" alt="logo poguard"
-                        width="173"></a>
+                <a href="./dashboard.html"><img src="assets/imgs/logo-dash.png" alt="logo poguard" width="173"></a>
             </div>
             <div class="links">
                 <ul>
@@ -87,6 +86,33 @@
                         Alertas de Temperatura
                     </h2>
                 </div>
+                <div class="pesquisa">
+                    <div class="filtros">
+                        <select id="select_veiculos" onchange="filtarPorPlaca()">
+
+                        </select>
+
+                        <select id="select_status" onchange="filtarPorStatus()">
+                            <option value="todos" selected="">Todos os status</option>
+                            <option value="Crítico">Crítico</option>
+                            <option value="Ideal">Ideal</option>
+                            <option value="Alerta">Alerta</option>
+                        </select>
+
+
+                    </div>
+
+                    <label for="input_pesquisa" class="input-pesquisa">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2   " stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-search-icon lucide-search" style="color:#9ca3af">
+                            <path d="m21 21-4.34-4.34" />
+                            <circle cx="11" cy="11" r="8" />
+                        </svg>
+                        <input type="text" id="input_pesquisa" placeholder="placa do veículo"
+                            oninput="filtrarPorPesquisa()">
+                    </label>
+                </div>
                 <table id="table_alerts">
                     <tr id="table-head">
                         <th>Veículo</th>
@@ -111,75 +137,185 @@
     noma_usuario.innerHTML = sessionStorage.NOME_USUARIO
     nome_empresa.innerHTML = sessionStorage.EMPRESA
 
-    var fkEmpresa = sessionStorage.FK_EMPRESA
+    var lista_alertas = []
 
-    fetch(`/alertas/todosAlertas/${fkEmpresa}`)
-        .then(response => response.json())
-        .then(result => {
-            var alertas = result.alertas
+    function fetchAlerts() {
+        var fkEmpresa = sessionStorage.FK_EMPRESA
+        fetch(`/alertas/todosAlertas/${fkEmpresa}`)
+            .then(response => response.json())
+            .then(result => {
+                var alertas = result.alertas
+                lista_alertas = alertas
+                console.log({
+                    result
+                })
+                var placas = []
+                select_veiculos.innerHTML = `
+                    <option value="todos" selected>Todos os veículos</option>`
 
-            for (var contador = 0; contador < alertas.length; contador++) {
-                var alerta = alertas[contador]
-                console.log(alerta)
-                var media = (Number(alerta.Porta) + Number(alerta.Centro) + Number(alerta.Fundo)) / 3
-                var status = "green"
+                for (let posicao = 0; posicao < lista_alertas.length; posicao++) {
+                    const alerta = lista_alertas[posicao]
 
-                if (media > -14) {
-                    status = "red"
-                } else if (media >= -16) {
-                    status = "yellow"
+                    if (!placas.includes(alerta.placa)) {
+                        select_veiculos.innerHTML += `
+                            <option value="${alerta.placa}">
+                            Caminhão ${alerta.placa}
+                            </option>
+                        `
+                        placas.push(alerta.placa)
+                    }
                 }
 
-                var imagenAlertaPorta = "icon-green.png"
-                var imagenAlertaCentro = "icon-green.png"
-                var imagenAlertaFundo = "icon-green.png"
+                exibirAlertas(alertas)
 
-                if (Number(alerta.Porta) > -14) {
-                    imagenAlertaPorta = "icon-red.png"
-                } else if (Number(alerta.Porta) >= -16) {
-                    imagenAlertaPorta = "icon-yellow.png"
-                }
-                if (Number(alerta.Centro) > -14) {
-                    imagenAlertaCentro = "icon-red.png"
-                } else if (Number(alerta.Porta) >= -16) {
-                    imagenAlertaCentro = "icon-yellow.png"
-                }
-                if (Number(alerta.Fundo) > -14) {
-                    imagenAlertaFundo = "icon-red.png"
-                } else if (Number(alerta.Porta) >= -16) {
-                    imagenAlertaFundo = "icon-yellow.png"
-                }
+            })
 
-                table_alerts.innerHTML += `
-            <tr class="row-${status}">
-                <td class="truck">
-                    <img src="./assets/icons/trunck-${status}.png" alt="truck red" width="40" height="40">
-                    <span>
-                        <h3>Caminhão ${alerta.placa}</h3>
-                        <p>${alerta.tempo}</p>
-                    </span>
-                </td>
-                <td>
-                    <img src="./assets/icons/${imagenAlertaPorta}" alt="truck red" width="48" height="48">
-                </td>
-                <td>
-                    <img src="./assets/icons/${imagenAlertaCentro}" alt="truck red" width="48" height="48">
-                </td>
-                <td>
-                    <img src="./assets/icons/${imagenAlertaFundo}" alt="truck red" width="48" height="48">
-                </td>
-                <td class="">
-                    <span class="status ${status}">${alerta.Status_alerta}</span>
-                </td>
-                <td class="temperature">
-                    <h3 class="title-${status}">
-                        ${media.toFixed(1)}°C
-                    </h3>
-                    <p>Ideal: -18°C</p>
-                </td>
+
+
+    }
+
+    function exibirAlertas(alertas) {
+        table_alerts.innerHTML = `
+             <tr id="table-head">
+                        <th>Veículo</th>
+                        <th>Porta</th>
+                        <th>Centro</th>
+                        <th>Fundo</th>
+                        <th>Status</th>
+                        <th>Temperatura</th>
             </tr>
             `
+        for (var contador = 0; contador < alertas.length; contador++) {
+            var alerta = alertas[contador]
+
+            var media = (Number(alerta.Porta) + Number(alerta.Centro) + Number(alerta.Fundo)) / 3
+            var status = "green"
+
+            if (media > -14) {
+                status = "red"
+            } else if (media > -16) {
+                status = "yellow"
             }
-        })
+
+            var imagenAlertaPorta = "icon-green.png"
+            var imagenAlertaCentro = "icon-green.png"
+            var imagenAlertaFundo = "icon-green.png"
+
+            if (Number(alerta.Porta) > -14) {
+                imagenAlertaPorta = "icon-red.png"
+            } else if (Number(alerta.Porta) > -16) {
+                imagenAlertaPorta = "icon-yellow.png"
+            }
+
+            if (Number(alerta.Centro) > -14) {
+                imagenAlertaCentro = "icon-red.png"
+            } else if (Number(alerta.Centro) > -16) {
+                imagenAlertaCentro = "icon-yellow.png"
+            }
+
+            if (Number(alerta.Fundo) > -14) {
+                imagenAlertaFundo = "icon-red.png"
+            } else if (Number(alerta.Fundo) > -16) {
+                imagenAlertaFundo = "icon-yellow.png"
+            }
+
+            table_alerts.innerHTML += `
+                    <tr class="row-${status} row" onclick="redirectPage(${alerta.id_veiculo, alerta.placa})">
+                        <td class="truck">
+                            <img src="./assets/icons/trunck-${status}.png" alt="truck red" width="40" height="40">
+                            <span>
+                                <h3>Caminhão ${alerta.placa}</h3>
+                                <p>${alerta.tempo}</p>
+                            </span>
+                        </td>
+                        <td>
+                            <img src="./assets/icons/${imagenAlertaPorta}" alt="truck red" width="48" height="48">
+                        </td>
+                        <td>
+                            <img src="./assets/icons/${imagenAlertaCentro}" alt="truck red" width="48" height="48">
+                        </td>
+                        <td>
+                            <img src="./assets/icons/${imagenAlertaFundo}" alt="truck red" width="48" height="48">
+                        </td>
+                        <td >
+                            <span class="status ${status}">${alerta.Status_alerta}</span>
+                        </td>
+                        <td class="temperature">
+                            <h3 class="title-${status}">
+                                ${media.toFixed(1)}°C
+                            </h3>
+                            <p>Ideal: -18°C</p>
+                        </td>
+                    </tr>
+            `
+        }
+
+    }
+
+    function filtarPorStatus() {
+        var status = select_status.value
+
+        if (status == "todos") {
+            exibirAlertas(lista_alertas)
+            return
+        }
+        var lista_filtrada = []
+
+        for (let posicao = 0; posicao < lista_alertas.length; posicao++) {
+            var alerta = lista_alertas[posicao]
+
+            if (alerta.Status_alerta == status) {
+                lista_filtrada.push(alerta)
+            }
+        }
+
+        exibirAlertas(lista_filtrada)
+    }
+
+
+    function filtarPorPlaca() {
+        var placa = select_veiculos.value
+
+        if (placa == "todos") {
+            exibirAlertas(lista_alertas)
+            return
+        }
+        var lista_filtrada = []
+
+        for (let posicao = 0; posicao < lista_alertas.length; posicao++) {
+            var alerta = lista_alertas[posicao]
+
+            if (alerta.placa == placa) {
+                lista_filtrada.push(alerta)
+            }
+        }
+
+        exibirAlertas(lista_filtrada)
+    }
+
+    function redirectPage(idCaminhao, placa) {
+        window.location.href = `./caminhao.html?caminhaoId=${idCaminhao}&placa=${placa}`
+    }
+
+    function filtrarPorPesquisa() {
+        var search = input_pesquisa.value
+
+        if (search == "") {
+            exibirAlertas(lista_alertas)
+            return
+        }
+
+        var lista_filtrada = []
+
+        for (let posicao = 0; posicao < lista_alertas.length; posicao++) {
+            const alerta = lista_alertas[posicao]
+
+            if (alerta.placa.includes(search.toUpperCase())) {
+                lista_filtrada.push(alerta)
+            }
+        }
+
+        exibirAlertas(lista_filtrada)
+    }
 
 </script>

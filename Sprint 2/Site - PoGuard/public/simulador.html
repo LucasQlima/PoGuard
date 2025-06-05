@@ -105,7 +105,7 @@
 
                 <div class="campo">
                     <p>Já sofreu alguma perda?</p>
-                    <select name="" id="select_perda" onchange="mostrar()">
+                    <select id="select_perda" onchange="mostrar()">
                         <option>Não</option>
                         <option>Sim</option>
                     </select>
@@ -280,7 +280,7 @@
                         TotalPerda = TotalProd * 0.15
                         parametroPerda = TotalProd * 0.85
                         mensagem = `<p>Com o total de <b>R$${TotalProd}</b> em mercadorias e os dados obtidos, é estimado uma possivel perda de até <b>15% (R$${TotalPerda})</b>.</p><br>`
-                        chart_container.innerHTML+= `<div class="chart-container">
+                        chart_container.innerHTML += `<div class="chart-container">
                                         <canvas id="pizzaChart"></canvas>
                                         </div><br>`;
                     } else {
