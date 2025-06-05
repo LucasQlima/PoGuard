@@ -201,11 +201,11 @@
 
             <div class="pesquisa">
                 <div class="filtros">
-                    <select name="" id="select_veiculos" onchange="atualizarCaminhoesPorPlaca()">
+                    <select id="select_veiculos" onchange="atualizarCaminhoesPorPlaca()">
 
                     </select>
 
-                    <select name="" id="select_status" onchange="atualizarCaminhoePorStatus()">
+                    <select id="select_status" onchange="atualizarCaminhoePorStatus()">
 
                     </select>
 
@@ -219,7 +219,8 @@
                         <path d="m21 21-4.34-4.34" />
                         <circle cx="11" cy="11" r="8" />
                     </svg>
-                    <input type="text" name="" id="input_pesquisa" oninput="atualizarCaminhoePorPesquisa()">
+                    <input type="text" id="input_pesquisa" placeholder="placa do veículo"
+                        oninput="atualizarCaminhoePorPesquisa()">
                 </label>
             </div>
 
@@ -423,7 +424,7 @@
                 <td>
                     <img src="./assets/icons/${imagenAlertaFundo}" alt="truck red" width="48" height="48">
                 </td>
-                <td class="">
+                <td >
                     <span class="status ${status}">${alerta.Status_alerta}</span>
                 </td>
                 <td class="temperature">
@@ -707,23 +708,23 @@
             }
 
             div_caminhoes.innerHTML += `
-    <a href="./caminhao.html?caminhaoId=${caminhao.id_veiculo}" class="card-caminhao ${statusClass}">
-        <div class="topo">
-            <h3>Caminhão ${caminhao.placa}</h3>
-            <p>Congelado</p>
-        </div>
-        <div class="baixo">
-            <div class="legenda">
-                <p>Temperatura</p>
-                <p>Status</p>
-            </div>
-            <div class="destaque">
-                <p>${caminhao.media}°C</p>
-                <p>${caminhao.status_alerta}</p>
-            </div>
-        </div>
-        <span></span>
-    </a>`;
+            <a href="./caminhao.html?caminhaoId=${caminhao.id_veiculo}" class="card-caminhao ${statusClass}">
+                <div class="topo">
+                    <h3>Caminhão ${caminhao.placa}</h3>
+                    <p>Congelado</p>
+                </div>
+                <div class="baixo">
+                    <div class="legenda">
+                        <p>Temperatura</p>
+                        <p>Status</p>
+                    </div>
+                    <div class="destaque">
+                        <p>${caminhao.media}°C</p>
+                        <p>${caminhao.status_alerta}</p>
+                    </div>
+                </div>
+                <span></span>
+            </a>`;
         }
 
     }
