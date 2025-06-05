@@ -41,9 +41,9 @@ function atualizarDados(req, res) {
 }
 
 function listarCaminhoes(req, res) {
-    var fkCaminhao = req.query.fkCaminhao
+    var fkEmpresa = req.query.fkEmpresa
 
-    caminhaoModel.listarCaminhao(fkCaminhao).then(
+    caminhaoModel.listarCaminhao(fkEmpresa).then(
         function (resultado) {
             res.json(resultado)
         }
