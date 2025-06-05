@@ -184,14 +184,7 @@
                     <a href="./historico.html">Ver todos</a>
                 </div>
                 <table id="table_alerts">
-                    <tr id="table-head">
-                        <th>Veículo</th>
-                        <th>Porta</th>
-                        <th>Centro</th>
-                        <th>Fundo</th>
-                        <th>Status</th>
-                        <th>Temperatura</th>
-                    </tr>
+
                 </table>
             </div>
         </div>
@@ -367,7 +360,16 @@
             var alertas = result.alertas
             console.log({ alertas })
 
-            table_alerts.innerHTML = ''
+            table_alerts.innerHTML = `
+             <tr id="table-head">
+                        <th>Veículo</th>
+                        <th>Porta</th>
+                        <th>Centro</th>
+                        <th>Fundo</th>
+                        <th>Status</th>
+                        <th>Temperatura</th>
+            </tr>
+            `
             for (var contador = 0; contador < alertas.length; contador++) {
                 var alerta = alertas[contador]
                 var media = (Number(alerta.Porta) + Number(alerta.Centro) + Number(alerta.Fundo)) / 3
@@ -402,7 +404,7 @@
                 }
 
                 table_alerts.innerHTML += `
-            <tr class="row-${status} row" onclick="redirectPage(${alerta.id_veiculo})">
+            <tr class="row-${status} row" onclick="redirectPage(${alerta.id_veiculo, alert.placa})">
                 <td class="truck">
                     <img src="./assets/icons/trunck-${status}.png" alt="truck red" width="40" height="40">
                     <span>
@@ -774,7 +776,8 @@
         }
     }
 
-    function redirectPage(idCaminhao) {
-        window.location.href = `./caminhao.html?caminhaoId=${idCaminhao}`
+
+    function redirectPage(idCaminhao, placa) {
+        window.location.href = `./caminhao.html?caminhaoId=${idCaminhao}&placa=${placa}`
     }
 </script>

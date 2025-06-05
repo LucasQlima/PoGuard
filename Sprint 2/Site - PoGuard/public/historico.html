@@ -175,7 +175,16 @@
     }
 
     function exibirAlertas(alertas) {
-        table_alerts.innerHTML = ''
+        table_alerts.innerHTML = `
+             <tr id="table-head">
+                        <th>Veículo</th>
+                        <th>Porta</th>
+                        <th>Centro</th>
+                        <th>Fundo</th>
+                        <th>Status</th>
+                        <th>Temperatura</th>
+            </tr>
+            `
         for (var contador = 0; contador < alertas.length; contador++) {
             var alerta = alertas[contador]
 
@@ -211,7 +220,7 @@
             }
 
             table_alerts.innerHTML += `
-                    <tr class="row-${status} row" onclick="redirectPage(${alerta.id_veiculo})">
+                    <tr class="row-${status} row" onclick="redirectPage(${alerta.id_veiculo, alerta.placa})">
                         <td class="truck">
                             <img src="./assets/icons/trunck-${status}.png" alt="truck red" width="40" height="40">
                             <span>
@@ -284,8 +293,8 @@
         exibirAlertas(lista_filtrada)
     }
 
-    function redirectPage(idCaminhao) {
-        window.location.href = `./caminhao.html?caminhaoId=${idCaminhao}`
+    function redirectPage(idCaminhao, placa) {
+        window.location.href = `./caminhao.html?caminhaoId=${idCaminhao}&placa=${placa}`
     }
 
     function filtrarPorPesquisa() {
