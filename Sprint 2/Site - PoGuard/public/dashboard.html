@@ -234,7 +234,6 @@
         </div>
     </div>
 
-
 </body>
 
 </html>
@@ -357,9 +356,7 @@
                 green_quantidade.innerHTML = idealAtivo
                 yellow_quantidade.innerHTML = alertaAtivo
                 red_quantidade.innerHTML = criticoAtivo
-
             })
-
         setTimeout(fetchKpis, 1000)
     }
 
@@ -430,19 +427,12 @@
                     <p>Ideal: -18°C</p>
                 </td>
             </tr>
-            `
-            }
-
+            `}
         })
         setTimeout(fetchAlerts, 1000)
-
     }
 
-
-
-
     var lista_caminhoes = []
-
 
     function verMaisCaminhoes() {
 
@@ -487,13 +477,8 @@
             </div>
             <span>
             </span>
-            </a>
-            `
-
+            </a>`
         }
-
-
-
     }
 
     function atualizarCaminhoesPorPlaca() {
@@ -514,9 +499,6 @@
                 caminhao_procura = { ...caminhao }
 
             }
-
-
-
 
             let status = "card-green"
 
@@ -554,8 +536,7 @@
                     <span>
 
                     </span>
-                </a>
-                `
+                </a>`
         }
     }
 
@@ -573,7 +554,6 @@
                 caminhao_procura.push(caminhao)
             }
         }
-
 
         for (let contador = 0; contador < caminhao_procura.length; contador++) {
 
@@ -611,9 +591,7 @@
             </span>
             </a>
             `
-
         }
-
     }
 
     var lista_caminhoes = []
@@ -631,8 +609,6 @@
                 aplicarFiltros()  // Mantém a filtragem após atualizar os dados
                 setTimeout(buscarCaminhoes, 1000)
             })
-
-
     }
 
     function preencherSelects() {
@@ -655,7 +631,6 @@
                 }
             }
 
-
             select_status.innerHTML = `<option value="todos" selected>Todos os status</option>`
 
             for (let i = 0; i < status_ativos.length; i++) {
@@ -667,8 +642,6 @@
         } else {
             aplicarFiltros()
         }
-
-
     }
 
     function aplicarFiltros() {
@@ -689,7 +662,6 @@
                 lista_filtrada.push(caminhao)
             }
         }
-
 
         renderizarCaminhoes(lista_filtrada)
     }
@@ -732,10 +704,7 @@
                 <span></span>
             </a>`;
         }
-
     }
-
-
 
     function atualizarCaminhoePorStatus() {
         var status = select_status.value
@@ -762,8 +731,6 @@
             }
         }
 
-
-
         for (let contador = 0; contador < caminhao_procura.length; contador++) {
             const caminhao = caminhao_procura[contador]
             let statusCard = "card-green"
@@ -773,7 +740,6 @@
             } else if (caminhao.status_alerta == "Alerta") {
                 statusCard = "card-yellow"
             }
-
 
             div_caminhoes.innerHTML += `
             <a href="./caminhao.html?caminhaId=${caminhao.id_veiculo}" class="card-caminhao ${statusCard}">
@@ -804,10 +770,7 @@
         </a>
         `
         }
-
     }
-
-
 
     function redirectPage(idCaminhao) {
         window.location.href = `./caminhao.html?caminhaoId=${idCaminhao}`

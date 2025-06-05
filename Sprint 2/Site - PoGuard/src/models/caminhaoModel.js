@@ -13,16 +13,28 @@ function obterDados(fkCaminhao) {
             (SELECT DISTINCT localSensor FROM TBL_SENSOR WHERE fkVeiculo = ${fkCaminhao}) s
         LEFT JOIN (
             SELECT 
-                d.*,
-                s.localSensor,
-                ROW_NUMBER() OVER (PARTITION BY s.localSensor ORDER BY d.dataHora DESC) AS row_num
+                d1.*
             FROM 
-                TBL_DADO d
+                TBL_DADO d1
             JOIN 
-                TBL_SENSOR s ON d.fkSensor = s.idSensor
+                TBL_SENSOR s1 ON d1.fkSensor = s1.idSensor
             WHERE 
-                s.fkVeiculo = ${fkCaminhao}
-        ) d ON s.localSensor = d.localSensor AND d.row_num <= 10
+                s1.fkVeiculo = ${fkCaminhao}
+                AND (
+                    SELECT COUNT(*) 
+                    FROM TBL_DADO d2
+                    JOIN TBL_SENSOR s2 ON d2.fkSensor = s2.idSensor
+                    WHERE 
+                        s2.localSensor = s1.localSensor 
+                        AND s2.fkVeiculo = ${fkCaminhao}
+                        AND d2.dataHora > d1.dataHora
+                ) < 10
+        ) d ON s.localSensor = (
+            SELECT localSensor 
+            FROM TBL_SENSOR 
+            WHERE idSensor = d.fkSensor 
+            LIMIT 1
+        )
         ORDER BY 
             s.localSensor,
             d.dataHora ASC;`;
