@@ -353,15 +353,12 @@
                     }
                 }
                 chart.update()
+                atualizarGrafico()
             })
             .catch(error => {
                 console.error('Erro ao obter dados:', error);
                 alert('Erro ao carregar dados. Por favor, recarregue a página.');
             });
-
-        setInterval(() => {
-            atualizarGrafico()
-        }, timeInterval);
     }
 
     function atualizarGrafico() {
@@ -1005,5 +1002,9 @@
             .catch(error => {
                 console.error('Erro ao atualizar dados:', error);
             });
+
+        setTimeout(() => {
+            atualizarGrafico()
+        }, timeInterval);
     }
 </script>
