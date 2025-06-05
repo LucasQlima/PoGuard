@@ -11,7 +11,7 @@
     <title>Dashboard | Polus</title>
 </head>
 
-<body onload="fetchTrucks();getDayAndMonth();fetchKpis();fetchAlerts()">
+<body onload="buscarCaminhoes();getDayAndMonth();fetchKpis();fetchAlerts()">
     <!-- NAVBAR -->
     <div class="nav-bar-left">
         <div class="top">
@@ -202,15 +202,11 @@
             <div class="pesquisa">
                 <div class="filtros">
                     <select name="" id="select_veiculos" onchange="atualizarCaminhoesPorPlaca()">
-                        <option value="todos" selected>
-                            Todos os veículos
-                        </option>
+
                     </select>
 
                     <select name="" id="select_status" onchange="atualizarCaminhoePorStatus()">
-                        <option value="todos" selected>
-                            Todos os status
-                        </option>
+
                     </select>
 
 
@@ -456,6 +452,10 @@
         button.innerHTML = ``
         div_caminhoes.innerHTML = ''
 
+        input_pesquisa.value = ""
+        select_status.value = "todos"
+        select_veiculos.value = "todos"
+
         for (let contador = 0; contador < lista_caminhoes.length; contador++) {
 
             const caminhao = lista_caminhoes[contador]
@@ -501,7 +501,6 @@
 
     function atualizarCaminhoesPorPlaca() {
         var placa = select_veiculos.value
-        var search = input_pesquisa.value
 
         button.innerHTML = ''
 
@@ -620,81 +619,115 @@
 
     }
 
-    function fetchTrucks() {
+    var lista_caminhoes = []
+
+    function buscarCaminhoes() {
         var empresaId = sessionStorage.FK_EMPRESA
+        fetch(`/caminhaoRoute/listar?fkEmpresa=${empresaId}`)
+            .then((response) => response.json())
+            .then(result => {
+                console.log(result)
 
-        fetch(`/caminhaoRoute/listar?fkEmpresa=${empresaId}`).then((response) => response.json()).then(result => {
-            console.log(result)
+                lista_caminhoes = result
 
-
-            var status_ativos = []
-            for (let contador = 0; contador < result.length; contador++) {
-
-                const caminhao = result[contador]
-                lista_caminhoes.push(caminhao)
-
-                select_veiculos.innerHTML += `
-                  <option value="${caminhao.placa}" >
-                  Placa ${caminhao.placa}
-                        </option>
-                `
-
-                if (status_ativos.includes(caminhao.status_alerta) == false) {
-                    status_ativos.push(caminhao.status_alerta)
-                }
-            }
-
-            for (let contador = 0; contador < status_ativos.length; contador++) {
-                const status = status_ativos[contador]
-                select_status.innerHTML += `
-                    <option value="${status}">
-                    ${status}
-                    </option>
-                `
-            }
-
-            for (let contador = 0; contador < result.slice(0, 4).length; contador++) {
-
-                const caminhao = result[contador]
-
-                let status = "card-green"
-
-                if (caminhao.status_alerta == "Crítico") {
-                    status = "card-red"
-                } else if (caminhao.status_alerta == "Alerta") {
-                    status = "card-yellow"
-                }
-
-                div_caminhoes.innerHTML += `
-                <a href="./caminhao.html?caminhaoId=${caminhao.id_veiculo}" class="card-caminhao ${status}">
-                <div class="topo">
-                    <h3>
-                        Caminhão ${caminhao.placa}
-                    </h3>
-                    <p>
-                        Congelado
-                    </p>
-                </div>
-                <div class="baixo">
-                    <div class="legenda">
-                        <p>Temperatura</p>
-                        <p>Status</p>
-                    </div>
-                    <div class="destaque">
-                        <p>${caminhao.media}°C</p>
-                        <p>${caminhao.status_alerta}</p>
-                    </div>
-                </div>
-                <span>
-                </span>
-                </a>
-                `
-
-            }
-
-        }
-        )
+                preencherSelects()
+                aplicarFiltros()  // Mantém a filtragem após atualizar os dados
+            })
     }
+
+    function preencherSelects() {
+        select_veiculos.innerHTML = `
+        <option value="todos" selected>Todos os veículos</option>`
+
+        let status_ativos = []
+
+        for (let i = 0; i < lista_caminhoes.length; i++) {
+            const caminhao = lista_caminhoes[i];
+
+            select_veiculos.innerHTML += `
+        <option value="${caminhao.placa}">Placa ${caminhao.placa}</option>`;
+
+            if (!status_ativos.includes(caminhao.status_alerta)) {
+                status_ativos.push(caminhao.status_alerta);
+            }
+        }
+
+
+        select_status.innerHTML = `<option value="todos" selected>Todos os status</option>`
+
+        for (let i = 0; i < status_ativos.length; i++) {
+            const status = status_ativos[i];
+
+            select_status.innerHTML += `
+        <option value="${status}">${status}</option>`;
+        }
+
+    }
+
+    function aplicarFiltros() {
+        const search = input_pesquisa.value.trim().toUpperCase()
+        const status = select_status.value
+        const placa = select_veiculos.value
+
+        let lista_filtrada = []
+
+        for (let i = 0; i < lista_caminhoes.length; i++) {
+            const caminhao = lista_caminhoes[i]
+
+            const placaMatch = placa === "todos" || caminhao.placa === placa
+            const statusMatch = status === "todos" || caminhao.status_alerta === status
+            const searchMatch = search === "" || caminhao.placa.includes(search)
+
+            if (placaMatch && statusMatch && searchMatch) {
+                lista_filtrada.push(caminhao)
+            }
+        }
+
+
+        renderizarCaminhoes(lista_filtrada)
+    }
+
+    function renderizarCaminhoes(lista) {
+        div_caminhoes.innerHTML = ''
+
+        const expand = button.innerHTML === ''
+
+        for (let index = 0; index < lista.length; index++) {
+            const caminhao = lista[index];
+
+            if (index >= 4 && !expand) {
+                break; // Sai do loop se não estiver expandido e já mostrou 4
+            }
+
+            let statusClass = "card-green";
+            if (caminhao.status_alerta === "Crítico") {
+                statusClass = "card-red";
+            } else if (caminhao.status_alerta === "Alerta") {
+                statusClass = "card-yellow";
+            }
+
+            div_caminhoes.innerHTML += `
+    <a href="./caminhao.html?caminhaoId=${caminhao.id_veiculo}" class="card-caminhao ${statusClass}">
+        <div class="topo">
+            <h3>Caminhão ${caminhao.placa}</h3>
+            <p>Congelado</p>
+        </div>
+        <div class="baixo">
+            <div class="legenda">
+                <p>Temperatura</p>
+                <p>Status</p>
+            </div>
+            <div class="destaque">
+                <p>${caminhao.media}°C</p>
+                <p>${caminhao.status_alerta}</p>
+            </div>
+        </div>
+        <span></span>
+    </a>`;
+        }
+
+    }
+
 
 
     function atualizarCaminhoePorStatus() {
