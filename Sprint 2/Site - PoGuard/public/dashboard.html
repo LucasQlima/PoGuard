@@ -239,6 +239,8 @@
 </html>
 
 <script>
+    var timeOutRefresh = 1000
+
     var fkEmpresa = sessionStorage.FK_EMPRESA
     var idUsuario = sessionStorage.ID_USUARIO
     noma_usuario.innerHTML = sessionStorage.NOME_USUARIO
@@ -357,7 +359,7 @@
                 yellow_quantidade.innerHTML = alertaAtivo
                 red_quantidade.innerHTML = criticoAtivo
             })
-        setTimeout(fetchKpis, 1000)
+        setTimeout(fetchKpis, timeOutRefresh)
     }
 
     function fetchAlerts() {
@@ -429,7 +431,7 @@
             </tr>
             `}
         })
-        setTimeout(fetchAlerts, 1000)
+        setTimeout(fetchAlerts, timeOutRefresh)
     }
 
     var lista_caminhoes = []
@@ -607,7 +609,7 @@
 
                 preencherSelects()
                 aplicarFiltros()  // Mantém a filtragem após atualizar os dados
-                setTimeout(buscarCaminhoes, 1000)
+                setTimeout(buscarCaminhoes, timeOutRefresh)
             })
     }
 
