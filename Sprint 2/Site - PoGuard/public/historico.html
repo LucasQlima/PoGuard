@@ -21,7 +21,7 @@
             </div>
             <div class="links">
                 <ul>
-                    <li>
+                    <a href="./dashboard.html">
                         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="36" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                             class="lucide lucide-chart-pie-icon lucide-chart-pie">
@@ -29,9 +29,9 @@
                                 d="M21 12c.552 0 1.005-.449.95-.998a10 10 0 0 0-8.953-8.951c-.55-.055-.998.398-.998.95v8a1 1 0 0 0 1 1z" />
                             <path d="M21.21 15.89A10 10 0 1 1 8 2.83" />
                         </svg>
-                        <a href="./dashboard.html">Dashboard</a>
-                    </li>
-                    <li id="active">
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="./historico.html" id="active">
                         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="36" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                             class="lucide lucide-bell-icon lucide-bell">
@@ -39,8 +39,23 @@
                             <path
                                 d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326" />
                         </svg>
-                        <a href="./historico.html">Notificação</a>
-                    </li>
+                        <span>
+                            Notificação
+                        </span>
+                    </a>
+                    <a href="https://poguard-polus-sptech.atlassian.net/servicedesk/customer/portal/1" target="_blank">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="36" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-message-circle-code-icon lucide-message-circle-code">
+                            <path d="M10 9.5 8 12l2 2.5" />
+                            <path d="m14 9.5 2 2.5-2 2.5" />
+                            <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22z" />
+                        </svg>
+                        <span>
+                            Suporte
+                        </span>
+                    </a>
+
                 </ul>
             </div>
         </div>
@@ -318,9 +333,9 @@
         exibirAlertas(lista_filtrada)
     }
 
-      function redirectPage(idCaminhao, placa) {
-        sessionStorage.PLACA = placa 
-     sessionStorage.ID_CAMINHAO =idCaminhao
+    function redirectPage(idCaminhao, placa) {
+        sessionStorage.PLACA = placa
+        sessionStorage.ID_CAMINHAO = idCaminhao
         window.location.href = `./caminhao.html`
     }
 
