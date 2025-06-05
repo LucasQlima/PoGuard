@@ -18,28 +18,28 @@ void loop() {
   int temperatura6 = random(-24, -14);
   
   int temperatura7 = random(-14, -10);
-  int temperatura8 = random(-24, -10);
-  int temperatura9 = random(-24, -10);
+  int temperatura8 = random(-24, -14);
+  int temperatura9 = random(-24, -14);
   
   int temperatura10 = random(-14, -10);
   int temperatura11 = random(-14, -10);
-  int temperatura12 = random(-24, -10);
+  int temperatura12 = random(-24, -14);
   
-  int temperatura13 = random(-14, -10);
-  int temperatura14 = random(-14, -10);
-  int temperatura15 = random(-14, -10);
+  int temperatura13 = random(-14, -12);
+  int temperatura14 = random(-14, -12);
+  int temperatura15 = random(-14, -12);
   
-  int temperatura16 = random(-24, -10);
-  int temperatura17 = random(-24, -10);
+  int temperatura16 = random(-24, -14);
+  int temperatura17 = random(-24, -14);
   int temperatura18 = random(-14, -10);
   
-  int temperatura19 = random(-24, -10);
-  int temperatura20 = random(-14, -10);
-  int temperatura21 = random(-14, -10);
+  int temperatura19 = random(-24, -14);
+  int temperatura20 = random(-14, -12);
+  int temperatura21 = random(-14, -12);
   
-  int temperatura22 = random(-24, -10);
-  int temperatura23 = random(-24, -10);
-  int temperatura24 = random(-24, -10);
+  int temperatura22 = random(-24, -14);
+  int temperatura23 = random(-24, -14);
+  int temperatura24 = random(-24, -14);
 
 // caminhão 1
   Serial.print(temperatura);
@@ -104,6 +104,6 @@ void loop() {
   Serial.print(";");
   Serial.println(temperatura24);
 
-  int ten_seconds= 1000 * 10;
+  int ten_seconds= 1000 * 1;
   delay(ten_seconds);
 }
