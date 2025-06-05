@@ -501,6 +501,8 @@
 
     function atualizarCaminhoesPorPlaca() {
         var placa = select_veiculos.value
+        var search = input_pesquisa.value
+
         button.innerHTML = ''
 
         if (placa == "todos") {
@@ -511,23 +513,26 @@
         let caminhao_procura = {}
         for (let index = 0; index < lista_caminhoes.length; index++) {
             const caminhao = lista_caminhoes[index]
+
             if (caminhao.placa == placa) {
                 caminhao_procura = { ...caminhao }
+
             }
-        }
 
 
-        let status = "card-green"
 
-        if (caminhao_procura.status_alerta == "Crítico") {
-            status = "card-red"
-        } else if (caminhao_procura.status_alerta == "Alerta") {
-            status = "card-yellow"
-        }
 
-        div_caminhoes.innerHTML = ''
+            let status = "card-green"
 
-        div_caminhoes.innerHTML += `
+            if (caminhao_procura.status_alerta == "Crítico") {
+                status = "card-red"
+            } else if (caminhao_procura.status_alerta == "Alerta") {
+                status = "card-yellow"
+            }
+
+            div_caminhoes.innerHTML = ''
+
+            div_caminhoes.innerHTML += `
                     <a href="./caminhao.html?caminhaId=${caminhao_procura.id_veiculo}" class="card-caminhao ${status}">
                     <div class="topo">
                         <h3>
@@ -555,6 +560,7 @@
                     </span>
                 </a>
                 `
+        }
     }
 
     function atualizarCaminhoePorPesquisa() {
@@ -693,20 +699,30 @@
 
     function atualizarCaminhoePorStatus() {
         var status = select_status.value
+        var search = input_pesquisa.value
+        div_caminhoes.innerHTML = ''
 
         if (status == "todos") {
             verMaisCaminhoes()
             return
         }
+
         let caminhao_procura = []
         for (let index = 0; index < lista_caminhoes.length; index++) {
             const caminhao = lista_caminhoes[index]
-            if (caminhao.status_alerta == status) {
-                caminhao_procura.push(caminhao)
+            if (search == "") {
+                if (caminhao.status_alerta == status) {
+                    caminhao_procura.push(caminhao)
+                }
+            } else {
+                if (caminhao.status_alerta == status && caminhao.placa.includes(search.toUpperCase())) {
+                    caminhao_procura.push(caminhao)
+                }
+
             }
         }
 
-        div_caminhoes.innerHTML = ''
+
 
         for (let contador = 0; contador < caminhao_procura.length; contador++) {
             const caminhao = caminhao_procura[contador]
@@ -750,6 +766,7 @@
         }
 
     }
+
 
 
     function redirectPage(idCaminhao) {
