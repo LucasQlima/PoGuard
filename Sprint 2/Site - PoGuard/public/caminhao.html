@@ -71,9 +71,9 @@
     </div>
 
     <!-- CONTENT -->
-    <div class="content-right">
+    <div class="content-right" id="placaCaminhao">
 
-        <h1 id="placaCaminhao">
+        <h1>
             Dashboard -
         </h1>
 
@@ -216,7 +216,7 @@
 
 
                         <p>
-                            Temperatura abaixo de -16°.
+                            Temperatura fora do padrão , acima de -18°.
                         </p>
                         <img src="./assets/imgs/sensor-green.png" width="24" height="35" />
                     </div>
@@ -230,7 +230,7 @@
 
 
                         <p>
-                            Temperatura acima de -15.9°.
+                            Temperatura fora do padrão , abaixo de -14°.
                         </p>
                         <img src="./assets/imgs/sensor-yellow.png" width="24" height="35" />
                     </div>
@@ -244,7 +244,7 @@
 
 
                         <p>
-                            Temperatura acima de -14°.
+                            Temperatura fora do padrão , abaixo de -10°.
                         </p>
                         <img src="./assets/imgs/sensor-red.png" width="24" height="35" />
                     </div>
@@ -263,18 +263,13 @@
 <script>
     noma_usuario.innerHTML = sessionStorage.NOME_USUARIO
     nome_empresa.innerHTML = sessionStorage.EMPRESA
-    var placa = url.searchParams.get('placa')
-    placaCaminhao.innerHTML = `
-    <h1>Dashboard - ${placa}</h1>`
-
-    var url = new URL(window.location.href)
-    var idCaminhao = url.searchParams.get('caminhaoId')
-    console.log(idCaminhao)
+    // placaCaminhao.innerHTML = `
+    // <h1>Dashboard - ${sessionStorage.PLACA_CAMINHAO}</h1>`
+    var idCaminhao = sessionStorage.ID_CAMINHAO
     var dadosLeitura = []
     var dadosAtualizados = []
     var chart
     var chartOptions
-    var timeInterval = 1000
 
     function obterDados() {
         fetch(`/caminhaoRoute/obterDados?fkCaminhao=${idCaminhao}`, {
@@ -305,6 +300,13 @@
                         {
                             label: 'Sensor do Fundo',
                             data: [],
+                            borderColor: '#A9F4D0',
+                            backgroundColor: '#A9F4D0',
+                        }
+                            ,
+                        {
+                            label: 'Ideal',
+                            data: [-16, -16, -16, -16, -16, -16, -16, -16, -16, -16],
                             borderColor: '#A9F4D0',
                             backgroundColor: '#A9F4D0',
                         }]
@@ -353,12 +355,15 @@
                     }
                 }
                 chart.update()
-                atualizarGrafico()
             })
             .catch(error => {
                 console.error('Erro ao obter dados:', error);
                 alert('Erro ao carregar dados. Por favor, recarregue a página.');
             });
+
+        setInterval(() => {
+            atualizarGrafico()
+        }, 2000);
     }
 
     function atualizarGrafico() {
@@ -1002,9 +1007,5 @@
             .catch(error => {
                 console.error('Erro ao atualizar dados:', error);
             });
-
-        setTimeout(() => {
-            atualizarGrafico()
-        }, timeInterval);
     }
 </script>

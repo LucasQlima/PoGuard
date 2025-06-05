@@ -2,6 +2,10 @@ var caminhaoModel = require("../models/caminhaoModel")
 
 function obterDados(req, res) {
     var fkCaminhao = req.query.fkCaminhao
+    console.log({
+        "obterDados":fkCaminhao
+    })
+
 
     caminhaoModel.obterDados(fkCaminhao)
 
@@ -21,11 +25,12 @@ function obterDados(req, res) {
 }
 
 function atualizarDados(req, res) {
+    console.log(req.query)
     var fkCaminhao = req.query.fkCaminhao
+    console.log({"atualizarDados":fkCaminhao})
 
-    caminhaoModel.atualizarDados(fkCaminhao)
 
-        .then(
+    caminhaoModel.atualizarDados(fkCaminhao) .then(
             function (resultado) {
                 res.json(resultado)
             }
