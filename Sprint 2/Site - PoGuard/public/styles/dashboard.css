@@ -39,7 +39,7 @@ svg {
   color: #2563eb;
 }
 
-.top .links ul li {
+.top .links ul a {
   width: 100%;
   padding: 15px 20px;
   display: flex;
@@ -49,19 +49,21 @@ svg {
   border-radius: 4px;
   transition: 0.2s all;
   margin-top: 2px;
+  text-decoration: none;
 }
 
-.top .links ul li:hover {
+.top .links ul a:hover {
   background-color: #2563eb;
   color: #ffffff;
 }
 
-.top .links ul li:hover a,
-.top .links ul li:hover svg {
+.top .links ul a:hover,
+.top .links ul a:hover svg {
   color: #ffffff;
 }
 
-.top .links ul li a {
+.top .links ul a,
+.top .links ul a img {
   color: #2563eb;
   text-decoration: none;
 }
@@ -75,8 +77,8 @@ svg {
   color: #ffffff;
 }
 
-#active a {
-  color: #ffffff;
+#active span {
+  color: #ffffff !important;
 }
 
 .nav-bar-left .bottom {
@@ -697,6 +699,6 @@ td {
   cursor: pointer;
 }
 
-.card-caminhao{
+.card-caminhao {
   cursor: pointer;
 }
