@@ -274,6 +274,7 @@
     var dadosAtualizados = []
     var chart
     var chartOptions
+    var timeInterval = 1000
 
     function obterDados() {
         fetch(`/caminhaoRoute/obterDados?fkCaminhao=${idCaminhao}`, {
@@ -360,7 +361,7 @@
 
         setInterval(() => {
             atualizarGrafico()
-        }, 10000);
+        }, timeInterval);
     }
 
     function atualizarGrafico() {
