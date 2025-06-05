@@ -14,7 +14,7 @@ const HABILITAR_OPERACAO_INSERIR = true;
 const serial = async (valoresSensorAnalogico) => {
   let poolBancoDados = mysql
     .createPool({
-      host: "10.18.32.122",
+      host: "10.18.32.79",
       user: "poguard",
       password: "sptech#123",
       database: "PoGuard",
@@ -105,11 +105,11 @@ const serial = async (valoresSensorAnalogico) => {
           [temperatura3, sensor.idSensorFundo]
         );
 
-        var temperaturaMedia = (Number(temperatura1) + Number(temperatura2) + Number(temperatura3)) / 3
+        var temperaturaMedia = (parseFloat(temperatura1) + parseFloat(temperatura2) + parseFloat(temperatura3)) / 3
         if (temperaturaMedia >= -999999) {
 
           var dado = {
-            dadoIdPorta: Number(insercaoDoDado1[0].insertId), dadoIdCentro: Number(insercaoDoDado2[0].insertId), dadoIdFundo: Number(insercaoDoDado3[0].insertId)
+            dadoIdPorta: parseFloat(insercaoDoDado1[0].insertId), dadoIdCentro: parseFloat(insercaoDoDado2[0].insertId), dadoIdFundo: parseFloat(insercaoDoDado3[0].insertId)
           }
 
           await inserirAlerta(sensor, dado, temperaturaMedia)
@@ -140,11 +140,11 @@ const serial = async (valoresSensorAnalogico) => {
           [temperatura6, sensor.idSensorFundo]
         );
 
-        temperaturaMedia = (Number(temperatura4) + Number(temperatura5) + Number(temperatura6)) / 3
+        temperaturaMedia = (parseFloat(temperatura4) + parseFloat(temperatura5) + parseFloat(temperatura6)) / 3
         if (temperaturaMedia >= -999999) {
 
           var dado = {
-            dadoIdPorta: Number(insercaoDoDado1[0].insertId), dadoIdCentro: Number(insercaoDoDado2[0].insertId), dadoIdFundo: Number(insercaoDoDado3[0].insertId)
+            dadoIdPorta: parseFloat(insercaoDoDado1[0].insertId), dadoIdCentro: parseFloat(insercaoDoDado2[0].insertId), dadoIdFundo: parseFloat(insercaoDoDado3[0].insertId)
           }
 
           await inserirAlerta(sensor, dado, temperaturaMedia)
@@ -175,11 +175,11 @@ const serial = async (valoresSensorAnalogico) => {
           [temperatura9, sensor.idSensorFundo]
         );
 
-        temperaturaMedia = (Number(temperatura7) + Number(temperatura8) + Number(temperatura9)) / 3
+        temperaturaMedia = (parseFloat(temperatura7) + parseFloat(temperatura8) + parseFloat(temperatura9)) / 3
         if (temperaturaMedia >= -999999) {
 
           var dado = {
-            dadoIdPorta: Number(insercaoDoDado1[0].insertId), dadoIdCentro: Number(insercaoDoDado2[0].insertId), dadoIdFundo: Number(insercaoDoDado3[0].insertId)
+            dadoIdPorta: parseFloat(insercaoDoDado1[0].insertId), dadoIdCentro: parseFloat(insercaoDoDado2[0].insertId), dadoIdFundo: parseFloat(insercaoDoDado3[0].insertId)
           }
 
           await inserirAlerta(sensor, dado, temperaturaMedia)
@@ -243,7 +243,7 @@ async function inserirAlerta(sensor, dado, temperaturaMedia) {
 
   let poolBancoDados = mysql
     .createPool({
-      host: "10.18.32.122",
+      host: "10.18.32.79",
       user: "poguard",
       password: "sptech#123",
       database: "PoGuard",

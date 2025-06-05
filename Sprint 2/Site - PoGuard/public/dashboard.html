@@ -633,35 +633,45 @@
 
                 preencherSelects()
                 aplicarFiltros()  // Mantém a filtragem após atualizar os dados
+                setTimeout(buscarCaminhoes, 1000)
             })
+
+
     }
 
     function preencherSelects() {
-        select_veiculos.innerHTML = `
+        var placa = select_veiculos.value
+
+        if (placa == "") {
+            select_veiculos.innerHTML = `
         <option value="todos" selected>Todos os veículos</option>`
 
-        let status_ativos = []
+            let status_ativos = []
 
-        for (let i = 0; i < lista_caminhoes.length; i++) {
-            const caminhao = lista_caminhoes[i];
+            for (let i = 0; i < lista_caminhoes.length; i++) {
+                const caminhao = lista_caminhoes[i];
 
-            select_veiculos.innerHTML += `
+                select_veiculos.innerHTML += `
         <option value="${caminhao.placa}">Placa ${caminhao.placa}</option>`;
 
-            if (!status_ativos.includes(caminhao.status_alerta)) {
-                status_ativos.push(caminhao.status_alerta);
+                if (!status_ativos.includes(caminhao.status_alerta)) {
+                    status_ativos.push(caminhao.status_alerta);
+                }
             }
-        }
 
 
-        select_status.innerHTML = `<option value="todos" selected>Todos os status</option>`
+            select_status.innerHTML = `<option value="todos" selected>Todos os status</option>`
 
-        for (let i = 0; i < status_ativos.length; i++) {
-            const status = status_ativos[i];
+            for (let i = 0; i < status_ativos.length; i++) {
+                const status = status_ativos[i];
 
-            select_status.innerHTML += `
+                select_status.innerHTML += `
         <option value="${status}">${status}</option>`;
+            }
+        } else {
+            aplicarFiltros()
         }
+
 
     }
 
