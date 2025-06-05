@@ -1,438 +1,525 @@
 CREATE DATABASE PoGuard;
 USE PoGuard;
--- DROP DATABASE PoGuard;
 
-
--- DROP TABLE TBL_EMPRESA;
-CREATE TABLE TBL_EMPRESA(
-idEmpresa INT PRIMARY KEY AUTO_INCREMENT,
-nome VARCHAR(100) NOT NULL,
-cnpj CHAR(18) NOT NULL,
-email VARCHAR(100) NOT NULL,
-telefone CHAR(13),
-codigoEmpresa CHAR(10) UNIQUE,
-CONSTRAINT chkEmailEmpresa CHECK(email LIKE '%@%')
+CREATE TABLE TBL_EMPRESA (
+    idEmpresa INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100) NOT NULL,
+    cnpj CHAR(18) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    telefone CHAR(13),
+    codigoEmpresa CHAR(10) UNIQUE,
+    CONSTRAINT chkEmailEmpresa CHECK (email LIKE '%@%')
 );
 
-
--- DROP TABLE TBL_USUARIO;
-CREATE TABLE TBL_USUARIO(
-idUsuario INT AUTO_INCREMENT,
-nome VARCHAR(45) NOT NULL,
-email VARCHAR(100) NOT NULL,
-senha VARCHAR(20) NOT NULL,
-cargo VARCHAR(45) NOT NULL,
-fkEmpresa INT,
-CONSTRAINT pkUsuarioEmpresa PRIMARY KEY(idUsuario, fkEmpresa),
-CONSTRAINT fkUsuarioEmpresa FOREIGN KEY (fkEmpresa) REFERENCES TBL_EMPRESA(idEmpresa),
-CONSTRAINT chkEmailUsuario CHECK (email LIKE '%@%'),
-CONSTRAINT chkCargo CHECK (cargo IN ('funcionario', 'gerente'))
+CREATE TABLE TBL_USUARIO (
+    idUsuario INT AUTO_INCREMENT,
+    nome VARCHAR(45) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    senha VARCHAR(20) NOT NULL,
+    fkEmpresa INT,
+    CONSTRAINT pkUsuarioEmpresa PRIMARY KEY (idUsuario , fkEmpresa),
+    CONSTRAINT fkUsuarioEmpresa FOREIGN KEY (fkEmpresa)
+        REFERENCES TBL_EMPRESA (idEmpresa),
+    CONSTRAINT chkEmailUsuario CHECK (email LIKE '%@%')
 );
 
-
--- DROP TABLE TBL_VEICULO;
-CREATE TABLE TBL_VEICULO(
-idVeiculo INT PRIMARY KEY AUTO_INCREMENT,
-placa CHAR(7) NOT NULL,
-modelo VARCHAR(100),
-fkEmpresa INT,
-CONSTRAINT fkVeiculoEmpresa FOREIGN KEY (fkEmpresa) REFERENCES TBL_EMPRESA(idEmpresa)
+CREATE TABLE TBL_VEICULO (
+    idVeiculo INT PRIMARY KEY AUTO_INCREMENT,
+    placa CHAR(7) NOT NULL,
+    modelo VARCHAR(100),
+    fkEmpresa INT,
+    CONSTRAINT fkVeiculoEmpresa FOREIGN KEY (fkEmpresa)
+        REFERENCES TBL_EMPRESA (idEmpresa)
 );
 
-
--- DROP TABLE TBL_SENSOR;
-CREATE TABLE TBL_SENSOR(
-idSensor INT PRIMARY KEY AUTO_INCREMENT,
-numSerie INT NOT NULL,
-modeloSensor VARCHAR(45) NOT NULL,
-statusSensor VARCHAR(45) NOT NULL,
-localSensor VARCHAR(45) NOT NULL,
-fkVeiculo INT NOT NULL,
-CONSTRAINT fkSensorVeiculo FOREIGN KEY (fkVeiculo) REFERENCES TBL_VEICULO(idVeiculo),
-CONSTRAINT statusSensor CHECK(statusSensor IN ('ativo', 'inativo', 'manutenção')),
-CONSTRAINT localSensor CHECK(localSensor IN ('Fundo', 'Centro', 'Porta'))
+CREATE TABLE TBL_SENSOR (
+    idSensor INT PRIMARY KEY AUTO_INCREMENT,
+    numSerie INT NOT NULL,
+    modeloSensor VARCHAR(45) NOT NULL,
+    statusSensor VARCHAR(45) NOT NULL,
+    localSensor VARCHAR(45) NOT NULL,
+    fkVeiculo INT NOT NULL,
+    CONSTRAINT fkSensorVeiculo FOREIGN KEY (fkVeiculo)
+        REFERENCES TBL_VEICULO (idVeiculo),
+    CONSTRAINT statusSensor CHECK (statusSensor IN ('ativo' , 'inativo', 'manutenção')),
+    CONSTRAINT localSensor CHECK (localSensor IN ('Fundo' , 'Centro', 'Porta'))
 );
 
-
--- DROP TABLE TBL_DADO;
-CREATE TABLE TBL_DADO(
-idDado INT AUTO_INCREMENT,
-temperatura DECIMAL(4,2) NOT NULL,
-dataHora DATETIME,
-fkSensor INT,
-PRIMARY KEY(idDado, fkSensor),
-CONSTRAINT fkDadoSensor FOREIGN KEY  (fkSensor) REFERENCES TBL_SENSOR(idSensor)
+CREATE TABLE TBL_DADO (
+    idDado INT AUTO_INCREMENT,
+    temperatura DECIMAL(4 , 2 ) NOT NULL,
+    dataHora DATETIME DEFAULT CURRENT_TIMESTAMP,
+    fkSensor INT,
+    PRIMARY KEY (idDado , fkSensor),
+    CONSTRAINT fkDadoSensor FOREIGN KEY (fkSensor)
+        REFERENCES TBL_SENSOR (idSensor)
 );
 
-
--- DROP TABLE TBL_ALERTA;
-CREATE TABLE TBL_ALERTA(
-idAlerta INT AUTO_INCREMENT,
-titulo VARCHAR(60) NOT NULL,
-statusAlerta VARCHAR(8) NOT NULL,
-mensagem VARCHAR(400) NOT NULL,
-dtAlerta DATETIME NOT NULL,
-dtLeitura DATETIME,
-fkDado INT,
-PRIMARY KEY(idAlerta, fkDado),
-CONSTRAINT chkStatusAlerta CHECK (statusAlerta IN ('verde', 'amarelo', 'vermelho')),
-CONSTRAINT fkAlertaDado FOREIGN KEY (fkDado) REFERENCES TBL_DADO(idDado)
+CREATE TABLE TBL_ALERTA (
+    idAlerta INT AUTO_INCREMENT,
+    dtAlerta TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    fkDadoPorta INT,
+    fkDadoCentro INT,
+    fkDadoFundo INT,
+    PRIMARY KEY (idAlerta , fkDadoPorta , fkDadoCentro , fkDadoFundo),
+    CONSTRAINT fkAlertaDadoPorta FOREIGN KEY (fkDadoPorta)
+        REFERENCES TBL_DADO (idDado),
+    CONSTRAINT fkAlertaDadoCentro FOREIGN KEY (fkDadoCentro)
+        REFERENCES TBL_DADO (idDado),
+    CONSTRAINT fkAlertaDadoFundo FOREIGN KEY (fkDadoFundo)
+        REFERENCES TBL_DADO (idDado)
 );
 
 CREATE TABLE TBL_HISTORICO (
-idHistorico INT AUTO_INCREMENT,
-dataInicio DATETIME NOT NULL,
-dataFim DATETIME,
-fkUsuario INT,
-fkEmpresa INT,
-fkVeiculo INT,
-CONSTRAINT pksHistorico PRIMARY KEY (idHistorico, fkUsuario, fkEmpresa, fkVeiculo),
-CONSTRAINT fkHistoricoUsuario FOREIGN KEY (fkUsuario)
-	REFERENCES TBL_USUARIO(idUsuario),
-CONSTRAINT fkHistoricoEmpresa FOREIGN KEY (fkEmpresa)
-	REFERENCES TBL_EMPRESA(idEmpresa),
-CONSTRAINT fkHistoricoVeiculo FOREIGN KEY (fkVeiculo)
-	REFERENCES TBL_VEICULO(idVeiculo)
+    idHistorico INT AUTO_INCREMENT,
+    dataInicio DATETIME NOT NULL,
+    dataFim DATETIME,
+    fkUsuario INT,
+    fkEmpresa INT,
+    fkVeiculo INT,
+    CONSTRAINT pksHistorico PRIMARY KEY (idHistorico , fkUsuario , fkEmpresa , fkVeiculo),
+    CONSTRAINT fkHistoricoUsuario FOREIGN KEY (fkUsuario)
+        REFERENCES TBL_USUARIO (idUsuario),
+    CONSTRAINT fkHistoricoEmpresa FOREIGN KEY (fkEmpresa)
+        REFERENCES TBL_EMPRESA (idEmpresa),
+    CONSTRAINT fkHistoricoVeiculo FOREIGN KEY (fkVeiculo)
+        REFERENCES TBL_VEICULO (idVeiculo)
 );
 
--- INSERÇÕES 
 INSERT INTO TBL_EMPRESA (nome, cnpj, email, telefone, codigoEmpresa) VALUES 
-('Transportes Rápidos Ltda', '12.345.678/0001-90', 'contato@transportesrapidos.com', '11-98765-4321', 'TRANS001'),
-('Logística Nacional S.A.', '98.765.432/0001-21', 'sac@logisticanacional.com.br', '(1-98765-1234', 'LOG002'),
-('Cargas Pesadas ME', '45.678.912/0001-34', 'atendimento@cargaspesadas.me', '31-91234-5678', 'CARGA003'),
-('Distribuidora Express', '78.912.345/0001-67', 'contato@expressdist.com', '41-99876-5432', 'EXP004'),
-('Fretes & Entregas Ltda', '23.456.789/0001-89', 'faleconosco@fretesentregas.com', '51-92345-6789', 'FRET005');
+('Transportes Rápidos Ltda', '12.345.678/0001-90', 'contato@transportesrapidos.com', '11-98765-4321', 'TRANS001');
 
-INSERT INTO TBL_USUARIO (nome, email, senha, cargo, fkEmpresa) VALUES 
-('João Silva', 'joao.silva@transportesrapidos.com', 'js123456', 'gerente', 1),
-('Maria Oliveira', 'maria.oliveira@transportesrapidos.com', 'mo654321', 'funcionario', 1),
-('Carlos Souza', 'carlos.souza@logisticanacional.com.br', 'cs789012', 'gerente', 2),
-('Ana Pereira', 'ana.pereira@logisticanacional.com.br', 'ap345678', 'funcionario', 2),
-('Pedro Costa', 'pedro.costa@cargaspesadas.me', 'pc901234', 'gerente', 3),
-('Fernanda Lima', 'fernanda.lima@expressdist.com', 'fl567890', 'gerente', 4),
-('Ricardo Santos', 'ricardo.santos@fretesentregas.com', 'rs123789', 'gerente', 5);
+INSERT INTO TBL_USUARIO (nome, email, senha, fkEmpresa) VALUES 
+('João Silva', 'joao.silva@transportesrapidos.com', 'js123456', 1);
 
 INSERT INTO TBL_VEICULO (placa, modelo, fkEmpresa) VALUES 
 ('ABC1D23', 'Volvo FH 540', 1),
 ('DEF4G56', 'Scania R500', 1),
-('GHI7J89', 'Mercedes-Benz Actros', 2),
-('JKL0M12', 'Volkswagen Constellation', 2),
-('MNO3P45', 'Ford Cargo 2429', 3),
-('PQR6S78', 'Iveco Stralis', 4),
-('STU9V01', 'DAF XF 480', 5);
+('DSK3421', 'FH 500', 1),
+('HKG9348', 'Scania 770s', 1),
+('PBNJ107', 'DAF XF 480', 1),
+('GYM97P0', 'Mercedes-Benz Atego 2548', 1),
+('ATK1010', 'Volkswagen Meteor 28.480', 1),
+('PIN8W33', 'Ford Cargo 2429', 1);
 
-INSERT INTO TBL_SENSOR (numSerie, modeloSensor, statusSensor, localSensor, fkVeiculo) VALUES 
-(1001, 'SensTemp-1000', 'ativo', 'Fundo', 1),
-(1002, 'SensTemp-1000', 'ativo', 'Centro', 1),
-(1003, 'SensTemp-1000', 'ativo', 'Porta', 1),
-(2001, 'SensTemp-2000', 'ativo', 'Fundo', 2),
-(2002, 'SensTemp-2000', 'ativo', 'Centro', 2),
-(3001, 'SensTemp-1000', 'manutenção', 'Fundo', 3),
-(4001, 'SensTemp-2000', 'ativo', 'Fundo', 4),
-(5001, 'SensTemp-1000', 'inativo', 'Fundo', 5),
-(6001, 'SensTemp-2000', 'ativo', 'Fundo', 6),
-(7001, 'SensTemp-1000', 'ativo', 'Fundo', 7);
+INSERT INTO TBL_SENSOR (numSerie, modeloSensor, statusSensor, localSensor, fkVeiculo) VALUES
+-- Veículo 1
+(101, 'LM35', 'ativo', 'Porta', 1),
+(102, 'LM35', 'ativo', 'Centro', 1),
+(103, 'LM35', 'ativo', 'Fundo', 1),
+-- Veículo 2
+(104, 'LM35', 'ativo', 'Porta', 2),
+(105, 'LM35', 'ativo', 'Centro', 2),
+(106, 'LM35', 'ativo', 'Fundo', 2),
+-- Veículo 3
+(107, 'LM35', 'ativo', 'Porta', 3),
+(108, 'LM35', 'ativo', 'Centro', 3),
+(109, 'LM35', 'ativo', 'Fundo', 3),
+-- Veículo 4
+(110, 'LM35', 'ativo', 'Porta', 4),
+(111, 'LM35', 'ativo', 'Centro', 4),
+(112, 'LM35', 'ativo', 'Fundo', 4),
+-- Veículo 5
+(113, 'LM35', 'ativo', 'Porta', 5),
+(114, 'LM35', 'ativo', 'Centro', 5),
+(115, 'LM35', 'ativo', 'Fundo', 5),
+-- Veículo 6
+(116, 'LM35', 'ativo', 'Porta', 6),
+(117, 'LM35', 'ativo', 'Centro', 6),
+(118, 'LM35', 'ativo', 'Fundo', 6),
+-- Veículo 7
+(119, 'LM35', 'ativo', 'Porta', 7),
+(120, 'LM35', 'ativo', 'Centro', 7),
+(121, 'LM35', 'ativo', 'Fundo', 7),
+-- Veículo 8
+(122, 'LM35', 'ativo', 'Porta', 8),
+(123, 'LM35', 'ativo', 'Centro', 8),
+(124, 'LM35', 'ativo', 'Fundo', 8);
 
-INSERT INTO TBL_DADO (temperatura, dataHora, fkSensor) VALUES 
-(-18.50, '2023-11-01 08:00:00', 1),
-(-19.20, '2023-11-01 08:05:00', 1),
-(-17.80, '2023-11-01 08:10:00', 1),
-(-20.10, '2023-11-01 08:00:00', 2),
-(-15.50, '2023-11-01 08:05:00', 2),
-(-12.30, '2023-11-01 08:10:00', 2),
-(-18.75, '2023-11-01 08:00:00', 3),
-(-19.90, '2023-11-01 08:05:00', 3),
-(-5.20, '2023-11-01 08:10:00', 3),
-(2.50, '2023-11-01 09:05:00', 7),
-(-18.30, '2023-11-01 10:00:00', 9),
-(-18.60, '2023-11-01 10:05:00', 9),
-(-19.10, '2023-11-01 11:00:00', 10);
-
-INSERT INTO TBL_ALERTA (titulo, statusAlerta, mensagem, dtAlerta, dtLeitura, fkDado) VALUES 
-('Temperatura estável', 'verde', 'Temperatura dentro do esperado para produtos congelados', '2023-11-01 08:00:00', '2023-11-01 08:02:00', 1),
-('Temperatura estável', 'verde', 'Temperatura dentro do esperado para produtos congelados', '2023-11-01 08:05:00', '2023-11-01 08:07:00', 2),
-('Temperatura elevada', 'amarelo', 'Temperatura próxima ao limite superior para produtos congelados', '2023-11-01 08:10:00', '2023-11-01 08:15:00', 3),
-('Temperatura crítica', 'vermelho', 'Temperatura acima do limite para produtos congelados', '2023-11-01 08:10:00', '2023-11-01 08:20:00', 6),
-('Temperatura crítica', 'vermelho', 'Temperatura acima do limite para produtos congelados', '2023-11-01 09:05:00', NULL, 10),
-('Temperatura estável', 'verde', 'Temperatura dentro do esperado para produtos congelados', '2023-11-01 11:00:00', NULL, 13);
-
-INSERT INTO TBL_HISTORICO (dataInicio, dataFim, fkUsuario, fkEmpresa, fkVeiculo) VALUES
--- Histórico do gerente João Silva com o veículo Volvo FH 540
-('2023-11-01 08:00:00', '2023-11-01 12:00:00', 1, 1, 1),
-
--- Histórico da funcionária Maria Oliveira com o veículo Scania R500
-('2023-11-01 13:00:00', '2023-11-01 17:00:00', 2, 1, 2),
-
--- Histórico do gerente Carlos Souza com o veículo Mercedes-Benz Actros
-('2023-11-01 07:30:00', '2023-11-01 15:30:00', 3, 2, 3),
-
--- Histórico do gerente Pedro Costa com o veículo Ford Cargo 2429
-('2023-11-01 06:00:00', '2023-11-01 18:00:00', 5, 3, 5),
-('2023-11-01 06:00:00', null, 3, 2, 4);
-
--- Verificação básica dos dados inseridos
-SELECT * FROM TBL_EMPRESA;
-
-SELECT * FROM TBL_USUARIO;
-
-SELECT * FROM TBL_VEICULO; 
-
-SELECT * FROM TBL_CARGA;
-
-SELECT * FROM TBL_SENSOR;
-
-SELECT * FROM TBL_DADO;
-
-SELECT * FROM TBL_ALERTA; 
-
-SELECT * FROM TBL_HISTORICO;
-
-
--- TESTE
--- TESTE
--- TESTE
-			select
-				d2.temperatura
-			from
-				TBL_DADO d2 join TBL_SENSOR s2
-					on s2.idSensor = d2.fkSensor
-                join TBL_VEICULO v2
-					on v2.idVeiculo = s2.fkVeiculo
-			where
-                v2.idVeiculo = 1 AND s2.localSensor = 'Centro'
-			LIMIT 1;
-
--- -- VIEWS -- --
-CREATE VIEW vw_login_page as 
-	SELECT 
-		idUsuario,
-		email,
-        senha
-	FROM
-		TBL_USUARIO;
-	
-select 
-	* 
-from 
-	vw_login_page 
+-- encontrar codigo empresa
+SELECT 
+    *
+FROM
+    TBL_EMPRESA
 WHERE
-	email = '${email}' AND senha = '${senha}';
--- ---------------------------------------------
+    codigoEmpresa = '${codigoEmpresa}';
 
-    
-CREATE VIEW vw_navbar as
-	SELECT
-		u.nome as usuario,
-		e.nome as empresa
-	FROM 
-		TBL_USUARIO u JOIN TBL_EMPRESA e
-			ON e.idEmpresa = u.fkEmpresa;
-		
-select * from vw_navbar;
--- ---------------------------------------------
+-- pagina cadastro
+INSERT INTO TBL_USUARIO (nome, email, senha, fkEmpresa) VALUES ('${nome}', '${email}', '${senha}', '${fkEmpresa}');
 
+-- pagina login
+SELECT 
+    idUsuario,
+    u.nome AS 'nome',
+    u.email AS 'email',
+    u.senha AS 'senha',
+    e.nome AS 'empresa',
+    e.idEmpresa AS 'fkEmpresa'
+FROM
+    TBL_USUARIO AS u
+        JOIN
+    TBL_EMPRESA AS e ON e.idEmpresa = u.fkEmpresa
+WHERE
+    u.email = '${email}'
+        AND senha = '${senha}';
 
-CREATE VIEW vw_frota_ativa as 
-	SELECT 
-		COUNT(v.idVeiculo) as Frota,
-        (
-			select
-				COUNT(vs.idVeiculo)
-			FROM
-				TBL_EMPRESA es JOIN TBL_VEICULO vs
-					ON es.idEmpresa = vs.fkEmpresa
-				JOIN TBL_HISTORICO hs
-					ON vs.idVeiculo = hs.fkVeiculo
-			WHERE
-				hs.dataFim = null
-        ) as Ativo
-	FROM
-		TBL_USUARIO u JOIN TBL_EMPRESA e
-			ON e.idEmpresa = u.fkEmpresa
-		JOIN TBL_VEICULO v
-			ON e.idEmpresa = v.fkEmpresa
-		JOIN TBL_HISTORICO h
-			ON v.idVeiculo = h.fkVeiculo;
-	
-select * from vw_frota_ativa;
--- ---------------------------------------------
+-- alerta
+-- select 1
+SELECT 
+    veiculo.idVeiculo AS id_veiculo,
+    veiculo.placa,
+    alerta.dtAlerta,
+    CONCAT('Há ',
+            TIMESTAMPDIFF(MINUTE,
+                alerta.dtAlerta,
+                NOW()),
+            ' minutos atrás') AS tempo,
+    dadoPorta.temperatura AS Porta,
+    dadoCentro.temperatura AS Centro,
+    dadoFundo.temperatura AS Fundo,
+    TRUNCATE((dadoPorta.temperatura + dadoCentro.temperatura + dadoFundo.temperatura) / 3,
+        2) AS Media,
+    CASE
+        WHEN
+            TRUNCATE((dadoPorta.temperatura + dadoCentro.temperatura + dadoFundo.temperatura) / 3,
+                2) > - 14
+        THEN
+            'Crítico'
+        WHEN
+            TRUNCATE((dadoPorta.temperatura + dadoCentro.temperatura + dadoFundo.temperatura) / 3,
+                2) > - 16
+                AND TRUNCATE((dadoPorta.temperatura + dadoCentro.temperatura + dadoFundo.temperatura) / 3,
+                2) <= - 14
+        THEN
+            'Alerta'
+        ELSE 'Ideal'
+    END AS Status_alerta
+FROM
+    TBL_ALERTA AS alerta
+        JOIN
+    TBL_DADO AS dadoPorta ON dadoPorta.idDado = alerta.fkDadoPorta
+        JOIN
+    TBL_SENSOR AS sensorPorta ON sensorPorta.idSensor = dadoPorta.fkSensor
+        JOIN
+    TBL_DADO AS dadoCentro ON dadoCentro.idDado = alerta.fkDadoCentro
+        JOIN
+    TBL_SENSOR AS sensorCentro ON sensorCentro.idSensor = dadoCentro.fkSensor
+        JOIN
+    TBL_DADO AS dadoFundo ON dadoFundo.idDado = alerta.fkDadoFundo
+        JOIN
+    TBL_SENSOR AS sensorFundo ON sensorFundo.idSensor = dadoFundo.fkSensor
+        JOIN
+    TBL_VEICULO AS veiculo ON veiculo.idVeiculo = sensorPorta.fkVeiculo
+WHERE
+    veiculo.fkEmpresa = 1
+GROUP BY veiculo.idVeiculo , veiculo.placa , alerta.dtAlerta , dadoPorta.temperatura , dadoCentro.temperatura , dadoFundo.temperatura
+ORDER BY alerta.dtAlerta DESC
+LIMIT 3;
 
+-- select 2
+SELECT
+        veiculo.idVeiculo AS id_veiculo,
+        veiculo.placa,
+        alerta.dtAlerta,
+        CONCAT('Há ', TIMESTAMPDIFF(MINUTE, alerta.dtAlerta, NOW()), ' minutos atrás') AS tempo,
+        dadoPorta.temperatura AS Porta,
+        dadoCentro.temperatura AS Centro,
+        dadoFundo.temperatura AS Fundo,
+        TRUNCATE((
+            dadoPorta.temperatura +
+            dadoCentro.temperatura +
+            dadoFundo.temperatura
+        ) / 3, 2) AS Media,
+        CASE
+            WHEN TRUNCATE((
+                dadoPorta.temperatura +
+                dadoCentro.temperatura +
+                dadoFundo.temperatura
+            ) / 3, 2) > -14 THEN 'Crítico'
 
--- CREATE VIEW vw_veiculo_semana as
---	SELECT
-    -- ANALISE NECESSARIA
-    -- ANALISE NECESSARIA
-    -- ANALISE NECESSARIA
-    -- ANALISE NECESSARIA
-    
--- ---------------------------------------------
+            WHEN TRUNCATE((
+                dadoPorta.temperatura +
+                dadoCentro.temperatura +
+                dadoFundo.temperatura
+            ) / 3, 2) > -16 AND TRUNCATE((
+                dadoPorta.temperatura +
+                dadoCentro.temperatura +
+                dadoFundo.temperatura
+            ) / 3, 2) <= -14 THEN 'Alerta'
+            ELSE 'Ideal'
+        END AS Status_alerta
+        FROM
+        TBL_ALERTA AS alerta
+        JOIN TBL_DADO AS dadoPorta ON dadoPorta.idDado = alerta.fkDadoPorta
+        JOIN TBL_SENSOR AS sensorPorta ON sensorPorta.idSensor = dadoPorta.fkSensor
+        JOIN TBL_DADO AS dadoCentro ON dadoCentro.idDado = alerta.fkDadoCentro
+        JOIN TBL_SENSOR AS sensorCentro ON sensorCentro.idSensor = dadoCentro.fkSensor
+        JOIN TBL_DADO AS dadoFundo ON dadoFundo.idDado = alerta.fkDadoFundo
+        JOIN TBL_SENSOR AS sensorFundo ON sensorFundo.idSensor = dadoFundo.fkSensor
+        JOIN TBL_VEICULO AS veiculo ON veiculo.idVeiculo = sensorPorta.fkVeiculo
+        WHERE
+        veiculo.fkEmpresa = ${fkEmpresa}
+        GROUP BY
+        veiculo.idVeiculo, veiculo.placa, alerta.dtAlerta,
+        dadoPorta.temperatura, dadoCentro.temperatura, dadoFundo.temperatura
+        ORDER BY
+        alerta.dtAlerta DESC LIMIT 100;
 
+-- select 3
+SELECT 
+            E.nome AS nome_empresa,
+            COUNT(A.idAlerta) AS total_alertas,
+            SUM(
+                CASE
+                    WHEN ((DP.temperatura + DC.temperatura + DF.temperatura) / 3) > -14 THEN 1
+                    ELSE 0
+                END
+            ) AS total_vermelhos
+        FROM 
+            TBL_ALERTA A
+        JOIN TBL_DADO DP ON A.fkDadoPorta = DP.idDado
+        JOIN TBL_DADO DC ON A.fkDadoCentro = DC.idDado
+        JOIN TBL_DADO DF ON A.fkDadoFundo = DF.idDado
+        JOIN TBL_SENSOR SP ON DP.fkSensor = SP.idSensor
+        JOIN TBL_VEICULO V ON SP.fkVeiculo = V.idVeiculo
+        JOIN TBL_EMPRESA E ON V.fkEmpresa = E.idEmpresa
+        WHERE 
+            E.idEmpresa = 1  
+            AND DATE(A.dtAlerta) = DATE(NOW())
+        GROUP BY 
+            E.nome;
+            
+-- dashboard
+-- select 1
+SELECT 
+    v.idVeiculo,
+    v.placa,
+    recentes.temperatura_porta,
+    recentes.datahora_porta,
+    recentes.temperatura_centro,
+    recentes.datahora_centro,
+    recentes.temperatura_fundo,
+    recentes.datahora_fundo,
+    CASE
+        WHEN recentes.idVeiculo IS NOT NULL THEN 'Ativo'
+        ELSE 'Inativo'
+    END AS status
+FROM
+    TBL_VEICULO v
+        LEFT JOIN
+    (SELECT 
+        v.idVeiculo,
+            MAX(CASE
+                WHEN s.localSensor = 'Porta' THEN d.temperatura
+            END) AS temperatura_porta,
+            MAX(CASE
+                WHEN s.localSensor = 'Porta' THEN d.dataHora
+            END) AS datahora_porta,
+            MAX(CASE
+                WHEN s.localSensor = 'Centro' THEN d.temperatura
+            END) AS temperatura_centro,
+            MAX(CASE
+                WHEN s.localSensor = 'Centro' THEN d.dataHora
+            END) AS datahora_centro,
+            MAX(CASE
+                WHEN s.localSensor = 'Fundo' THEN d.temperatura
+            END) AS temperatura_fundo,
+            MAX(CASE
+                WHEN s.localSensor = 'Fundo' THEN d.dataHora
+            END) AS datahora_fundo
+    FROM
+        TBL_VEICULO v
+    JOIN TBL_SENSOR s ON v.idVeiculo = s.fkVeiculo
+    JOIN TBL_DADO d ON s.idSensor = d.fkSensor
+    WHERE
+        DATE(d.dataHora) = DATE(NOW())
+            AND v.fkEmpresa = 1
+            AND d.dataHora >= DATE_SUB(NOW(), INTERVAL 5 MINUTE)
+            AND (s.fkVeiculo , s.localSensor, d.dataHora) IN (SELECT 
+                s2.fkVeiculo, s2.localSensor, MAX(d2.dataHora)
+            FROM
+                TBL_SENSOR s2
+            JOIN TBL_DADO d2 ON s2.idSensor = d2.fkSensor
+            WHERE
+                DATE(d2.dataHora) = DATE(NOW())
+                    AND d2.dataHora >= DATE_SUB(NOW(), INTERVAL 5 MINUTE)
+            GROUP BY s2.fkVeiculo , s2.localSensor)
+    GROUP BY v.idVeiculo) recentes ON v.idVeiculo = recentes.idVeiculo
+WHERE
+    v.fkEmpresa = 1
+ORDER BY status DESC , v.placa;
 
-CREATE VIEW vw_alertas as 
-	SELECT
-		v.idVeiculo as idVeiculo,
-        v.placa as placa,
-        (
-			select
-				d2.temperatura
-			from
-				TBL_DADO d2 join TBL_SENSOR s2
-					on s2.idSensor = d2.fkSensor
-                join TBL_VEICULO v2
-					on v2.idVeiculo = s2.fkVeiculo
-			where
-                v2.idVeiculo = 1 AND s2.localSensor = 'Porta'
-            LIMIT 1
-		) as porta,
-        (
-			select
-				d2.temperatura
-			from
-				TBL_DADO d2 join TBL_SENSOR s2
-					on s2.idSensor = d2.fkSensor
-                join TBL_VEICULO v2
-					on v2.idVeiculo = s2.fkVeiculo
-			where
-                v2.idVeiculo = 1 AND s2.localSensor = 'Centro'
-            LIMIT 1
-        ) as centro,
-        (
-			select
-				d2.temperatura
-			from
-				TBL_DADO d2 join TBL_SENSOR s2
-					on s2.idSensor = d2.fkSensor
-                join TBL_VEICULO v2
-					on v2.idVeiculo = s2.fkVeiculo
-			where
-                v2.idVeiculo = 1 AND s2.localSensor = 'Fundo'
-            LIMIT 1
-        ) as fundo,
-			(
-            (
-            select
-				d2.temperatura
-			from
-				TBL_DADO d2 join TBL_SENSOR s2
-					on s2.idSensor = d2.fkSensor
-                join TBL_VEICULO v2
-					on v2.idVeiculo = s2.fkVeiculo
-			where
-                v2.idVeiculo = 1 AND s2.localSensor = 'Porta'
-            LIMIT 1
-			) +
-            (
-            select
-				d2.temperatura
-			from
-				TBL_DADO d2 join TBL_SENSOR s2
-					on s2.idSensor = d2.fkSensor
-                join TBL_VEICULO v2
-					on v2.idVeiculo = s2.fkVeiculo
-			where
-                v2.idVeiculo = 1 AND s2.localSensor = 'Centro'
-            LIMIT 1
-            ) +
-            (
-            select
-				d2.temperatura
-			from
-				TBL_DADO d2 join TBL_SENSOR s2
-					on s2.idSensor = d2.fkSensor
-                join TBL_VEICULO v2
-					on v2.idVeiculo = s2.fkVeiculo
-			where
-                v2.idVeiculo = 1 AND s2.localSensor = 'Fundo'
-            LIMIT 1
-            )) / 3
-         as media
-	FROM 
-		TBL_USUARIO u JOIN TBL_EMPRESA e
-			ON e.idEmpresa = u.fkEmpresa
-		JOIN TBL_VEICULO v
-			ON e.idEmpresa = v.fkEmpresa
-		JOIN TBL_HISTORICO h
-			ON v.idVeiculo = h.fkVeiculo;
-		
-SELECT * FROM vw_alertas WHERE idVeiculo = 1 LIMIT 1;
+-- select 2
+SELECT 
+    v.idVeiculo,
+    v.placa,
+    MAX(CASE
+        WHEN s.localSensor = 'Porta' THEN d.temperatura
+    END) AS temperatura_porta,
+    MAX(CASE
+        WHEN s.localSensor = 'Porta' THEN d.dataHora
+    END) AS datahora_porta,
+    MAX(CASE
+        WHEN s.localSensor = 'Centro' THEN d.temperatura
+    END) AS temperatura_centro,
+    MAX(CASE
+        WHEN s.localSensor = 'Centro' THEN d.dataHora
+    END) AS datahora_centro,
+    MAX(CASE
+        WHEN s.localSensor = 'Fundo' THEN d.temperatura
+    END) AS temperatura_fundo,
+    MAX(CASE
+        WHEN s.localSensor = 'Fundo' THEN d.dataHora
+    END) AS datahora_fundo,
+    'Ativo' AS status
+FROM
+    TBL_VEICULO v
+        JOIN
+    TBL_SENSOR s ON v.idVeiculo = s.fkVeiculo
+        JOIN
+    TBL_DADO d ON s.idSensor = d.fkSensor
+WHERE
+    v.fkEmpresa = 1
+        AND DATE(d.dataHora) = DATE(NOW())
+        AND d.dataHora >= DATE_SUB(NOW(), INTERVAL 10 SECOND)
+GROUP BY v.idVeiculo , v.placa
+ORDER BY v.placa;
 
+-- pagina caminhao
+-- select 1
 
-SELECT usuario.nome AS 'Nome do Integrante', 
-	   usuario.cargo AS 'Cargo do Integrante', 
-       empresa.nome AS 'Nome da Empresa'
-       FROM TBL_EMPRESA as empresa JOIN TBL_USUARIO AS usuario 
-       ON empresa.idEmpresa = usuario.fkEmpresa;
+SELECT 
+    s.localSensor AS sensor,
+    IFNULL(ROUND(d.temperatura, 2), 'N/A') AS temperatura,
+    IFNULL(DATE_FORMAT(d.dataHora, '%H:%i'), 'N/A') AS horario_leitura,
+    d.idDado AS idDado
+FROM
+    (SELECT DISTINCT
+        localSensor
+    FROM
+        TBL_SENSOR
+    WHERE
+        fkVeiculo = 1) s
+        LEFT JOIN
+    (SELECT 
+        d1.*
+    FROM
+        TBL_DADO d1
+    JOIN TBL_SENSOR s1 ON d1.fkSensor = s1.idSensor
+    WHERE
+        s1.fkVeiculo = 1
+            AND (SELECT 
+                COUNT(*)
+            FROM
+                TBL_DADO d2
+            JOIN TBL_SENSOR s2 ON d2.fkSensor = s2.idSensor
+            WHERE
+                s2.localSensor = s1.localSensor
+                    AND s2.fkVeiculo = 1
+                    AND d2.dataHora > d1.dataHora) < 10) d ON s.localSensor = (SELECT 
+            localSensor
+        FROM
+            TBL_SENSOR
+        WHERE
+            idSensor = d.fkSensor
+        LIMIT 1)
+ORDER BY s.localSensor , d.dataHora ASC;
 
-SELECT empresa.nome AS 'Nome da Empresa', 
-	   veiculo.placa AS 'Placa do veículo', 
-       carga.tipoCarga AS 'Tipo da Carga', 
-       sensor.statusSensor AS 'Status do Sensor', 
-       dado.temperatura AS 'Temperatura Atual', 
-       alerta.titulo AS 'Mensagem do alerta', 
-       alerta.statusAlerta AS 'Status do alerta'
-       FROM TBL_EMPRESA AS empresa
-       JOIN TBL_VEICULO AS veiculo
-       ON empresa.idEmpresa = veiculo.fkEmpresa
-       JOIN TBL_CARGA AS carga
-       ON veiculo.idVeiculo = carga.fkVeiculo
-       JOIN TBL_SENSOR AS sensor
-       ON veiculo.idVeiculo = sensor.fkVeiculo
-       JOIN TBL_DADO AS dado
-       ON sensor.idSensor = dado.fkSensor
-       JOIN TBL_ALERTA AS alerta
-       ON dado.idDado = alerta.fkDado;
-       
--- Exibição dos dados - Empresa 1       
-SELECT empresa.nome AS 'Nome da Empresa', 
-	   veiculo.placa AS 'Placa do veículo', 
-       carga.tipoCarga AS 'Tipo da Carga', 
-       sensor.statusSensor AS 'Status do Sensor', 
-       dado.temperatura AS 'Temperatura Atual', 
-       alerta.titulo AS 'Mensagem do alerta', 
-       alerta.statusAlerta AS 'Status do alerta'
-       FROM TBL_EMPRESA AS empresa
-       JOIN TBL_VEICULO AS veiculo
-       ON empresa.idEmpresa = veiculo.fkEmpresa
-       JOIN TBL_CARGA AS carga
-       ON veiculo.idVeiculo = carga.fkVeiculo
-       JOIN TBL_SENSOR AS sensor
-       ON veiculo.idVeiculo = sensor.fkVeiculo
-       JOIN TBL_DADO AS dado
-       ON sensor.idSensor = dado.fkSensor
-       JOIN TBL_ALERTA AS alerta
-       ON dado.idDado = alerta.fkDado
-       WHERE idEmpresa = 1;
-       
--- Exibição dos dados - Empresa 2       
-SELECT empresa.nome AS 'Nome da Empresa', 
-	   veiculo.placa AS 'Placa do veículo', 
-       carga.tipoCarga AS 'Tipo da Carga', 
-       sensor.statusSensor AS 'Status do Sensor', 
-       dado.temperatura AS 'Temperatura Atual', 
-       alerta.titulo AS 'Mensagem do alerta', 
-       alerta.statusAlerta AS 'Status do alerta'
-       FROM TBL_EMPRESA AS empresa
-       JOIN TBL_VEICULO AS veiculo
-       ON empresa.idEmpresa = veiculo.fkEmpresa
-       JOIN TBL_CARGA AS carga
-       ON veiculo.idVeiculo = carga.fkVeiculo
-       JOIN TBL_SENSOR AS sensor
-       ON veiculo.idVeiculo = sensor.fkVeiculo
-       JOIN TBL_DADO AS dado
-       ON sensor.idSensor = dado.fkSensor
-       JOIN TBL_ALERTA AS alerta
-       ON dado.idDado = alerta.fkDado
-       WHERE idEmpresa = 2;
-       
-SELECT veiculo.placa AS 'Placa do Veículo', 
-	   carga.tipoCarga AS 'Tipo da Carga', 
-       sensor.statusSensor AS 'Status do Sensor', 
-       dado.temperatura AS 'Temperatura Atual', 
-       alerta.titulo AS 'Mensagem do alerta', 
-       alerta.statusAlerta AS 'Status do alerta'
-       FROM TBL_VEICULO AS veiculo
-       JOIN TBL_CARGA AS carga
-       ON veiculo.idVeiculo = carga.fkVeiculo
-       JOIN TBL_SENSOR AS sensor 
-       ON sensor.id
+-- select 2
+SELECT 
+    s.localSensor AS sensor,
+    ROUND(d.temperatura, 2) AS temperatura,
+    DATE_FORMAT(d.dataHora, '%H:%i') AS horario_leitura,
+    d.idDado AS idDado
+FROM
+    TBL_DADO d
+        JOIN
+    TBL_SENSOR s ON d.fkSensor = s.idSensor
+WHERE
+    s.fkVeiculo = 1
+        AND d.idDado IN (SELECT 
+            MAX(d2.idDado)
+        FROM
+            TBL_DADO d2
+                JOIN
+            TBL_SENSOR s2 ON d2.fkSensor = s2.idSensor
+        WHERE
+            s2.fkVeiculo = 1
+        GROUP BY s2.localSensor)
+ORDER BY CASE s.localSensor
+    WHEN 'Porta' THEN 1
+    WHEN 'Centro' THEN 2
+    WHEN 'Fundo' THEN 3
+END;
+
+-- select 3
+SELECT 
+    v.idVeiculo AS id_veiculo,
+    v.placa,
+    TRUNCATE((dp.temperatura + dc.temperatura + df.temperatura) / 3,
+        2) AS media,
+    CASE
+        WHEN
+            TRUNCATE((dp.temperatura + dc.temperatura + df.temperatura) / 3,
+                2) > - 14
+        THEN
+            'Crítico'
+        WHEN
+            TRUNCATE((dp.temperatura + dc.temperatura + df.temperatura) / 3,
+                2) <= - 14
+                AND TRUNCATE((dp.temperatura + dc.temperatura + df.temperatura) / 3,
+                2) > - 16
+        THEN
+            'Alerta'
+        ELSE 'Ideal'
+    END AS status_alerta,
+    dp.dataHora AS dtTemperatura
+FROM
+    TBL_VEICULO AS v
+        JOIN
+    TBL_SENSOR AS sp ON v.idVeiculo = sp.fkVeiculo
+        AND sp.localSensor = 'porta'
+        JOIN
+    TBL_SENSOR AS sc ON v.idVeiculo = sc.fkVeiculo
+        AND sc.localSensor = 'centro'
+        JOIN
+    TBL_SENSOR AS sf ON v.idVeiculo = sf.fkVeiculo
+        AND sf.localSensor = 'fundo'
+        JOIN
+    (SELECT 
+        d.*
+    FROM
+        TBL_DADO d
+    JOIN (SELECT 
+        fkSensor, MAX(dataHora) AS maxData
+    FROM
+        TBL_DADO
+    GROUP BY fkSensor) ult ON d.fkSensor = ult.fkSensor
+        AND d.dataHora = ult.maxData) AS dp ON sp.idSensor = dp.fkSensor
+        JOIN
+    (SELECT 
+        d.*
+    FROM
+        TBL_DADO d
+    JOIN (SELECT 
+        fkSensor, MAX(dataHora) AS maxData
+    FROM
+        TBL_DADO
+    GROUP BY fkSensor) ult ON d.fkSensor = ult.fkSensor
+        AND d.dataHora = ult.maxData) AS dc ON sc.idSensor = dc.fkSensor
+        JOIN
+    (SELECT 
+        d.*
+    FROM
+        TBL_DADO d
+    JOIN (SELECT 
+        fkSensor, MAX(dataHora) AS maxData
+    FROM
+        TBL_DADO
+    GROUP BY fkSensor) ult ON d.fkSensor = ult.fkSensor
+        AND d.dataHora = ult.maxData) AS df ON sf.idSensor = df.fkSensor
+WHERE
+    v.fkEmpresa = 1
+ORDER BY dtTemperatura DESC;
+
 
