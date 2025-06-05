@@ -374,7 +374,7 @@
                 var alerta = alertas[contador]
                 var media = (Number(alerta.Porta) + Number(alerta.Centro) + Number(alerta.Fundo)) / 3
                 var status = "green"
-
+                console.log(alerta)
                 if (media > -14) {
                     status = "red"
                 } else if (media > -16) {
@@ -404,7 +404,7 @@
                 }
 
                 table_alerts.innerHTML += `
-            <tr class="row-${status} row" onclick="redirectPage(${alerta.id_veiculo, alert.placa})">
+            <tr class="row-${status} row" onclick="redirectPage('${alerta.id_veiculo}', '${alert.placa}')">
                 <td class="truck">
                     <img src="./assets/icons/trunck-${status}.png" alt="truck red" width="40" height="40">
                     <span>
@@ -460,7 +460,7 @@
             }
 
             div_caminhoes.innerHTML += `
-            <a href="./caminhao.html?caminhaId=${caminhao.id_veiculo}" class="card-caminhao ${status}">
+            <div onclick="redirectPage('${caminhao.id_veiculo}', '${caminhao.placa}')" class="card-caminhao ${status}">
             <div class="topo">
                 <h3>
                     Caminhão ${caminhao.placa}
@@ -481,7 +481,7 @@
             </div>
             <span>
             </span>
-            </a>`
+            </div   >`
         }
     }
 
@@ -515,7 +515,7 @@
             div_caminhoes.innerHTML = ''
 
             div_caminhoes.innerHTML += `
-                    <a href="./caminhao.html?caminhaId=${caminhao_procura.id_veiculo}" class="card-caminhao ${status}">
+                    <div onclick="redirectPage('${alerta.id_veiculo}', '${alert.placa}')" class="card-caminhao ${status}">
                     <div class="topo">
                         <h3>
                             Caminhão ${caminhao_procura.placa}
@@ -540,7 +540,7 @@
                     <span>
 
                     </span>
-                </a>`
+                </div>`
         }
     }
 
@@ -572,7 +572,7 @@
             }
 
             div_caminhoes.innerHTML += `
-            <a href="./caminhao.html?caminhaId=${caminhao.id_veiculo}" class="card-caminhao ${status}">
+            <div onclick="redirectPage('${alerta.id_veiculo}', '${alert.placa}')" class="card-caminhao ${status}">
             <div class="topo">
                 <h3>
                     Caminhão ${caminhao.placa}
@@ -593,7 +593,7 @@
             </div>
             <span>
             </span>
-            </a>
+            </div>
             `
         }
     }
@@ -690,7 +690,7 @@
             }
 
             div_caminhoes.innerHTML += `
-            <a href="./caminhao.html?caminhaoId=${caminhao.id_veiculo}&placa=${caminhao.placa}" class="card-caminhao ${statusClass}">
+            <div  class="card-caminhao ${statusClass}" onclick="redirectPage('${caminhao.id_veiculo}', '${caminhao.placa}')">
                 <div class="topo">
                     <h3>Caminhão ${caminhao.placa}</h3>
                     <p>Congelado</p>
@@ -778,6 +778,8 @@
 
 
     function redirectPage(idCaminhao, placa) {
-        window.location.href = `./caminhao.html?caminhaoId=${idCaminhao}&placa=${placa}`
+        sessionStorage.PLACA = placa 
+     sessionStorage.ID_CAMINHAO =idCaminhao
+        window.location.href = `./caminhao.html`
     }
 </script>

@@ -220,7 +220,7 @@
             }
 
             table_alerts.innerHTML += `
-                    <tr class="row-${status} row" onclick="redirectPage(${alerta.id_veiculo, alerta.placa})">
+                    <tr class="row-${status} row" onclick="redirectPage('${alerta.id_veiculo}', '${alert.placa}')">
                         <td class="truck">
                             <img src="./assets/icons/trunck-${status}.png" alt="truck red" width="40" height="40">
                             <span>
@@ -316,6 +316,12 @@
         }
 
         exibirAlertas(lista_filtrada)
+    }
+
+      function redirectPage(idCaminhao, placa) {
+        sessionStorage.PLACA = placa 
+     sessionStorage.ID_CAMINHAO =idCaminhao
+        window.location.href = `./caminhao.html`
     }
 
 </script>

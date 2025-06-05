@@ -696,3 +696,7 @@ td {
 .row {
   cursor: pointer;
 }
+
+.card-caminhao{
+  cursor: pointer;
+}

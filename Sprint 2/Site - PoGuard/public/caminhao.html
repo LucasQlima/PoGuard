@@ -71,9 +71,9 @@
     </div>
 
     <!-- CONTENT -->
-    <div class="content-right" id="placaCaminhao">
+    <div class="content-right">
 
-        <h1>
+        <h1 id="placaCaminhao">
             Dashboard -
         </h1>
 
@@ -263,8 +263,8 @@
 <script>
     noma_usuario.innerHTML = sessionStorage.NOME_USUARIO
     nome_empresa.innerHTML = sessionStorage.EMPRESA
-    // placaCaminhao.innerHTML = `
-    // <h1>Dashboard - ${sessionStorage.PLACA_CAMINHAO}</h1>`
+    placaCaminhao.innerHTML = `
+    Dashboard - ${sessionStorage.PLACA}`
     var idCaminhao = sessionStorage.ID_CAMINHAO
     var dadosLeitura = []
     var dadosAtualizados = []
@@ -300,13 +300,6 @@
                         {
                             label: 'Sensor do Fundo',
                             data: [],
-                            borderColor: '#A9F4D0',
-                            backgroundColor: '#A9F4D0',
-                        }
-                            ,
-                        {
-                            label: 'Ideal',
-                            data: [-16, -16, -16, -16, -16, -16, -16, -16, -16, -16],
                             borderColor: '#A9F4D0',
                             backgroundColor: '#A9F4D0',
                         }]
