@@ -84,7 +84,7 @@ function ativaStatus(fkEmpresa) {
 	WHERE
 		v.fkEmpresa = ${fkEmpresa}
 		AND DATE(d.dataHora) = DATE(NOW())
-		AND d.dataHora >= DATE_SUB(NOW(), INTERVAL 10 SECOND)
+		AND d.dataHora >= DATE_SUB(NOW(), INTERVAL 7 SECOND)
 	GROUP BY
 		v.idVeiculo, v.placa
 	ORDER BY

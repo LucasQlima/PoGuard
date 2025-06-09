@@ -119,15 +119,15 @@
 
             <div class="frota-ativa card frota-status">
                 <h4>
-                    Status dos caminhões(Ativos)
+                    Status dos caminhões(Ideal)
                 </h4>
 
                 <span id="card_ativo">
                     <h3>
-                        4/6
+                        0/0
                     </h3>
                     <span>
-                        66%
+                        0%
                     </span>
                 </span>
 
@@ -139,7 +139,7 @@
                             Ideal
                         </p>
 
-                        <p id="green_quantidade">4</p>
+                        <p id="green_quantidade">0</p>
                     </div>
 
                     <div class="status-trucks status-yellow">
@@ -148,7 +148,7 @@
                             Alerta
                         </p>
 
-                        <p id="yellow_quantidade">1</p>
+                        <p id="yellow_quantidade">0</p>
                     </div>
 
                     <div class="status-trucks status-red">
@@ -157,7 +157,7 @@
                             Crítico
                         </p>
 
-                        <p id="red_quantidade">1</p>
+                        <p id="red_quantidade">0</p>
                     </div>
                 </div>
 
@@ -171,10 +171,10 @@
 
                 <span>
                     <h3 id="card_alertas">
-                        3/11
+                        0/0
                     </h3>
                     <span id="porcentagem">
-                        27%
+                        0%
                     </span>
                 </span>
 
@@ -287,7 +287,6 @@
 
                 card_alertas.innerHTML = `${totalCriticos}/${totalAlertas}`
                 porcentagem.innerHTML = ((totalCriticos / totalAlertas) * 100).toFixed(0) + '%';
-
                 red_progreess.style.width = ((totalCriticos / totalAlertas) * 100).toFixed(0) + '%'
             })
 
@@ -367,7 +366,7 @@
                 yellow_quantidade.innerHTML = alertaAtivo
                 red_quantidade.innerHTML = criticoAtivo
             })
-        setTimeout(fetchKpis, timeOutRefresh)
+        setTimeout(fetchKpis, 620)
     }
 
     function fetchAlerts() {
@@ -419,7 +418,7 @@
                 }
 
                 table_alerts.innerHTML += `
-            <tr class="row-${status} row" onclick="redirectPage('${alerta.id_veiculo}', '${alert.placa}')">
+            <tr class="row-${status} row" onclick="redirectPage('${alerta.id_veiculo}', '${alerta.placa}')">
                 <td class="truck">
                     <img src="./assets/icons/trunck-${status}.png" alt="truck red" width="40" height="40">
                     <span>
@@ -587,7 +586,7 @@
             }
 
             div_caminhoes.innerHTML += `
-            <div onclick="redirectPage('${alerta.id_veiculo}', '${alert.placa}')" class="card-caminhao ${status}">
+            <div onclick="redirectPage('${alerta.id_veiculo}', '${alerta.placa}')" class="card-caminhao ${status}">
             <div class="topo">
                 <h3>
                     Caminhão ${caminhao.placa}
@@ -625,8 +624,8 @@
                 lista_caminhoes = result
 
                 preencherSelects()
-                aplicarFiltros()  // Mantém a filtragem após atualizar os dados
-                setTimeout(buscarCaminhoes, timeOutRefresh)
+                aplicarFiltros()
+                setTimeout(buscarCaminhoes, 450)
             })
     }
 
@@ -694,7 +693,7 @@
             const caminhao = lista[index];
 
             if (index >= 4 && !expand) {
-                break; // Sai do loop se não estiver expandido e já mostrou 4
+                break;
             }
 
             let statusClass = "card-green";
